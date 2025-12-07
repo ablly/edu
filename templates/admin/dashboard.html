@@ -1,0 +1,410 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}总览{% endblock %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <!-- 欢迎标题 -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="welcome-header">
+                <h2 class="mb-2">
+                    <i class="fas fa-chart-line"></i> 
+                    欢迎回来，{{ admin_context.admin.username }}
+                </h2>
+                <p class="text-muted mb-0">
+                    <i class="fas fa-clock"></i> 
+                    <span id="currentDateTime"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 核心统计卡片（8个指标） -->
+    <div class="row mb-4" id="statsCards">
+        <!-- 总用户数 -->
+        <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
+            <div class="magic-card stats-card" data-color="primary">
+                <div class="card-content">
+                    <div class="stats-header">
+                        <div class="stats-icon-wrapper">
+                            <i class="fas fa-users stats-icon"></i>
+                        </div>
+                        <div class="stats-value">
+                            <h3 id="totalUsers" class="loading-shimmer">0</h3>
+                            <p class="stats-label">总用户数</p>
+                        </div>
+                    </div>
+                    <div class="stats-footer">
+                        <span class="trend trend-up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span id="usersGrowth">+12%</span>
+                        </span>
+                        <span class="text-muted">较昨日</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 活跃用户数 -->
+        <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
+            <div class="magic-card stats-card" data-color="success">
+                <div class="card-content">
+                    <div class="stats-header">
+                        <div class="stats-icon-wrapper">
+                            <i class="fas fa-user-check stats-icon"></i>
+                        </div>
+                        <div class="stats-value">
+                            <h3 id="activeUsers" class="loading-shimmer">0</h3>
+                            <p class="stats-label">活跃用户</p>
+                        </div>
+                    </div>
+                    <div class="stats-footer">
+                        <span class="trend trend-up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span id="activeGrowth">+8%</span>
+                        </span>
+                        <span class="text-muted">较上周</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 会员总数 -->
+        <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
+            <div class="magic-card stats-card" data-color="warning">
+                <div class="card-content">
+                    <div class="stats-header">
+                        <div class="stats-icon-wrapper">
+                            <i class="fas fa-crown stats-icon"></i>
+                        </div>
+                        <div class="stats-value">
+                            <h3 id="totalMembers" class="loading-shimmer">0</h3>
+                            <p class="stats-label">会员总数</p>
+                        </div>
+                    </div>
+                    <div class="stats-footer">
+                        <span class="trend trend-up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span id="membersGrowth">+15%</span>
+                        </span>
+                        <span class="text-muted">较上月</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 订单总数 -->
+        <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
+            <div class="magic-card stats-card" data-color="info">
+                <div class="card-content">
+                    <div class="stats-header">
+                        <div class="stats-icon-wrapper">
+                            <i class="fas fa-shopping-cart stats-icon"></i>
+                        </div>
+                        <div class="stats-value">
+                            <h3 id="totalOrders" class="loading-shimmer">0</h3>
+                            <p class="stats-label">订单总数</p>
+                        </div>
+                    </div>
+                    <div class="stats-footer">
+                        <span class="trend trend-up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span id="ordersGrowth">+20%</span>
+                        </span>
+                        <span class="text-muted">较上月</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 总收入 -->
+        <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
+            <div class="magic-card stats-card" data-color="danger">
+                <div class="card-content">
+                    <div class="stats-header">
+                        <div class="stats-icon-wrapper">
+                            <i class="fas fa-yen-sign stats-icon"></i>
+                        </div>
+                        <div class="stats-value">
+                            <h3 id="totalRevenue" class="loading-shimmer">¥0</h3>
+                            <p class="stats-label">总收入</p>
+                        </div>
+                    </div>
+                    <div class="stats-footer">
+                        <span class="trend trend-up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span id="revenueGrowth">+25%</span>
+                        </span>
+                        <span class="text-muted">较上月</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 今日收入 -->
+        <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
+            <div class="magic-card stats-card" data-color="purple">
+                <div class="card-content">
+                    <div class="stats-header">
+                        <div class="stats-icon-wrapper">
+                            <i class="fas fa-wallet stats-icon"></i>
+                        </div>
+                        <div class="stats-value">
+                            <h3 id="todayRevenue" class="loading-shimmer">¥0</h3>
+                            <p class="stats-label">今日收入</p>
+                        </div>
+                    </div>
+                    <div class="stats-footer">
+                        <span class="trend trend-up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span id="todayGrowth">+30%</span>
+                        </span>
+                        <span class="text-muted">较昨日</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 转化率 -->
+        <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
+            <div class="magic-card stats-card" data-color="teal">
+                <div class="card-content">
+                    <div class="stats-header">
+                        <div class="stats-icon-wrapper">
+                            <i class="fas fa-chart-pie stats-icon"></i>
+                        </div>
+                        <div class="stats-value">
+                            <h3 id="conversionRate" class="loading-shimmer">0%</h3>
+                            <p class="stats-label">转化率</p>
+                        </div>
+                    </div>
+                    <div class="stats-footer">
+                        <span class="trend trend-up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span id="conversionGrowth">+5%</span>
+                        </span>
+                        <span class="text-muted">较上周</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 系统状态 -->
+        <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
+            <div class="magic-card stats-card" data-color="cyan">
+                <div class="card-content">
+                    <div class="stats-header">
+                        <div class="stats-icon-wrapper">
+                            <i class="fas fa-server stats-icon"></i>
+                        </div>
+                        <div class="stats-value">
+                            <h3 id="systemStatus" class="loading-shimmer">正常</h3>
+                            <p class="stats-label">系统状态</p>
+                        </div>
+                    </div>
+                    <div class="stats-footer">
+                        <span class="badge badge-success">
+                            <i class="fas fa-check-circle"></i> 运行中
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 数据图表（4个） -->
+    <div class="row mb-4">
+        <!-- 收入趋势图 -->
+        <div class="col-lg-8 mb-4">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h5><i class="fas fa-chart-line"></i> 收入趋势（近30天）</h5>
+                    <div class="chart-controls">
+                        <button class="btn btn-sm btn-outline-primary" onclick="refreshChart('revenueChart')">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="chart-body">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 会员类型分布 -->
+        <div class="col-lg-4 mb-4">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h5><i class="fas fa-chart-pie"></i> 会员分布</h5>
+                </div>
+                <div class="chart-body">
+                    <canvas id="membershipChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 用户增长趋势 -->
+        <div class="col-lg-6 mb-4">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h5><i class="fas fa-user-plus"></i> 用户增长（近7天）</h5>
+                </div>
+                <div class="chart-body">
+                    <canvas id="userGrowthChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 活跃度热力图 -->
+        <div class="col-lg-6 mb-4">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h5><i class="fas fa-fire"></i> 每日活跃度</h5>
+                </div>
+                <div class="chart-body">
+                    <canvas id="activityChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 最近动态（3列） -->
+    <div class="row mb-4">
+        <!-- 最近订单 -->
+        <div class="col-lg-4 mb-4">
+            <div class="activity-card">
+                <div class="activity-header">
+                    <h5><i class="fas fa-shopping-cart"></i> 最近订单</h5>
+                    <a href="{{ url_for('admin_orders') }}" class="btn btn-sm btn-link">查看全部 →</a>
+                </div>
+                <div class="activity-body" id="recentOrders">
+                    <div class="loading-placeholder">
+                        <i class="fas fa-spinner fa-spin"></i> 加载中...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 最近用户 -->
+        <div class="col-lg-4 mb-4">
+            <div class="activity-card">
+                <div class="activity-header">
+                    <h5><i class="fas fa-user-plus"></i> 新注册用户</h5>
+                    <a href="{{ url_for('admin_users') }}" class="btn btn-sm btn-link">查看全部 →</a>
+                </div>
+                <div class="activity-body" id="recentUsers">
+                    <div class="loading-placeholder">
+                        <i class="fas fa-spinner fa-spin"></i> 加载中...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 系统日志 -->
+        <div class="col-lg-4 mb-4">
+            <div class="activity-card">
+                <div class="activity-header">
+                    <h5><i class="fas fa-history"></i> 系统日志</h5>
+                    <a href="#" class="btn btn-sm btn-link">查看全部 →</a>
+                </div>
+                <div class="activity-body" id="systemLogs">
+                    <div class="activity-item">
+                        <div class="activity-icon bg-success">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p class="activity-title">系统启动成功</p>
+                            <p class="activity-time">2分钟前</p>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon bg-primary">
+                            <i class="fas fa-sync"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p class="activity-title">数据同步完成</p>
+                            <p class="activity-time">5分钟前</p>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon bg-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p class="activity-title">磁盘使用率 75%</p>
+                            <p class="activity-time">10分钟前</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 快速操作 -->
+    <div class="row">
+        <div class="col-12">
+            <div class="quick-actions-card">
+                <div class="quick-actions-header">
+                    <h5><i class="fas fa-bolt"></i> 快速操作</h5>
+                </div>
+                <div class="quick-actions-body">
+                    {% if admin_context.is_super_admin or 'user_view' in admin_context.permissions %}
+                    <a href="{{ url_for('admin_users') }}" class="quick-action-item">
+                        <div class="action-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h6>用户管理</h6>
+                        <p>管理所有用户</p>
+                    </a>
+                    {% endif %}
+
+                    {% if admin_context.is_super_admin or 'membership_view' in admin_context.permissions %}
+                    <a href="{{ url_for('admin_memberships') }}" class="quick-action-item">
+                        <div class="action-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <h6>会员管理</h6>
+                        <p>管理会员套餐</p>
+                    </a>
+                    {% endif %}
+
+                    {% if admin_context.is_super_admin or 'order_view' in admin_context.permissions %}
+                    <a href="{{ url_for('admin_orders') }}" class="quick-action-item">
+                        <div class="action-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h6>订单管理</h6>
+                        <p>查看所有订单</p>
+                    </a>
+                    {% endif %}
+
+                    {% if admin_context.is_super_admin or 'stats_export' in admin_context.permissions %}
+                    <a href="#" class="quick-action-item" onclick="exportAllData(); return false;">
+                        <div class="action-icon" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                            <i class="fas fa-download"></i>
+                        </div>
+                        <h6>数据导出</h6>
+                        <p>导出系统数据</p>
+                    </a>
+                    {% endif %}
+
+                    <a href="#" class="quick-action-item" onclick="window.location.reload(); return false;">
+                        <div class="action-icon" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);">
+                            <i class="fas fa-sync-alt"></i>
+                        </div>
+                        <h6>刷新数据</h6>
+                        <p>重新加载统计</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Dashboard专用JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='admin/js/dashboard.js') }}?v={{ timestamp }}"></script>
+{% endblock %}

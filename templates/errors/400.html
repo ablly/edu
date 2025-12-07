@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>400 - 错误的请求 | EduPilot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/error.css') }}?v=1.0.0">
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-content">
+            <div class="error-code error-400">400</div>
+            <h1 class="error-title">错误的请求</h1>
+            <p class="error-message">
+                抱歉，服务器无法理解您的请求。
+            </p>
+            <div class="error-suggestions">
+                <h3>可能的原因：</h3>
+                <ul>
+                    <li>请求参数格式不正确</li>
+                    <li>缺少必需的参数</li>
+                    <li>请求数据损坏或不完整</li>
+                </ul>
+            </div>
+            <div class="error-actions">
+                <a href="/" class="btn btn-primary">返回首页</a>
+                <a href="javascript:history.back()" class="btn btn-secondary">返回上一页</a>
+            </div>
+        </div>
+        <div class="error-illustration">
+            <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="200" cy="150" r="100" fill="#ffe5e5" opacity="0.5"/>
+                <path d="M150 120 Q200 80 250 120" stroke="#ff6b6b" stroke-width="4" fill="none"/>
+                <circle cx="170" cy="140" r="8" fill="#ff6b6b"/>
+                <circle cx="230" cy="140" r="8" fill="#ff6b6b"/>
+                <path d="M170 170 L230 170" stroke="#ff6b6b" stroke-width="4"/>
+            </svg>
+        </div>
+    </div>
+</body>
+</html>

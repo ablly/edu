@@ -1,0 +1,287 @@
+/* 科幻数据表格样式 */
+.cyber-data-grid {
+  position: relative;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+}
+
+.cyber-data-grid::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--glow-color), transparent);
+  opacity: 0.6;
+  z-index: 1;
+}
+
+/* 扫描线效果 */
+.scanline-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+  animation: scanline 3s linear infinite;
+  z-index: 2;
+  opacity: 0.8;
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(400px);
+    opacity: 0;
+  }
+}
+
+/* 表格样式覆盖 */
+.cyber-table {
+  background: transparent !important;
+}
+
+.cyber-table .ant-table {
+  background: transparent;
+  color: var(--text-primary);
+}
+
+.cyber-table .ant-table-thead > tr > th {
+  background: linear-gradient(135deg, var(--primary-color-20), var(--secondary-color-20));
+  border-bottom: 1px solid var(--primary-color-40);
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 16px 12px;
+  position: relative;
+}
+
+.cyber-table .ant-table-thead > tr > th::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+}
+
+.cyber-table .ant-table-thead > tr > th:hover {
+  background: linear-gradient(135deg, var(--primary-color-30), var(--secondary-color-30));
+}
+
+.cyber-table .ant-table-tbody > tr {
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+.cyber-table .ant-table-tbody > tr:hover {
+  background: var(--hover-bg) !important;
+  box-shadow: inset 0 0 20px rgba(0, 212, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.cyber-table .ant-table-tbody > tr > td {
+  border-bottom: 1px solid var(--border-color-light);
+  color: var(--text-primary);
+  padding: 12px;
+  transition: all 0.3s ease;
+}
+
+.cyber-table .ant-table-tbody > tr:hover > td {
+  border-bottom-color: var(--primary-color-30);
+  box-shadow: 0 1px 0 var(--primary-color-20);
+}
+
+/* 分页器样式 */
+.cyber-table .ant-pagination {
+  margin: 16px 0 0 0;
+  padding: 16px 24px;
+  background: var(--card-bg-secondary);
+  border-top: 1px solid var(--border-color);
+}
+
+.cyber-table .ant-pagination .ant-pagination-item {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+}
+
+.cyber-table .ant-pagination .ant-pagination-item:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  box-shadow: 0 0 8px var(--primary-glow);
+}
+
+.cyber-table .ant-pagination .ant-pagination-item-active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--bg-primary);
+  box-shadow: 0 0 12px var(--primary-glow);
+}
+
+.cyber-table .ant-pagination .ant-pagination-prev,
+.cyber-table .ant-pagination .ant-pagination-next {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+}
+
+.cyber-table .ant-pagination .ant-pagination-prev:hover,
+.cyber-table .ant-pagination .ant-pagination-next:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  box-shadow: 0 0 8px var(--primary-glow);
+}
+
+.cyber-table .ant-pagination .ant-pagination-jump-prev,
+.cyber-table .ant-pagination .ant-pagination-jump-next {
+  color: var(--text-secondary);
+}
+
+.cyber-table .ant-pagination .ant-pagination-jump-prev:hover,
+.cyber-table .ant-pagination .ant-pagination-jump-next:hover {
+  color: var(--primary-color);
+}
+
+/* 选择框样式 */
+.cyber-table .ant-table-selection-column .ant-checkbox-wrapper {
+  margin: 0;
+}
+
+.cyber-table .ant-checkbox {
+  border-radius: 2px;
+}
+
+.cyber-table .ant-checkbox-inner {
+  background: var(--card-bg);
+  border-color: var(--border-color);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.cyber-table .ant-checkbox:hover .ant-checkbox-inner {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 4px var(--primary-glow);
+}
+
+.cyber-table .ant-checkbox-checked .ant-checkbox-inner {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 8px var(--primary-glow);
+}
+
+.cyber-table .ant-checkbox-checked::after {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 8px var(--primary-glow);
+}
+
+/* 排序图标 */
+.cyber-table .ant-table-column-sorter {
+  color: var(--text-secondary);
+}
+
+.cyber-table .ant-table-column-sorter-up.active,
+.cyber-table .ant-table-column-sorter-down.active {
+  color: var(--primary-color);
+}
+
+/* 筛选图标 */
+.cyber-table .ant-table-filter-trigger {
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+}
+
+.cyber-table .ant-table-filter-trigger:hover {
+  color: var(--primary-color);
+}
+
+.cyber-table .ant-table-filter-trigger.active {
+  color: var(--primary-color);
+}
+
+/* 空状态 */
+.cyber-table .ant-empty {
+  color: var(--text-secondary);
+}
+
+.cyber-table .ant-empty-description {
+  color: var(--text-secondary);
+}
+
+/* 加载状态 */
+.cyber-table .ant-spin {
+  color: var(--primary-color);
+}
+
+.cyber-table .ant-spin-dot-item {
+  background-color: var(--primary-color);
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+  .cyber-table .ant-table-thead > tr > th {
+    padding: 12px 8px;
+    font-size: 12px;
+  }
+  
+  .cyber-table .ant-table-tbody > tr > td {
+    padding: 8px;
+    font-size: 12px;
+  }
+  
+  .cyber-table .ant-pagination {
+    padding: 12px 16px;
+  }
+}
+
+/* 固定列样式 */
+.cyber-table .ant-table-fixed-left {
+  box-shadow: 6px 0 6px -4px rgba(0, 212, 255, 0.1);
+}
+
+.cyber-table .ant-table-fixed-right {
+  box-shadow: -6px 0 6px -4px rgba(0, 212, 255, 0.1);
+}
+
+/* 展开行样式 */
+.cyber-table .ant-table-expanded-row > td {
+  background: var(--card-bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.cyber-table .ant-table-expand-icon-col {
+  width: 48px;
+}
+
+.cyber-table .ant-table-row-expand-icon {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+}
+
+.cyber-table .ant-table-row-expand-icon:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  box-shadow: 0 0 4px var(--primary-glow);
+}
+

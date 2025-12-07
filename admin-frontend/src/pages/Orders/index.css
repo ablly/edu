@@ -1,0 +1,166 @@
+/**
+ * 订单管理页面样式
+ */
+
+.orders-page {
+  padding: 0;
+}
+
+/* 订单号样式 */
+.order-sn {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+/* 用户信息样式 */
+.user-name {
+  font-weight: 500;
+  color: var(--text-color);
+  margin-bottom: 2px;
+}
+
+.user-email {
+  font-size: 12px;
+  color: var(--text-color-secondary);
+}
+
+/* 金额样式 */
+.amount {
+  font-weight: bold;
+  color: var(--success-color);
+  font-size: 14px;
+}
+
+/* 搜索表单样式 */
+.orders-page .ant-form-inline .ant-form-item {
+  margin-bottom: 16px;
+}
+
+/* 统计卡片动画 */
+.orders-page .stat-card {
+  transition: all 0.3s ease;
+}
+
+.orders-page .stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 212, 255, 0.15);
+}
+
+/* 表格行悬停效果 */
+.orders-page .ant-table-tbody > tr:hover > td {
+  background: var(--hover-background) !important;
+}
+
+/* 操作按钮样式 */
+.orders-page .ant-dropdown-menu-item {
+  transition: all 0.2s ease;
+}
+
+.orders-page .ant-dropdown-menu-item:hover {
+  background: var(--hover-background);
+  color: var(--primary-color);
+}
+
+/* 模态框样式优化 */
+.orders-page .ant-modal-header {
+  background: var(--card-background);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.orders-page .ant-modal-content {
+  background: var(--card-background);
+}
+
+.orders-page .ant-modal-body {
+  background: var(--card-background);
+}
+
+/* 描述列表样式 */
+.orders-page .ant-descriptions-bordered .ant-descriptions-item-label {
+  background: var(--card-background-secondary);
+  color: var(--text-color-secondary);
+}
+
+.orders-page .ant-descriptions-bordered .ant-descriptions-item-content {
+  background: var(--card-background);
+  color: var(--text-color);
+}
+
+/* 表单样式 */
+.orders-page .ant-form-item-label > label {
+  color: var(--text-color);
+}
+
+.orders-page .ant-input,
+.orders-page .ant-select-selector,
+.orders-page .ant-picker {
+  background: var(--input-background);
+  border-color: var(--border-color);
+  color: var(--text-color);
+}
+
+.orders-page .ant-input:focus,
+.orders-page .ant-select-focused .ant-select-selector,
+.orders-page .ant-picker:hover,
+.orders-page .ant-picker-focused {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
+}
+
+/* 警告框样式 */
+.orders-page .ant-alert {
+  background: rgba(255, 184, 0, 0.1);
+  border: 1px solid rgba(255, 184, 0, 0.3);
+  color: var(--text-color);
+}
+
+.orders-page .ant-alert-icon {
+  color: var(--warning-color);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .orders-page .ant-form-inline .ant-form-item {
+    width: 100%;
+    margin-bottom: 12px;
+  }
+  
+  .orders-page .ant-form-inline .ant-form-item .ant-input,
+  .orders-page .ant-form-inline .ant-form-item .ant-select {
+    width: 100%;
+  }
+}
+
+/* 加载状态样式 */
+.orders-page .ant-spin-container {
+  background: transparent;
+}
+
+.orders-page .ant-spin-dot-item {
+  background-color: var(--primary-color);
+}
+
+/* 分页样式 */
+.orders-page .ant-pagination {
+  background: transparent;
+}
+
+.orders-page .ant-pagination .ant-pagination-item {
+  background: var(--card-background);
+  border-color: var(--border-color);
+}
+
+.orders-page .ant-pagination .ant-pagination-item a {
+  color: var(--text-color);
+}
+
+.orders-page .ant-pagination .ant-pagination-item-active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.orders-page .ant-pagination .ant-pagination-item-active a {
+  color: var(--text-color-light);
+}
+

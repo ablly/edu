@@ -1,0 +1,485 @@
+{
+  "template_name": "pptx",
+  "slides": [
+    {
+      "slide_idx": 0,
+      "layout_name": "标题幻灯片",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "长方形 17",
+          "text": "",
+          "placeholder_type": null,
+          "position": {
+            "left": 1507,
+            "top": 4915076,
+            "width": 12188952,
+            "height": 1942924
+          }
+        },
+        {
+          "shape_idx": 1,
+          "name": "标题 1",
+          "text": "授课",
+          "placeholder_type": "CENTER_TITLE (3)",
+          "position": {
+            "left": 828675,
+            "top": 5120639,
+            "width": 7137263,
+            "height": 1280161
+          }
+        },
+        {
+          "shape_idx": 3,
+          "name": "副标题 2",
+          "text": "演示文稿副标题",
+          "placeholder_type": "SUBTITLE (4)",
+          "position": {
+            "left": 8289580,
+            "top": 5166359,
+            "width": 2582367,
+            "height": 1188721
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 1,
+      "layout_name": "三项内容",
+      "shapes": [
+        {
+          "shape_idx": 1,
+          "name": "标题 14",
+          "text": "课程大纲",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 0,
+            "top": 0,
+            "width": 12192000,
+            "height": 1296537
+          }
+        },
+        {
+          "shape_idx": 4,
+          "name": "页脚占位符 2",
+          "text": "授课",
+          "placeholder_type": "FOOTER (15)",
+          "position": {
+            "left": 643051,
+            "top": 6446838,
+            "width": 6818262,
+            "height": 365125
+          }
+        },
+        {
+          "shape_idx": 5,
+          "name": "灯片编号占位符 17",
+          "text": "2",
+          "placeholder_type": "SLIDE_NUMBER (13)",
+          "position": {
+            "left": 10930596,
+            "top": 6446838,
+            "width": 617912,
+            "height": 365125
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 2,
+      "layout_name": "两栏内容",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "长方形 25",
+          "text": "",
+          "placeholder_type": null,
+          "position": {
+            "left": 15,
+            "top": 0,
+            "width": 12191985,
+            "height": 6858000
+          }
+        },
+        {
+          "shape_idx": 1,
+          "name": "标题 1",
+          "text": "第一课",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 598202,
+            "top": 516835,
+            "width": 3448259,
+            "height": 1666501
+          }
+        },
+        {
+          "shape_idx": 3,
+          "name": "内容占位符 2",
+          "text": "我们将介绍这些技能：\n第一种技能\n第二种技能\n第三种技能",
+          "placeholder_type": "OBJECT (7)",
+          "position": {
+            "left": 505657,
+            "top": 2604280,
+            "width": 3448259,
+            "height": 3342747
+          }
+        },
+        {
+          "shape_idx": 4,
+          "name": "页脚占位符 3",
+          "text": "授课",
+          "placeholder_type": "FOOTER (15)",
+          "position": {
+            "left": 643051,
+            "top": 6446838,
+            "width": 6818262,
+            "height": 365125
+          }
+        },
+        {
+          "shape_idx": 6,
+          "name": "灯片编号占位符 4",
+          "text": "3",
+          "placeholder_type": "SLIDE_NUMBER (13)",
+          "position": {
+            "left": 10930596,
+            "top": 6446838,
+            "width": 617912,
+            "height": 365125
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 3,
+      "layout_name": "1_带内容的图片",
+      "shapes": [
+        {
+          "shape_idx": 1,
+          "name": "标题 4",
+          "text": "第一种技能",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 0,
+            "top": 0,
+            "width": 12192000,
+            "height": 1296537
+          }
+        },
+        {
+          "shape_idx": 2,
+          "name": "内容占位符 5",
+          "text": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Maecenas porttitor congue massa.Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.\nNunc viverra imperdiet enim.Fusce est.Vivamus a tellus.Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.\nNemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. ",
+          "placeholder_type": "OBJECT (7)",
+          "position": {
+            "left": 514715,
+            "top": 1812759,
+            "width": 10905457,
+            "height": 2899284
+          }
+        },
+        {
+          "shape_idx": 3,
+          "name": "页脚占位符 1",
+          "text": "授课",
+          "placeholder_type": "FOOTER (15)",
+          "position": {
+            "left": 643051,
+            "top": 6446838,
+            "width": 6818262,
+            "height": 365125
+          }
+        },
+        {
+          "shape_idx": 4,
+          "name": "灯片编号占位符 16",
+          "text": "4",
+          "placeholder_type": "SLIDE_NUMBER (13)",
+          "position": {
+            "left": 10930596,
+            "top": 6446838,
+            "width": 617912,
+            "height": 365125
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 4,
+      "layout_name": "1_带内容的图片",
+      "shapes": [
+        {
+          "shape_idx": 1,
+          "name": "标题 1",
+          "text": "第二种技能",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 0,
+            "top": 0,
+            "width": 12192000,
+            "height": 1296537
+          }
+        },
+        {
+          "shape_idx": 3,
+          "name": "页脚占位符 2",
+          "text": "授课",
+          "placeholder_type": "FOOTER (15)",
+          "position": {
+            "left": 643051,
+            "top": 6446838,
+            "width": 6818262,
+            "height": 365125
+          }
+        },
+        {
+          "shape_idx": 4,
+          "name": "灯片编号占位符 13",
+          "text": "5",
+          "placeholder_type": "SLIDE_NUMBER (13)",
+          "position": {
+            "left": 10930596,
+            "top": 6446838,
+            "width": 617912,
+            "height": 365125
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 5,
+      "layout_name": "1_带标题的内容",
+      "shapes": [
+        {
+          "shape_idx": 1,
+          "name": "标题 2",
+          "text": "第三种技能",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 643466,
+            "top": 488254,
+            "width": 3517567,
+            "height": 1087974
+          }
+        },
+        {
+          "shape_idx": 2,
+          "name": "文本占位符 3",
+          "text": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Maecenas porttitor congue massa.Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.\nNunc viverra imperdiet enim.Fusce est.Vivamus a tellus.\nPellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.Proin pharetra nonummy pede.Mauris et orci.",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 403625,
+            "top": 2083689,
+            "width": 3757408,
+            "height": 3855791
+          }
+        },
+        {
+          "shape_idx": 3,
+          "name": "页脚占位符 4",
+          "text": "授课",
+          "placeholder_type": "FOOTER (15)",
+          "position": {
+            "left": 643051,
+            "top": 6446838,
+            "width": 6818262,
+            "height": 365125
+          }
+        },
+        {
+          "shape_idx": 5,
+          "name": "灯片编号占位符 1",
+          "text": "6",
+          "placeholder_type": "SLIDE_NUMBER (13)",
+          "position": {
+            "left": 10930596,
+            "top": 6446838,
+            "width": 617912,
+            "height": 365125
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 6,
+      "layout_name": "2_带标题的内容",
+      "shapes": [
+        {
+          "shape_idx": 1,
+          "name": "标题 2",
+          "text": "第一课总结",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 5356143,
+            "top": 3975295,
+            "width": 6835858,
+            "height": 1089350
+          }
+        },
+        {
+          "shape_idx": 2,
+          "name": "文本占位符 3",
+          "text": "第一种技能\u000bLorem ipsum dolor sit amet, consectetuer adipiscing elit.Maecenas porttitor congue massa.Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero.\n第二种技能\u000bNunc viverra imperdiet enim.Fusce est.Vivamus a tellus.Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.\n第三种技能\u000bLorem ipsum dolor sit amet, consectetuer adipiscing elit.Maecenas porttitor congue massa.",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 678635,
+            "top": 0,
+            "width": 3998873,
+            "height": 5852160
+          }
+        },
+        {
+          "shape_idx": 4,
+          "name": "文本占位符 35",
+          "text": "下面是我们学到的内容",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 5356422,
+            "top": 5034909,
+            "width": 6835291,
+            "height": 817251
+          }
+        },
+        {
+          "shape_idx": 5,
+          "name": "页脚占位符 4",
+          "text": "授课",
+          "placeholder_type": "FOOTER (15)",
+          "position": {
+            "left": 643051,
+            "top": 6446838,
+            "width": 6818262,
+            "height": 365125
+          }
+        },
+        {
+          "shape_idx": 6,
+          "name": "灯片编号占位符 1",
+          "text": "7",
+          "placeholder_type": "SLIDE_NUMBER (13)",
+          "position": {
+            "left": 10930596,
+            "top": 6446838,
+            "width": 617912,
+            "height": 365125
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 7,
+      "layout_name": "1_带内容的图片",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "标题 1",
+          "text": "课程进度",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 0,
+            "top": 0,
+            "width": 12192000,
+            "height": 1296537
+          }
+        },
+        {
+          "shape_idx": 2,
+          "name": "页脚占位符 2",
+          "text": "授课",
+          "placeholder_type": "FOOTER (15)",
+          "position": {
+            "left": 643051,
+            "top": 6446838,
+            "width": 6818262,
+            "height": 365125
+          }
+        },
+        {
+          "shape_idx": 3,
+          "name": "幻灯片编号占位符 8",
+          "text": "8",
+          "placeholder_type": "SLIDE_NUMBER (13)",
+          "position": {
+            "left": 10930596,
+            "top": 6446838,
+            "width": 617912,
+            "height": 365125
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 8,
+      "layout_name": "1_带内容的图片",
+      "shapes": [
+        {
+          "shape_idx": 1,
+          "name": "标题 1",
+          "text": "课程进度  ",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 0,
+            "top": 0,
+            "width": 12192000,
+            "height": 1296537
+          }
+        },
+        {
+          "shape_idx": 3,
+          "name": "页脚占位符 2",
+          "text": "授课",
+          "placeholder_type": "FOOTER (15)",
+          "position": {
+            "left": 643051,
+            "top": 6446838,
+            "width": 6818262,
+            "height": 365125
+          }
+        },
+        {
+          "shape_idx": 4,
+          "name": "幻灯片编号占位符 8",
+          "text": "9",
+          "placeholder_type": "SLIDE_NUMBER (13)",
+          "position": {
+            "left": 10930596,
+            "top": 6446838,
+            "width": 617912,
+            "height": 365125
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 9,
+      "layout_name": "带标题的图片",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "标题 2",
+          "text": "谢谢！",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 1097279,
+            "top": 4892956,
+            "width": 10113645,
+            "height": 743682
+          }
+        },
+        {
+          "shape_idx": 1,
+          "name": "文本占位符 3",
+          "text": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Maecenas porttitor congue massa.Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 1097279,
+            "top": 5808594,
+            "width": 10113264,
+            "height": 682822
+          }
+        }
+      ]
+    }
+  ]
+}

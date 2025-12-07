@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="视频总结页面">
+    <title>视频总结 - EduPilot多智能体教育协控平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar_user.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/video_summary.css') }}">
+</head>
+<body class="video-summary-page">
+    <div class="container">
+        <header class="navbar">
+        <div class="navbar-container">
+            <a href="{{ url_for('index') }}" class="navbar-brand">EduPilot</a>
+            <button class="navbar-toggle" id="navbarToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav class="navbar-nav" id="navbarNav">
+                    <a href="{{ url_for('index') }}" class="nav-link" data-page="index">首页</a>
+                    <a href="{{ url_for('students_page') }}" class="nav-link" data-page="students">学生管理</a>
+                    <a href="{{ url_for('submit_page') }}" class="nav-link" data-page="submit">作业提交</a>
+                    <a href="{{ url_for('scores_page') }}" class="nav-link" data-page="scores">成绩查询</a>
+                    <a href="{{ url_for('ai_ask_page') }}" class="nav-link" data-page="ai_ask">AI答疑</a>
+                    <a href="{{ url_for('auxiliary_programming_page') }}" class="nav-link" data-page="auxiliary_programming">辅助编程</a>
+                    <a href="{{ url_for('video_summary_page') }}" class="nav-link active" data-page="video_summary">视频总结</a>
+                    <a href="{{ url_for('generate_question_page') }}" class="nav-link" data-page="generate_question">智能出题</a>
+                    <a href="{{ url_for('generate_lecture_page') }}" class="nav-link" data-page="generate_lecture">智能讲义</a>
+                    <a href="{{ url_for('progress_chart') }}" class="nav-link" data-page="progress_chart">成绩分析</a>
+            </nav>
+        </div>
+    </header>
+
+        <main>
+            <section class="video-summary-form">
+                <h2>视频总结</h2>
+                <div class="instructions">
+            <h3 class="lp">功能说明</h3>
+            <ul>
+                <li class="ki"><strong>上传视频/链接</strong> - 支持文件或链接输入</li>
+                <li class="ki"><strong>获取结果</strong> - 一键生成可编辑/导出的文字总结。</li>
+            </ul>
+        </div>
+                <form id="video-summary-form">
+                    <div class="form-group">
+                        <label for="video-url" class="ki">视频链接:</label>
+                        <input type="url" id="video-url" name="video_url" placeholder="https://www.bilibili.com/video/...">
+                        <p class="help-text">请输入视频的在线链接（如YouTube、Bilibili等）。</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="video-file" class="ki">或上传视频文件:</label>
+                        <input type="file" id="video-file" name="video_file" accept="video/*">
+                        <p class="help-text">请上传视频文件（如MP4格式）。</p>
+                    </div>
+
+                    <button type="submit" class="btn">总结视频</button>
+                </form>
+                <div id="summary-result" class="message"></div>
+
+                <!-- 笔记功能区域 -->
+                <div id="note-container" style="display: none;">
+                    <div class="notes-section">
+                        <h3 class="lp">学习笔记</h3>
+                        <div class="note-input-area">
+                            <textarea id="note-content" placeholder="写下你的学习笔记..."></textarea>
+                            <div class="note-actions">
+                                <button id="save-note-btn" class="btn">保存笔记</button>
+                                <button id="clear-note-btn" class="btn btn-secondary">清空笔记</button>
+                            </div>
+                            <div id="note-message"></div>
+                        </div>
+                        <div class="note-history">
+                            <h4>历史笔记</h4>
+                            <div id="note-history"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 AI作业批改系统</p>
+        </footer>
+    </div>
+
+    <div id="message-container" class="message-container"></div>
+
+    <script src="{{ url_for('static', filename='js/navbar.js') }}?v=20251005a"></script>
+    <script src="{{ url_for('static', filename='js/video_summary.js') }}"></script>
+</body>
+</html>

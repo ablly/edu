@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>成绩管理 - EduPilot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/scores.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 导航栏 -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <a href="{{ url_for('index') }}" class="navbar-brand">EduPilot</a>
+                
+                <button class="navbar-toggle" id="navbarToggle" aria-label="切换导航菜单">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+                
+                <nav class="navbar-nav" id="navbarNav" role="navigation">
+                    <a href="{{ url_for('index') }}" class="nav-link" data-page="index">首页</a>
+                    <a href="{{ url_for('students_page') }}" class="nav-link" data-page="students">学生管理</a>
+                    <a href="{{ url_for('submit_page') }}" class="nav-link" data-page="submit">作业提交</a>
+                    <a href="{{ url_for('scores_page') }}" class="nav-link active" data-page="scores">成绩查询</a>
+                    <a href="{{ url_for('ai_ask_page') }}" class="nav-link" data-page="ai_ask">AI答疑</a>
+                    <a href="{{ url_for('auxiliary_programming_page') }}" class="nav-link" data-page="auxiliary">辅助编程</a>
+                    <a href="{{ url_for('video_summary_page') }}" class="nav-link" data-page="video">视频总结</a>
+                    <a href="{{ url_for('generate_question_page') }}" class="nav-link" data-page="question">智能出题</a>
+                <a href="{{ url_for('generate_lecture_page') }}" class="nav-link" data-page="lecture">智能讲义</a>
+                <a href="{{ url_for('progress_chart') }}" class="nav-link" data-page="progress">成绩分析</a>
+            </nav>
+        </div>
+    </header>
+
+        <main class="main-content">
+            <!-- 页面标题和操作栏 -->
+            <div class="page-header">
+                <h1><i class="fas fa-chart-line"></i> 成绩管理</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" id="add-score-btn">
+                        <i class="fas fa-plus"></i> 录入成绩
+                    </button>
+                    <button class="btn btn-secondary" id="batch-import-btn">
+                        <i class="fas fa-upload"></i> 批量导入
+                    </button>
+                </div>
+            </div>
+
+            <!-- 功能选项卡 -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="query">成绩查询</button>
+                <button class="tab-btn" data-tab="manage">成绩管理</button>
+            </div>
+
+            <!-- 成绩查询面板 -->
+            <div id="query-panel" class="tab-panel active">
+                <div class="search-section">
+                    <div class="search-form">
+                    <div class="form-group">
+                            <label for="student-select">选择学生:</label>
+                            <select id="student-select">
+                                <option value="">请选择学生</option>
+                        </select>
+                        </div>
+                        <button class="btn btn-primary" id="search-btn">
+                            <i class="fas fa-search"></i> 查询成绩
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 学生成绩展示区 -->
+                <div id="student-scores" class="scores-display" style="display: none;">
+                    <div class="student-info">
+                        <h3 id="student-name"></h3>
+                        <div class="stats-cards">
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-clipboard-list"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-value" id="total-assignments">0</div>
+                                    <div class="stat-label">总作业数</div>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-value" id="avg-score">0</div>
+                                    <div class="stat-label">平均成绩</div>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-trophy"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-value" id="max-score">0</div>
+                                    <div class="stat-label">最高分</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 成绩表格 -->
+                    <div class="scores-table-container">
+                        <table class="scores-table" id="scores-table">
+                            <thead>
+                                <tr>
+                                    <th>作业名称</th>
+                                    <th>学科</th>
+                                    <th>章节</th>
+                                    <th>成绩</th>
+                                    <th>提交时间</th>
+                                    <th>反馈</th>
+                                </tr>
+                            </thead>
+                            <tbody id="scores-tbody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                </div>
+
+            <!-- 成绩管理面板 -->
+            <div id="manage-panel" class="tab-panel">
+                <div class="manage-section">
+                    <h3>最近作业提交</h3>
+                    <div class="recent-assignments">
+                        <table class="assignments-table" id="recent-assignments-table">
+                            <thead>
+                            <tr>
+                                    <th>学生</th>
+                                    <th>作业名称</th>
+                                    <th>学科</th>
+                                    <th>章节</th>
+                                    <th>成绩</th>
+                                    <th>提交时间</th>
+                                    <th>操作</th>
+                            </tr>
+                        </thead>
+                            <tbody id="recent-assignments-tbody">
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 成绩录入模态框 -->
+    <div id="score-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>录入成绩</h3>
+                <button class="modal-close" id="score-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="score-form">
+                    <div class="form-group">
+                        <label for="score-student-id">学生:</label>
+                        <select id="score-student-id" name="student_id" required>
+                            <option value="">请选择学生</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="score-assignment-name">作业名称:</label>
+                        <input type="text" id="score-assignment-name" name="assignment_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="score-subject">学科:</label>
+                        <input type="text" id="score-subject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="score-chapter">章节:</label>
+                        <input type="text" id="score-chapter" name="chapter">
+                    </div>
+                    <div class="form-group">
+                        <label for="score-value">成绩:</label>
+                        <input type="number" id="score-value" name="score" min="0" max="100" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="score-feedback">反馈:</label>
+                        <textarea id="score-feedback" name="feedback" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="score-cancel-btn">取消</button>
+                <button type="submit" class="btn btn-primary" id="score-submit-btn">录入成绩</button>
+                    </div>
+                </div>
+    </div>
+
+    <!-- 消息提示容器 -->
+    <div id="message-container" class="message-container"></div>
+
+    <!-- 脚本文件 -->
+    <script src="{{ url_for('static', filename='js/scores.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/navbar.js') }}?v=20251005a"></script>
+</body>
+</html>

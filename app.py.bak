@@ -1,0 +1,2926 @@
+import os
+import traceback
+import uuid
+import zipfile
+import tempfile
+import json
+import re
+import sys
+import requests
+import shutil
+from flask import Flask, request, jsonify, render_template, redirect, send_file
+from werkzeug.utils import secure_filename
+from datetime import datetime
+from openai import OpenAI
+import config
+import PyPDF2
+import base64
+from pptx.enum.text import PP_PARAGRAPH_ALIGNMENT
+from pptx.util import Inches, Pt
+from pptx.dml.color import RGBColor
+from pptx.util import Inches  # 设置PPT元素尺寸
+from docx import Document
+from pptx import Presentation
+from models import db, Student, Assignment, QuestionBank, QuestionSubmission, VideoNote, Conversation, \
+    ConversationMessage  # 新增QuestionBank
+from config import DEEPSEEK_API_KEY, DEEPSEEK_BASE_URL
+from flask_migrate import Migrate
+from datetime import datetime
+from pptx.enum.text import PP_ALIGN
+import time
+import threading
+import warnings
+
+# 初始化 Flask 应用
+app = Flask(__name__)
+app.config.from_object(config)
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB
+# 确保上传文件夹存在
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+# 确保上传和数据库目录存在
+os.makedirs(config.UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(os.path.dirname(config.DATABASE_PATH), exist_ok=True)
+
+# 初始化数据库
+db.init_app(app)
+migrate = Migrate(app, db)
+
+# 创建数据库表
+with app.app_context():
+    db.create_all()
+
+    # ✅ 修复后的调试代码（兼容 SQLAlchemy ≥2.0）
+    from sqlalchemy import inspect
+
+    inspector = inspect(db.engine)
+
+    print("=== 检查数据库表结构 ===")
+    print("所有表名:", inspector.get_table_names())  # 替代原先的 db.engine.table_names()
+
+    if 'question_bank' in inspector.get_table_names():
+        print("question_bank 表的列:", inspector.get_columns('question_bank'))
+    else:
+        print("❌ question_bank 表不存在，请检查模型定义")
+
+
+# 资源文件目录访问
+def source_path(relative_path):
+    # 是否Bundle Resource
+    if getattr(sys, 'frozen', False):
+        base_path = sys._MEIPASS
+    else:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
+
+
+# 修改当前工作目录，使得资源文件可以被正确访问
+cd = source_path('')
+os.chdir(cd)
+
+
+# 检查文件类型是否允许
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in config.ALLOWED_EXTENSIONS
+
+
+# 从文件名解析学号和姓名
+def parse_student_info(filename):
+    base_name = os.path.splitext(filename)[0]
+    match = re.match(r'^([A-Za-z0-9]+)-(.+)$', base_name)
+    if match:
+        student_id = match.group(1)
+        name = match.group(2)
+        return student_id, name
+    return None, None
+
+
+# 获取或创建学生记录
+def get_or_create_student(student_id, name):
+    student = Student.query.filter_by(student_id=student_id).first()
+    if student:
+        return student
+    new_student = Student(student_id=student_id, name=name)
+    db.session.add(new_student)
+    db.session.commit()
+    return new_student
+
+
+# 解析 PDF 文件为纯文本
+def parse_pdf(file_path):
+    with open(file_path, 'rb') as file:
+        reader = PyPDF2.PdfReader(file)
+        return ' '.join(page.extract_text() for page in reader.pages if page.extract_text())
+
+
+# 解析 DOCX 文件为纯文本
+def parse_docx(file_path):
+    doc = Document(file_path)
+    text = ''
+    for para in doc.paragraphs:
+        text += para.text + '\n'
+    return text
+
+
+#解析ppt
+def parse_pptx(file_path):
+    """解析 PPTX 文件为纯文本，并包含图片等内容的描述"""
+    presentation = Presentation(file_path)
+    text = ''
+    for slide_index, slide in enumerate(presentation.slides):
+        text += f"幻灯片 {slide_index + 1}:\n"
+        for shape in slide.shapes:
+            if hasattr(shape, "text") and shape.text.strip():
+                text += shape.text + '\n'
+            # 处理图片
+            if shape.shape_type == 13:  # 13 表示图片
+                text += f"[图片描述] 幻灯片 {slide_index + 1} 包含一张图片，可能与主题相关。\n"
+    return text
+
+
+def parse_ai_response(ai_response):
+    """
+    预处理 AI 返回的 JSON 数据，去除外部的 ```json 标记。
+    """
+    try:
+        # 使用正则表达式去除 ```json 和多余的换行符
+        ai_response = re.sub(r'```json|\```', '', ai_response).strip()
+        # 将字符串解析为 JSON
+        return json.loads(ai_response)
+    except Exception as e:
+        raise ValueError(f"无法解析 AI 返回的题目数据: {str(e)}")
+
+
+def parse_txt(file_path):
+    """解析 TXT 文件为纯文本"""
+    with open(file_path, 'r', encoding='utf-8') as file:
+        return file.read()
+
+
+def sanitize_ai_response(text):
+    """
+    清理和规范化AI响应文本
+    1. 移除非法字符
+    2. 规范化标点符号
+    3. 确保段落格式
+    """
+    # 移除ASCII控制字符（保留\t\n\r）
+    text = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]', '', text)
+
+    # 中文标点规范化
+    text = text.replace('，', '，').replace('。', '。').replace('？', '？')
+
+    # 英文标点规范化
+    text = text.replace(' ,', ',').replace(' .', '.').replace(' ?', '?')
+
+    # 确保问答段落之间有适当间距
+    text = re.sub(r'(\n\s*){3,}', '\n\n', text)
+
+    # 移除首尾空白
+    return text.strip()
+
+
+def hex_to_rgb(hex_color):
+    """将十六进制颜色代码转换为RGB元组"""
+    hex_color = str(hex_color).lstrip('#')
+
+    # 处理缩写格式如 #RGB
+    if len(hex_color) == 3:
+        hex_color = ''.join([c * 2 for c in hex_color])
+
+    # 验证长度
+    if len(hex_color) != 6:
+        return (0, 0, 0)  # 返回默认黑色
+
+    try:
+        return tuple(int(hex_color[i:i + 2], 16) for i in (0, 2, 4))
+    except ValueError:
+        return (0, 0, 0)  # 返回默认黑色
+
+
+# 预定义的课程结构
+COURSE_STRUCTURE = {
+    "计算机组成原理": ["数字逻辑基础", "计算机系统概述", "数据的表示和运算", "存储系统"],
+    "操作系统": ["操作系统概述", "进程管理", "内存管理", "文件系统"],
+    "数据结构": ["线性结构", "树形结构", "图结构", "排序与查找"],
+    "计算机网络": ["网络基础", "TCP/IP协议", "网络应用", "网络安全"],
+    "数据库系统": ["数据库基础", "SQL语言", "数据库设计", "事务管理"],
+    "软件工程": ["软件过程", "需求工程", "软件设计", "软件测试"],
+    "人工智能": ["搜索算法", "机器学习基础", "神经网络", "自然语言处理"]
+}
+
+
+# 页面路由
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
+@app.route('/students')
+def students_page():
+    return render_template('students.html')
+
+
+@app.route('/submit')
+def submit_page():
+    return render_template('submit.html')
+
+
+@app.route('/scores')
+def scores_page():
+    return render_template('scores.html')
+
+
+@app.route('/ai-ask')
+def ai_ask_page():
+    return render_template('ai_ask.html')
+
+
+@app.route('/Auxiliary-programming')
+def auxiliary_programming_page():
+    return render_template('Auxiliary_programming.html')
+
+
+@app.route('/video-summary')
+def video_summary_page():
+    return render_template('video_summary.html')
+
+
+@app.route('/generate-question')
+def generate_question_page():
+    return render_template('generate_question.html')
+
+
+@app.route('/generate-lecture')
+def generate_lecture_page():
+    return render_template('generate_lecture.html')
+
+
+@app.route('/login')
+def login_page():
+    return render_template('login.html')
+
+
+@app.route('/progress')
+def progress_chart():
+    students = Student.query.all()  # 假设这是获取学生数据的代码
+    return render_template(
+        'progress_chart.html',
+        students=students,
+        now=datetime.now()  # 添加当前时间
+    )
+
+
+@app.route('/api/students/progress', methods=['GET'])
+def get_students_progress():
+    """获取学生成绩进度数据，用于图表分析"""
+    try:
+        # 获取所有学生
+        students = Student.query.all()
+        
+        # 获取作业统计数据
+        assignment_stats = db.session.query(
+            Assignment.student_id,
+            db.func.count(Assignment.id).label('assignment_count'),
+            db.func.avg(Assignment.score).label('avg_score'),
+            db.func.max(Assignment.score).label('max_score'),
+            db.func.min(Assignment.score).label('min_score')
+        ).group_by(Assignment.student_id).all()
+        
+        # 获取题目提交统计
+        question_stats = db.session.query(
+            QuestionSubmission.student_id,
+            db.func.count(QuestionSubmission.id).label('question_count'),
+            db.func.avg(db.case((QuestionSubmission.is_correct == True, 100), else_=0)).label('accuracy_rate')
+        ).group_by(QuestionSubmission.student_id).all()
+        
+        # 构建学生进度数据
+        progress_data = []
+        assignment_dict = {stat.student_id: stat for stat in assignment_stats}
+        question_dict = {stat.student_id: stat for stat in question_stats}
+        
+        for student in students:
+            student_id = student.student_id
+            assignment_stat = assignment_dict.get(student_id)
+            question_stat = question_dict.get(student_id)
+            
+            student_data = {
+                'student_id': student_id,
+                'name': student.name,
+                'class_name': student.class_name or '未分班',
+                'major': student.major or '未设置',
+                'assignment_count': assignment_stat.assignment_count if assignment_stat else 0,
+                'avg_score': round(assignment_stat.avg_score, 2) if assignment_stat and assignment_stat.avg_score else 0,
+                'max_score': assignment_stat.max_score if assignment_stat else 0,
+                'min_score': assignment_stat.min_score if assignment_stat else 0,
+                'question_count': question_stat.question_count if question_stat else 0,
+                'accuracy_rate': round(question_stat.accuracy_rate, 2) if question_stat and question_stat.accuracy_rate else 0
+            }
+            progress_data.append(student_data)
+        
+        # 班级统计
+        class_stats = {}
+        for data in progress_data:
+            class_name = data['class_name']
+            if class_name not in class_stats:
+                class_stats[class_name] = {
+                    'class_name': class_name,
+                    'student_count': 0,
+                    'total_assignments': 0,
+                    'avg_class_score': 0,
+                    'total_questions': 0,
+                    'avg_accuracy': 0
+                }
+            
+            class_stats[class_name]['student_count'] += 1
+            class_stats[class_name]['total_assignments'] += data['assignment_count']
+            class_stats[class_name]['avg_class_score'] += data['avg_score']
+            class_stats[class_name]['total_questions'] += data['question_count']
+            class_stats[class_name]['avg_accuracy'] += data['accuracy_rate']
+        
+        # 计算班级平均值
+        for class_name, stats in class_stats.items():
+            if stats['student_count'] > 0:
+                stats['avg_class_score'] = round(stats['avg_class_score'] / stats['student_count'], 2)
+                stats['avg_accuracy'] = round(stats['avg_accuracy'] / stats['student_count'], 2)
+        
+        # 专业统计
+        major_stats = {}
+        for data in progress_data:
+            major = data['major']
+            if major not in major_stats:
+                major_stats[major] = {
+                    'major': major,
+                    'student_count': 0,
+                    'avg_score': 0,
+                    'avg_accuracy': 0
+                }
+            
+            major_stats[major]['student_count'] += 1
+            major_stats[major]['avg_score'] += data['avg_score']
+            major_stats[major]['avg_accuracy'] += data['accuracy_rate']
+        
+        # 计算专业平均值
+        for major, stats in major_stats.items():
+            if stats['student_count'] > 0:
+                stats['avg_score'] = round(stats['avg_score'] / stats['student_count'], 2)
+                stats['avg_accuracy'] = round(stats['avg_accuracy'] / stats['student_count'], 2)
+        
+        return jsonify({
+            'students': progress_data,
+            'class_stats': list(class_stats.values()),
+            'major_stats': list(major_stats.values()),
+            'total_students': len(students),
+            'total_assignments': sum(data['assignment_count'] for data in progress_data),
+            'total_questions': sum(data['question_count'] for data in progress_data)
+        })
+        
+    except Exception as e:
+        return jsonify({'error': f'获取进度数据失败: {str(e)}'}), 500
+
+
+@app.route('/api/assignments/recent', methods=['GET'])
+def get_recent_assignments():
+    """获取最近的作业提交记录"""
+    try:
+        limit = int(request.args.get('limit', 10))
+        
+        recent_assignments = db.session.query(Assignment, Student).join(
+            Student, Assignment.student_id == Student.student_id
+        ).order_by(Assignment.submission_time.desc()).limit(limit).all()
+        
+        assignments_data = []
+        for assignment, student in recent_assignments:
+            assignments_data.append({
+                'id': assignment.id,
+                'student_name': student.name,
+                'student_id': assignment.student_id,
+                'assignment_name': assignment.assignment_name,
+                'subject': assignment.subject,
+                'chapter': assignment.chapter,
+                'score': assignment.score,
+                'submission_time': assignment.submission_time.strftime('%Y-%m-%d %H:%M:%S'),
+                'feedback': assignment.feedback
+            })
+        
+        return jsonify({'assignments': assignments_data})
+        
+    except Exception as e:
+        return jsonify({'error': f'获取作业记录失败: {str(e)}'}), 500
+
+
+#  AI PPT
+@app.route('/aippt')
+def AIPPT_PAGE():
+    return redirect("http://127.0.0.1:5555/aippt")
+
+
+# 6666666666
+
+#   return redirect("http://127.0.0.1:5001/aippt")
+
+#   return render_template('index2.html')
+
+# API 路由
+@app.route('/api/students', methods=['GET'])
+def get_students():
+    """获取学生列表，支持搜索和筛选"""
+    # 获取查询参数
+    search = request.args.get('search', '')
+    major = request.args.get('major', '')
+    class_name = request.args.get('class', '')
+    status = request.args.get('status', '')
+    page = int(request.args.get('page', 1))
+    per_page = int(request.args.get('per_page', 20))
+    simple = request.args.get('simple', 'false').lower() == 'true'
+    
+    # 构建查询
+    query = Student.query
+    
+    # 搜索条件
+    if search:
+        search_filter = f"%{search}%"
+        query = query.filter(
+            db.or_(
+                Student.name.like(search_filter),
+                Student.student_id.like(search_filter),
+                Student.phone.like(search_filter),
+                Student.email.like(search_filter)
+            )
+        )
+    
+    # 筛选条件
+    if major:
+        query = query.filter(Student.major.like(f"%{major}%"))
+    if class_name:
+        query = query.filter(Student.class_name.like(f"%{class_name}%"))
+    if status:
+        query = query.filter(Student.student_status == status)
+    
+    # 分页
+    students = query.paginate(
+        page=page, per_page=per_page, error_out=False
+    )
+    
+    # 返回数据
+    if simple:
+        student_list = [student.to_simple_dict() for student in students.items]
+    else:
+        student_list = [student.to_dict() for student in students.items]
+    
+    return jsonify({
+        'students': student_list,
+        'total': students.total,
+        'pages': students.pages,
+        'current_page': page,
+        'per_page': per_page
+    })
+
+
+@app.route('/api/students', methods=['POST'])
+def add_student():
+    """添加学生，支持完整的学生信息"""
+    data = request.json
+    
+    # 检查必填字段
+    if not data.get('student_id') or not data.get('name'):
+        return jsonify({'error': '学号和姓名为必填字段'}), 400
+    
+    # 检查学号是否已存在
+    existing_student = Student.query.filter_by(student_id=data['student_id']).first()
+    if existing_student:
+        return jsonify({'error': '学号已存在'}), 400
+    
+    try:
+        # 创建新学生
+        new_student = Student(
+            student_id=data['student_id'],
+            name=data['name'],
+            gender=data.get('gender'),
+            birth_date=datetime.strptime(data['birth_date'], '%Y-%m-%d').date() if data.get('birth_date') else None,
+            id_card=data.get('id_card'),
+            phone=data.get('phone'),
+            email=data.get('email'),
+            admission_date=datetime.strptime(data['admission_date'], '%Y-%m-%d').date() if data.get('admission_date') else None,
+            major=data.get('major'),
+            class_name=data.get('class_name'),
+            grade=data.get('grade'),
+            education_level=data.get('education_level'),
+            student_status=data.get('student_status', '在读'),
+            address=data.get('address'),
+            emergency_contact=data.get('emergency_contact'),
+            emergency_phone=data.get('emergency_phone'),
+            parent_name=data.get('parent_name'),
+            parent_phone=data.get('parent_phone'),
+            notes=data.get('notes'),
+            tags=json.dumps(data.get('tags', [])) if data.get('tags') else None
+        )
+        
+        db.session.add(new_student)
+        db.session.commit()
+        
+        return jsonify(new_student.to_dict()), 201
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': f'添加学生失败: {str(e)}'}), 500
+
+
+@app.route('/api/students/<student_id>', methods=['PUT'])
+def update_student(student_id):
+    """更新学生信息，支持完整字段更新"""
+    student = Student.query.filter_by(student_id=student_id).first()
+    if not student:
+        return jsonify({'error': '学生不存在'}), 404
+    
+    data = request.json
+    
+    try:
+        # 检查新学号是否与其他学生冲突
+        if 'student_id' in data and data['student_id'] != student_id:
+            existing_student = Student.query.filter_by(student_id=data['student_id']).first()
+            if existing_student:
+                return jsonify({'error': '新学号已被其他学生使用'}), 400
+            student.student_id = data['student_id']
+        
+        # 更新基本信息
+        if 'name' in data:
+            student.name = data['name']
+        if 'gender' in data:
+            student.gender = data['gender']
+        if 'birth_date' in data and data['birth_date']:
+            student.birth_date = datetime.strptime(data['birth_date'], '%Y-%m-%d').date()
+        if 'id_card' in data:
+            student.id_card = data['id_card']
+        if 'phone' in data:
+            student.phone = data['phone']
+        if 'email' in data:
+            student.email = data['email']
+        
+        # 更新学术信息
+        if 'admission_date' in data and data['admission_date']:
+            student.admission_date = datetime.strptime(data['admission_date'], '%Y-%m-%d').date()
+        if 'major' in data:
+            student.major = data['major']
+        if 'class_name' in data:
+            student.class_name = data['class_name']
+        if 'grade' in data:
+            student.grade = data['grade']
+        if 'education_level' in data:
+            student.education_level = data['education_level']
+        if 'student_status' in data:
+            student.student_status = data['student_status']
+        
+        # 更新联系信息
+        if 'address' in data:
+            student.address = data['address']
+        if 'emergency_contact' in data:
+            student.emergency_contact = data['emergency_contact']
+        if 'emergency_phone' in data:
+            student.emergency_phone = data['emergency_phone']
+        if 'parent_name' in data:
+            student.parent_name = data['parent_name']
+        if 'parent_phone' in data:
+            student.parent_phone = data['parent_phone']
+        
+        # 更新扩展信息
+        if 'notes' in data:
+            student.notes = data['notes']
+        if 'tags' in data:
+            student.tags = json.dumps(data['tags']) if data['tags'] else None
+        
+        # 更新时间戳
+        student.updated_at = datetime.utcnow()
+        
+        db.session.commit()
+        return jsonify(student.to_dict()), 200
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': f'更新失败: {str(e)}'}), 500
+
+
+@app.route('/api/students/<student_id>', methods=['GET'])
+def get_student_detail(student_id):
+    """获取学生详细信息"""
+    student = Student.query.filter_by(student_id=student_id).first()
+    if not student:
+        return jsonify({'error': '学生不存在'}), 404
+    
+    return jsonify(student.to_dict())
+
+
+@app.route('/api/students/stats', methods=['GET'])
+def get_students_stats():
+    """获取学生统计信息"""
+    try:
+        total_students = Student.query.count()
+        
+        # 按状态统计
+        status_stats = db.session.query(
+            Student.student_status,
+            db.func.count(Student.id)
+        ).group_by(Student.student_status).all()
+        
+        # 按专业统计
+        major_stats = db.session.query(
+            Student.major,
+            db.func.count(Student.id)
+        ).filter(Student.major.isnot(None)).group_by(Student.major).all()
+        
+        # 按班级统计
+        class_stats = db.session.query(
+            Student.class_name,
+            db.func.count(Student.id)
+        ).filter(Student.class_name.isnot(None)).group_by(Student.class_name).all()
+        
+        # 按性别统计
+        gender_stats = db.session.query(
+            Student.gender,
+            db.func.count(Student.id)
+        ).filter(Student.gender.isnot(None)).group_by(Student.gender).all()
+        
+        return jsonify({
+            'total_students': total_students,
+            'status_distribution': [{'status': status, 'count': count} for status, count in status_stats],
+            'major_distribution': [{'major': major, 'count': count} for major, count in major_stats],
+            'class_distribution': [{'class': class_name, 'count': count} for class_name, count in class_stats],
+            'gender_distribution': [{'gender': gender, 'count': count} for gender, count in gender_stats]
+        })
+        
+    except Exception as e:
+        return jsonify({'error': f'获取统计信息失败: {str(e)}'}), 500
+
+
+@app.route('/api/students/<student_id>', methods=['DELETE'])
+def delete_student(student_id):
+    """删除学生（级联删除相关数据）"""
+    student = Student.query.filter_by(student_id=student_id).first()
+    if not student:
+        return jsonify({'error': '学生不存在'}), 404
+    
+    try:
+        # 删除相关的作业记录
+        Assignment.query.filter_by(student_id=student_id).delete()
+        
+        # 删除相关的问题提交记录
+        QuestionSubmission.query.filter_by(student_id=student_id).delete()
+        
+        # 删除头像文件
+        if student.avatar and os.path.exists(student.avatar):
+            try:
+                os.remove(student.avatar)
+            except:
+                pass
+        
+        # 删除学生记录
+        db.session.delete(student)
+        db.session.commit()
+        
+        return jsonify({'message': '学生及相关数据删除成功'}), 200
+    except Exception as e:
+        db.session.rollback()
+        app.logger.error(f"删除学生失败: {str(e)}")
+        return jsonify({'error': f'删除失败: {str(e)}'}), 500
+
+
+@app.route('/api/course-structure', methods=['GET'])
+def get_course_structure():
+    """获取完整的课程结构"""
+    return jsonify(COURSE_STRUCTURE)
+
+
+@app.route('/api/submit', methods=['POST'])
+def submit_assignment():
+    if 'file' not in request.files:
+        return jsonify({'error': '未包含文件'}), 400
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': '未选择文件'}), 400
+    if not allowed_file(file.filename):
+        return jsonify({'error': '不支持的文件类型'}), 400
+    student_id = request.form.get('student_id')
+    assignment_name = request.form.get('assignment_name')
+    subject = request.form.get('subject', '未分类')
+    chapter = request.form.get('chapter', '未分类')
+    prompt = request.form.get('prompt')
+    student = Student.query.filter_by(student_id=student_id).first()
+    if not student:
+        return jsonify({'error': '未找到学生'}), 404
+    temp_dir = tempfile.mkdtemp()
+    file_path = os.path.join(temp_dir, secure_filename(file.filename))
+    file.save(file_path)
+    file_contents = {}
+    file_extension = file.filename.rsplit('.', 1)[1].lower()
+
+    # 处理不同文件类型
+    if file_extension == 'zip':
+        extract_path = os.path.join(temp_dir, 'extracted')
+        os.makedirs(extract_path, exist_ok=True)
+        try:
+            with zipfile.ZipFile(file_path, 'r') as zip_ref:
+                zip_ref.extractall(extract_path)
+            for root, _, files in os.walk(extract_path):
+                for file_name in files:
+                    if file_name.endswith(('.c', '.py', '.cpp', '.java')):
+                        current_file_path = os.path.join(root, file_name)
+                        relative_path = os.path.relpath(current_file_path, extract_path)
+                        with open(current_file_path, 'r', encoding='utf-8', errors='ignore') as f:
+                            file_contents[relative_path] = f.read()
+        except zipfile.BadZipFile:
+            return jsonify({'error': '无效的zip文件'}), 400
+    elif file_extension == 'pdf':
+        file_contents[file.filename] = parse_pdf(file_path)
+    elif file_extension == 'docx':
+        file_contents[file.filename] = parse_docx(file_path)
+    elif file_extension == 'pptx':
+        file_contents[file.filename] = parse_pptx(file_path)
+    else:
+        try:
+            with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+                file_contents[file.filename] = f.read()
+        except Exception as e:
+            return jsonify({'error': f'读取文件错误: {str(e)}'}), 500
+    try:
+        submission_content = ""
+        for file_name, content in file_contents.items():
+            submission_content += f"文件: {file_name}\n\n{content}\n\n---\n\n"
+        user_prompt = f"""
+        [作业批改助手]
+        作业名称: {assignment_name}
+        学科: {subject}
+        章节: {chapter}
+        学生ID: {student_id}
+        学生提交的内容:
+        {submission_content}
+        评分标准:
+        针对{subject}学科的{chapter}章节内容，按照以下标准评分:
+        1. 知识掌握程度 (40分)
+           - 是否符合本章节核心概念
+        2. 应用能力 (30分)
+           - 是否能正确应用本章节所学
+        3. 创新性 (20分)
+           - 是否有超出本章节的深入思考
+        4. 表达清晰度 (10分)
+           - 逻辑是否清晰，表述是否准确
+        请提供具体的改进建议，特别是针对{subject}学科{chapter}章节的知识点。
+        返回以下格式的 JSON:
+        {{
+            "score": 分数,
+            "feedback": "详细的反馈内容"
+        }}
+        仅输出JSON格式，不要有其他文本。
+        """
+
+        client = OpenAI(api_key=config.DEEPSEEK_API_KEY, base_url=config.DEEPSEEK_BASE_URL)
+        response = client.chat.completions.create(
+            model=config.DEEPSEEK_MODEL,
+            messages=[
+                {"role": "system", "content": "你是一位精通编程的助手，负责批改学生提交的编程作业。"},
+                {"role": "user", "content": user_prompt}
+            ],
+            temperature=0.3,
+            max_tokens=4096,
+            stream=False
+        )
+
+        ai_response = response.choices[0].message.content.strip()
+        try:
+            grading_result = json.loads(ai_response)
+            if not isinstance(grading_result,
+                              dict) or 'score' not in grading_result or 'feedback' not in grading_result:
+                return jsonify({'error': 'AI返回的结果格式不正确'}), 500
+        except json.JSONDecodeError:
+            import re
+            score_match = re.search(r'score["\s:]+(\d+)', ai_response)
+            score = float(score_match.group(1)) if score_match else None
+            feedback_match = re.search(r'feedback["\s:]+(.+?)(?:}|$)', ai_response, re.DOTALL)
+            feedback = feedback_match.group(1).strip().strip('"\'') if feedback_match else ai_response
+            grading_result = {'score': score, 'feedback': feedback}
+
+        assignment = Assignment(
+            student_id=student_id,
+            assignment_name=assignment_name,
+            subject=subject,  # 保存科目
+            chapter=chapter,  # 保存章节
+            score=grading_result.get('score'),
+            feedback=grading_result.get('feedback'),
+            submission_time=datetime.utcnow()
+        )
+        db.session.add(assignment)
+        db.session.commit()
+        return jsonify(assignment.to_dict()), 201
+    except Exception as e:
+        return jsonify({'error': f'批改过程中出错: {str(e)}'}), 500
+    finally:
+        shutil.rmtree(temp_dir, ignore_errors=True)
+
+
+# 获取所有已存在的科目分类
+@app.route('/api/subjects', methods=['GET'])
+def get_all_subjects():
+    subjects = db.session.query(Assignment.subject).distinct().all()
+    return jsonify([s[0] for s in subjects if s[0]])
+
+
+@app.route('/api/batch-submit', methods=['POST'])
+def batch_submit_assignments():
+    if 'files[]' not in request.files:
+        return jsonify({'error': '未包含文件'}), 400
+    files = request.files.getlist('files[]')
+    if not files or files[0].filename == '':
+        return jsonify({'error': '未选择文件'}), 400
+
+    subject = request.form.get('subject', '未分类')  # 新增
+    chapter = request.form.get('chapter', '未分类')  # 新增
+
+    batch_name = request.form.get('batch_name')
+    prompt = request.form.get('prompt')
+    if not batch_name:
+        return jsonify({'error': '请提供批次作业名称'}), 400
+    if not prompt:
+        return jsonify({'error': '请提供批改提示词'}), 400
+
+    results = []
+    temp_dirs = []
+    try:
+        for file in files:
+            if not allowed_file(file.filename):
+                continue
+            student_id, name = parse_student_info(file.filename)
+            if not student_id or not name:
+                results.append({
+                    'filename': file.filename,
+                    'status': 'error',
+                    'message': '无法从文件名解析学号和姓名，请确保文件名格式为"学号-姓名.扩展名"'
+                })
+                continue
+            student = get_or_create_student(student_id, name)
+            temp_dir = tempfile.mkdtemp()
+            temp_dirs.append(temp_dir)
+            file_path = os.path.join(temp_dir, secure_filename(file.filename))
+            file.save(file_path)
+            try:
+                file_content = ""
+                file_extension = file.filename.rsplit('.', 1)[1].lower()
+
+                if file_extension == 'pdf':
+                    file_content = parse_pdf(file_path)
+                elif file_extension == 'docx':
+                    file_content = parse_docx(file_path)
+                elif file_extension == 'pptx':
+                    file_content = parse_pptx(file_path)
+                else:
+                    with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+                        file_content = f.read()
+            except Exception as e:
+                results.append({
+                    'filename': file.filename,
+                    'status': 'error',
+                    'message': f'读取文件错误: {str(e)}'
+                })
+                continue
+
+            assignment_name = f"{batch_name} - {student.name}"
+            user_prompt = f"""
+            [作业批改助手]
+            作业名称: {assignment_name}
+            学生ID: {student.student_id}
+            学生提交的代码:
+            文件: {file.filename}
+            {file_content}
+            评分标准:
+            1. 本次作业满分为100分。
+            2. 评分时请综合考虑代码的质量、可读性和功能性：
+               - 功能实现 (40分)
+               - 代码规范 (30分)
+               - 逻辑清晰 (20分)
+               - 创新性 (10分)
+            3. 提供详细的评分理由，指出优点和可以改进的地方。
+            返回以下格式的 JSON：
+            {{
+                "score": 分数,
+                "feedback": "详细的反馈内容"
+            }}
+            仅输出JSON格式，不要有其他文本。
+            """
+
+            client = OpenAI(api_key=config.DEEPSEEK_API_KEY, base_url=config.DEEPSEEK_BASE_URL)
+            response = client.chat.completions.create(
+                model=config.DEEPSEEK_MODEL,
+                messages=[
+                    {"role": "system", "content": "你是一位精通编程的助手，负责批改学生提交的编程作业。"},
+                    {"role": "user", "content": user_prompt}
+                ],
+                temperature=0.3,
+                max_tokens=4096,
+                stream=False
+            )
+
+            ai_response = response.choices[0].message.content.strip()
+            try:
+                grading_result = json.loads(ai_response)
+                if not isinstance(grading_result,
+                                  dict) or 'score' not in grading_result or 'feedback' not in grading_result:
+                    results.append({
+                        'filename': file.filename,
+                        'status': 'error',
+                        'message': 'AI返回的结果格式不正确'
+                    })
+                    continue
+            except json.JSONDecodeError:
+                import re
+                score_match = re.search(r'score["\s:]+(\d+)', ai_response)
+                score = float(score_match.group(1)) if score_match else None
+                feedback_match = re.search(r'feedback["\s:]+(.+?)(?:}|$)', ai_response, re.DOTALL)
+                feedback = feedback_match.group(1).strip().strip('"\'') if feedback_match else ai_response
+                grading_result = {'score': score, 'feedback': feedback}
+
+            assignment = Assignment(
+                student_id=student.student_id,
+                assignment_name=batch_name,
+                subject=subject,  # 新增
+                chapter=chapter,  # 新增
+                score=grading_result.get('score'),
+                feedback=grading_result.get('feedback'),
+                submission_time=datetime.utcnow()
+            )
+            db.session.add(assignment)
+            db.session.commit()
+
+            results.append({
+                'filename': file.filename,
+                'status': 'success',
+                'student_id': student.student_id,
+                'student_name': student.name,
+                'assignment_name': batch_name,
+                'score': grading_result.get('score')
+            })
+
+    except Exception as e:
+        return jsonify({'error': f'批量上传处理出错: {str(e)}'}), 500
+    finally:
+        for temp_dir in temp_dirs:
+            shutil.rmtree(temp_dir, ignore_errors=True)
+
+    return jsonify({
+        'batch_name': batch_name,
+        'total': len(files),
+        'processed': len(results),
+        'results': results
+    }), 201
+
+
+@app.route('/api/scores/<student_id>/<assignment_name>', methods=['GET'])
+def get_assignment_score(student_id, assignment_name):
+    student = Student.query.filter_by(student_id=student_id).first()
+    if not student:
+        return jsonify({'error': '未找到学生'}), 404
+    assignment = Assignment.query.filter_by(student_id=student_id, assignment_name=assignment_name).order_by(
+        Assignment.submission_time.desc()).first()
+    if not assignment:
+        return jsonify({'error': '未找到作业'}), 404
+    return jsonify({
+        'student': student.to_dict(),
+        'assignment': assignment.to_dict()
+    })
+
+
+# 获取学生所有成绩数据（用于基础图表）
+@app.route('/api/scores/<student_id>')
+def get_student_scores(student_id):
+    # 首先获取学生信息
+    student = Student.query.filter_by(student_id=student_id).first()
+    if not student:
+        return jsonify({'error': 'Student not found'}), 404
+
+    # 然后获取该学生的所有作业
+    assignments = Assignment.query.filter_by(student_id=student_id).all()
+
+    # 返回统一格式的数据
+    return jsonify({
+        'student': {
+            'student_id': student.student_id,
+            'name': student.name
+        },
+        'assignments': [a.to_dict() for a in assignments]
+    })
+
+
+# 获取学科-章节成绩趋势数据
+@app.route('/api/chapter-scores/<student_id>/<subject>/<chapter>')
+def get_chapter_scores(student_id, subject, chapter):
+    assignments = Assignment.query.filter_by(
+        student_id=student_id,
+        subject=subject,
+        chapter=chapter
+    ).order_by(Assignment.submission_time).all()
+
+    data = {
+        'student_id': student_id,
+        'subject': subject,
+        'chapter': chapter,
+        'assignments': [a.to_dict() for a in assignments]
+    }
+    return jsonify(data)
+
+
+# 获取学科成绩分布数据
+@app.route('/api/subject-scores/<student_id>/<subject>')
+def get_subject_scores(student_id, subject):
+    assignments = Assignment.query.filter_by(
+        student_id=student_id,
+        subject=subject
+    ).all()
+
+    data = {
+        'student_id': student_id,
+        'subject': subject,
+        'assignments': [a.to_dict() for a in assignments]
+    }
+    return jsonify(data)
+
+
+@app.route('/api/scores/<student_id>/subjects', methods=['GET'])
+def get_student_subjects(student_id):
+    subjects = db.session.query(Assignment.subject).filter_by(student_id=student_id).distinct().all()
+    return jsonify([s[0] for s in subjects if s[0]])
+
+
+@app.route('/api/scores/<student_id>/<subject>', methods=['GET'])
+def get_student_subject_scores(student_id, subject):
+    student = Student.query.filter_by(student_id=student_id).first()
+    if not student:
+        return jsonify({'error': '未找到学生'}), 404
+
+    assignments = Assignment.query.filter_by(
+        student_id=student_id,
+        subject=subject
+    ).order_by(Assignment.submission_time).all()
+
+    return jsonify({
+        'student': student.to_dict(),
+        'subject': subject,
+        'assignments': [a.to_dict() for a in assignments]
+    })
+
+
+@app.route('/api/subject-chapters/<subject>', methods=['GET'])
+def get_subject_chapters(subject):
+    """获取指定科目下的所有章节"""
+    chapters = db.session.query(Assignment.chapter).filter_by(
+        subject=subject
+    ).distinct().all()
+    return jsonify([c[0] for c in chapters if c[0]])
+
+
+@app.route('/api/subject-score-trend/<student_id>/<subject>', methods=['GET'])
+def get_subject_score_trend(student_id, subject):
+    """获取学生在某科目的各章节成绩趋势"""
+    student = Student.query.filter_by(student_id=student_id).first()
+    if not student:
+        return jsonify({'error': '未找到学生'}), 404
+
+    assignments = Assignment.query.filter_by(
+        student_id=student_id,
+        subject=subject
+    ).order_by(Assignment.chapter).all()
+
+    # 按章节分组计算平均分
+    scores_by_chapter = {}
+    for a in assignments:
+        if a.chapter not in scores_by_chapter:
+            scores_by_chapter[a.chapter] = []
+        scores_by_chapter[a.chapter].append(a.score)
+
+    # 计算每个章节的平均分
+    chapter_data = []
+    for chapter, scores in scores_by_chapter.items():
+        if scores:
+            avg_score = round(sum(scores) / len(scores), 2)
+            chapter_data.append({
+                'chapter': chapter,
+                'average_score': avg_score,
+                'assignment_count': len(scores)
+            })
+
+    return jsonify({
+        'subject': subject,
+        'trend_data': chapter_data
+    })
+
+
+@app.route('/api/score-comparison/<student_id>', methods=['GET'])
+def get_score_comparison(student_id):
+    """获取学生在各科目的平均分比较"""
+    student = Student.query.filter_by(student_id=student_id).first()
+    if not student:
+        return jsonify({'error': '未找到学生'}), 404
+
+    subjects = db.session.query(
+        Assignment.subject,
+        db.func.avg(Assignment.score).label('avg_score'),
+        db.func.count(Assignment.id).label('assignment_count')
+    ).filter_by(
+        student_id=student_id
+    ).group_by(
+        Assignment.subject
+    ).all()
+
+    subject_data = [{
+        'subject': s.subject,
+        'average_score': round(float(s.avg_score), 2),
+        'assignment_count': s.assignment_count
+    } for s in subjects]
+
+    return jsonify({
+        'student_id': student_id,
+        'subjects': subject_data
+    })
+
+
+@app.route('/api/ai/ask', methods=['POST'])
+def ai_ask():
+    data = request.json
+    question = data.get('question')
+    session_id = data.get('session_id')
+    if not question or not isinstance(question, str):
+        return jsonify({'error': '必须提供有效的问题内容'}), 400
+    try:
+        # 查找或创建会话（不使用事务，因为需要立即查询）
+            conversation = Conversation.query.filter_by(session_id=session_id).first()
+            if not conversation:
+                if not session_id:
+                    session_id = str(uuid.uuid4())
+                conversation = Conversation(session_id=session_id)
+                db.session.add(conversation)
+            db.session.commit()  # 立即提交以获取ID
+            
+                # 添加系统消息
+            system_msg = ConversationMessage(
+                conversation_id=conversation.id,
+                    role='system',
+                    content="""
+                    你是一位知识渊博的导师，请用专业但易懂的语言回答学生问题。
+                    回答要求：
+                    1. 使用规范的中文表达
+                    2. 禁止输出任何代码或特殊符号
+                    3. 如果问题不明确，请要求澄清
+                    4. 保持回答简洁明了
+                    """
+            )
+            db.session.add(system_msg)
+            
+            # 添加用户消息
+        user_msg = ConversationMessage(
+            conversation_id=conversation.id,
+                role='user',
+                content=question
+        )
+        db.session.add(user_msg)
+        db.session.commit()  # 提交用户消息
+        
+            # 使用正确的方法获取对话历史(最多最近20条消息)
+        messages = [msg.to_dict() for msg in ConversationMessage.query
+            .filter_by(conversation_id=conversation.id)
+            .order_by(ConversationMessage.created_at.desc())
+            .limit(20).all()]
+            messages.reverse()  # 按时间正序排列
+
+        # 使用DeepSeek API
+            client = OpenAI(api_key=config.DEEPSEEK_API_KEY, base_url=config.DEEPSEEK_BASE_URL)
+            response = client.chat.completions.create(
+                model=config.DEEPSEEK_MODEL,
+                messages=messages,
+                temperature=0.3,
+                max_tokens=1024,
+                stream=False
+            )
+            ai_response = response.choices[0].message.content
+            sanitized_response = sanitize_ai_response(ai_response)
+
+        # 保存AI回复到数据库
+        ai_msg = ConversationMessage(
+                conversation_id=conversation.id,
+                role='assistant',
+                content=sanitized_response
+        )
+        db.session.add(ai_msg)
+        db.session.commit()
+
+        return jsonify({
+            'answer': sanitized_response,
+            'session_id': conversation.session_id
+        }), 200
+
+    except Exception as e:
+        db.session.rollback()  # 发生错误时回滚
+        app.logger.error(f"AI答疑错误: {str(e)}")
+        return jsonify({
+            'error': '抱歉，回答生成失败',
+            'session_id': session_id,
+            'technical_detail': str(e) if app.debug else None
+        }), 500
+
+
+@app.route('/api/ai/conversation', methods=['GET'])
+def get_conversation():
+    session_id = request.args.get('session_id')
+    if not session_id:
+        return jsonify({'error': 'Missing session_id'}), 400
+
+    conversation = Conversation.query.filter_by(session_id=session_id).first()
+    if not conversation:
+        return jsonify({'messages': []})
+
+    messages = [msg.to_dict() for msg in conversation.messages.order_by(ConversationMessage.created_at).limit(20).all()]
+    return jsonify({
+        'session_id': session_id,
+        'messages': messages
+    })
+
+
+@app.route('/api/ai/new-conversation', methods=['POST'])
+def new_conversation():
+    try:
+        # 创建新会话
+        new_session_id = str(uuid.uuid4())
+        conversation = Conversation(session_id=new_session_id)
+        db.session.add(conversation)
+
+        # 添加系统消息
+        db.session.add(ConversationMessage(
+            conversation=conversation,
+            role='system',
+            content="""
+            你是一位知识渊博的导师，请用专业但易懂的语言回答学生问题。
+            回答要求：
+            1. 使用规范的中文表达
+            2. 禁止输出任何代码或特殊符号
+            3. 如果问题不明确，请要求澄清
+            4. 保持回答简洁明了
+            """
+        ))
+        db.session.commit()
+
+        return jsonify({
+            'success': True,
+            'session_id': new_session_id
+        }), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            'error': f'创建新会话时出错: {str(e)}'
+        }), 500
+
+
+@app.route('/api/ai/conversations', methods=['GET'])
+def get_conversations():
+    try:
+        # 获取最近的10个会话
+        conversations = Conversation.query.order_by(
+            Conversation.updated_at.desc()
+        ).limit(10).all()
+
+        return jsonify([{
+            'session_id': conv.session_id,
+            'updated_at': conv.updated_at.isoformat() if conv.updated_at else None
+        } for conv in conversations])
+    except Exception as e:
+        return jsonify({'error': f'获取会话列表失败: {str(e)}'}), 500
+
+
+# 辅助编程API
+@app.route('/api/ai/programming-help', methods=['POST'])
+def programming_help():
+    """辅助编程API - 使用DeepSeek API"""
+    try:
+        data = request.json
+        code = data.get('code', '')
+        question = data.get('question', '')
+        language = data.get('language', 'python')
+        session_id = data.get('session_id', str(uuid.uuid4()))
+        
+        if not code and not question:
+            return jsonify({'error': '请提供代码或问题描述'}), 400
+        
+        # 构建编程助手的提示词
+        system_prompt = f"""你是一位专业的编程助手，专门帮助学生解决编程问题。
+        
+请遵循以下规则：
+1. 使用中文回答
+2. 提供清晰的代码解释和建议
+3. 如果发现代码错误，请指出并提供修正方案
+4. 提供最佳实践建议
+5. 保持回答简洁明了但详细
+
+当前编程语言：{language}
+"""
+        
+        # 构建用户消息
+        user_message = ""
+        if code:
+            user_message += f"我的代码：\n```{language}\n{code}\n```\n\n"
+        if question:
+            user_message += f"问题：{question}"
+        
+        # 使用DeepSeek API
+            client = OpenAI(api_key=config.DEEPSEEK_API_KEY, base_url=config.DEEPSEEK_BASE_URL)
+            response = client.chat.completions.create(
+                model=config.DEEPSEEK_MODEL,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_message}
+                ],
+                temperature=0.3,
+                max_tokens=2048,
+                stream=False
+            )
+            ai_response = response.choices[0].message.content
+        
+        # 清理响应内容
+        sanitized_response = sanitize_ai_response(ai_response)
+        
+        return jsonify({
+            'success': True,
+            'response': sanitized_response,
+            'session_id': session_id
+        }), 200
+        
+    except Exception as e:
+        app.logger.error(f"编程助手错误: {str(e)}")
+        return jsonify({
+            'error': '编程助手服务暂时不可用',
+            'technical_detail': str(e) if app.debug else None
+        }), 500
+
+
+@app.route('/api/ai/code-review', methods=['POST'])
+def code_review():
+    """代码审查API"""
+    try:
+        data = request.json
+        code = data.get('code', '')
+        language = data.get('language', 'python')
+        
+        if not code:
+            return jsonify({'error': '请提供要审查的代码'}), 400
+        
+        # 构建代码审查提示词
+        review_prompt = f"""请对以下{language}代码进行专业的代码审查：
+
+```{language}
+{code}
+```
+
+请从以下几个方面进行评估：
+1. 代码质量和规范性
+2. 性能优化建议
+3. 安全性问题
+4. 可读性和维护性
+5. 潜在的bug或错误
+6. 最佳实践建议
+
+请用中文回答，提供具体的改进建议和示例代码。"""
+        
+        # 使用DeepSeek API
+            client = OpenAI(api_key=config.DEEPSEEK_API_KEY, base_url=config.DEEPSEEK_BASE_URL)
+            response = client.chat.completions.create(
+                model=config.DEEPSEEK_MODEL,
+                messages=[
+                    {"role": "system", "content": "你是一位资深的代码审查专家，请提供专业的代码审查意见。"},
+                    {"role": "user", "content": review_prompt}
+                ],
+                temperature=0.3,
+                max_tokens=2048,
+                stream=False
+            )
+            ai_response = response.choices[0].message.content
+        
+        sanitized_response = sanitize_ai_response(ai_response)
+        
+        return jsonify({
+            'success': True,
+            'review': sanitized_response
+        }), 200
+        
+    except Exception as e:
+        app.logger.error(f"代码审查错误: {str(e)}")
+        return jsonify({
+            'error': '代码审查服务暂时不可用',
+            'technical_detail': str(e) if app.debug else None
+        }), 500
+
+
+@app.route('/api/ai/code-explain', methods=['POST'])
+def code_explain():
+    """代码解释API"""
+    try:
+        data = request.json
+        code = data.get('code', '')
+        language = data.get('language', 'python')
+        
+        if not code:
+            return jsonify({'error': '请提供要解释的代码'}), 400
+        
+        explain_prompt = f"""请详细解释以下{language}代码的功能和工作原理：
+
+```{language}
+{code}
+```
+
+请包括：
+1. 代码的整体功能
+2. 每个重要部分的作用
+3. 使用的算法或数据结构
+4. 代码的执行流程
+5. 关键概念的解释
+
+请用中文回答，使用通俗易懂的语言。"""
+        
+        # 使用DeepSeek API
+            client = OpenAI(api_key=config.DEEPSEEK_API_KEY, base_url=config.DEEPSEEK_BASE_URL)
+            response = client.chat.completions.create(
+                model=config.DEEPSEEK_MODEL,
+                messages=[
+                    {"role": "system", "content": "你是一位编程导师，擅长用简单易懂的语言解释复杂的代码。"},
+                    {"role": "user", "content": explain_prompt}
+                ],
+                temperature=0.3,
+                max_tokens=2048,
+                stream=False
+            )
+            ai_response = response.choices[0].message.content
+        
+        sanitized_response = sanitize_ai_response(ai_response)
+        
+        return jsonify({
+            'success': True,
+            'explanation': sanitized_response
+        }), 200
+        
+    except Exception as e:
+        app.logger.error(f"代码解释错误: {str(e)}")
+        return jsonify({
+            'error': '代码解释服务暂时不可用',
+            'technical_detail': str(e) if app.debug else None
+        }), 500
+
+
+@app.route('/api/ai/debug-help', methods=['POST'])
+def debug_help():
+    """调试帮助API"""
+    try:
+        data = request.json
+        code = data.get('code', '')
+        error_message = data.get('error_message', '')
+        language = data.get('language', 'python')
+        
+        if not code and not error_message:
+            return jsonify({'error': '请提供代码或错误信息'}), 400
+        
+        debug_prompt = f"""请帮助调试以下{language}代码问题：
+
+"""
+        
+        if code:
+            debug_prompt += f"代码：\n```{language}\n{code}\n```\n\n"
+        
+        if error_message:
+            debug_prompt += f"错误信息：\n{error_message}\n\n"
+        
+        debug_prompt += """请提供：
+1. 错误原因分析
+2. 具体的修复方案
+3. 修正后的代码示例
+4. 预防类似错误的建议
+
+请用中文回答。"""
+        
+        # 使用DeepSeek API
+            client = OpenAI(api_key=config.DEEPSEEK_API_KEY, base_url=config.DEEPSEEK_BASE_URL)
+            response = client.chat.completions.create(
+                model=config.DEEPSEEK_MODEL,
+                messages=[
+                    {"role": "system", "content": "你是一位专业的调试专家，擅长快速定位和解决代码问题。"},
+                    {"role": "user", "content": debug_prompt}
+                ],
+                temperature=0.3,
+                max_tokens=2048,
+                stream=False
+            )
+            ai_response = response.choices[0].message.content
+        
+        sanitized_response = sanitize_ai_response(ai_response)
+        
+        return jsonify({
+            'success': True,
+            'debug_help': sanitized_response
+        }), 200
+        
+    except Exception as e:
+        app.logger.error(f"调试帮助错误: {str(e)}")
+        return jsonify({
+            'error': '调试帮助服务暂时不可用',
+            'technical_detail': str(e) if app.debug else None
+        }), 500
+
+
+
+
+@app.route('/api/ai/summarize-video', methods=['POST'])
+def ai_summarize_video():
+    if 'file' not in request.files and 'url' not in request.form:
+        return jsonify({'error': '未提供视频文件或链接'}), 400
+
+    video_file = request.files.get('file')
+    video_url = request.form.get('url')
+
+    try:
+        if video_file:
+            # 文件上传处理
+            video_file.seek(0, os.SEEK_END)
+            file_size = video_file.tell()
+            video_file.seek(0)
+            if file_size > 500 * 1024 * 1024:
+                return jsonify({'error': '视频文件超过500MB限制'}), 413
+            
+            secure_name = secure_filename(video_file.filename)
+            if not secure_name:
+                return jsonify({'error': '文件名无效'}), 400
+            
+            # 由于DeepSeek API无法直接处理视频文件，我们基于文件名生成一个教育性的总结
+            summary_prompt = f"""
+            请根据视频文件名"{secure_name}"，生成一个教育性的视频总结。假设这是一个教育视频，请：
+
+            1. 根据文件名推测视频可能的内容主题
+            2. 提供一个结构化的学习总结，包括：
+               - 主要知识点
+               - 重要概念
+               - 学习建议
+               - 可能的应用场景
+
+            请用中文回答，格式清晰，适合学生学习使用。
+            """
+            
+        else:
+            # URL处理
+            if not video_url.startswith(('http://', 'https://')):
+                return jsonify({'error': '无效的视频链接'}), 400
+            
+            # 基于视频URL生成总结
+            summary_prompt = f"""
+            请根据视频链接"{video_url}"，生成一个教育性的视频总结。请：
+
+            1. 根据链接URL推测视频可能的内容和主题
+            2. 如果是Bilibili、YouTube等平台的链接，说明这类平台的教育价值
+            3. 提供一个结构化的学习指导，包括：
+               - 预期学习内容
+               - 观看建议
+               - 笔记要点
+               - 扩展学习方向
+
+            请用中文回答，格式清晰，适合教育场景使用。
+            """
+
+        # 使用DeepSeek API生成总结
+        client = OpenAI(api_key=config.DEEPSEEK_API_KEY, base_url=config.DEEPSEEK_BASE_URL)
+        response = client.chat.completions.create(
+            model=config.DEEPSEEK_MODEL,
+            messages=[
+                {"role": "system", "content": "你是一个专业的教育助手，擅长分析和总结教育视频内容，为学生提供有价值的学习指导。"},
+                {"role": "user", "content": summary_prompt}
+            ],
+            temperature=0.7,
+            max_tokens=1500,
+            stream=False
+        )
+        
+        ai_summary = response.choices[0].message.content
+        sanitized_summary = sanitize_ai_response(ai_summary)
+
+        return jsonify({
+            'input': video_url or secure_name,
+            'summary': sanitized_summary
+        }), 200
+
+    except Exception as e:
+        app.logger.exception("视频总结严重错误")
+        return jsonify({'error': f'视频总结过程中出错: {str(e)}'}), 500
+
+
+# 智能讲义
+@app.route('/api/ai/generate-lecture', methods=['POST'])
+def generate_lecture():
+    if 'file' not in request.files:
+        return jsonify({'error': '未提供文件', 'status': 'failed'}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': '未选择文件', 'status': 'failed'}), 400
+
+    temp_dir = tempfile.mkdtemp()
+    try:
+        # 保存上传的文件
+        file_path = os.path.join(temp_dir, secure_filename(file.filename))
+        file.save(file_path)
+
+        # 解析文件内容
+        ext = file.filename.rsplit('.', 1)[1].lower()
+        if ext == 'pdf':
+            text = parse_pdf(file_path)
+        elif ext == 'docx':
+            text = parse_docx(file_path)
+        elif ext == 'pptx':
+            text = parse_pptx(file_path)
+        else:
+            return jsonify({
+                'error': '不支持的文件类型',
+                'status': 'failed',
+                'allowed_types': ['pdf', 'docx', 'pptx']
+            }), 400
+
+        # 使用DeepSeek API生成教案
+            client = OpenAI(api_key=config.DEEPSEEK_API_KEY, base_url=config.DEEPSEEK_BASE_URL)
+            response = client.chat.completions.create(
+                model=config.DEEPSEEK_MODEL,
+                messages=[
+                    {"role": "system", "content": """
+                    你是一位专业讲师助手，请严格按以下要求生成结构化讲义:
+
+                    结构化要求:
+                    1. 使用JSON格式返回
+                    2. 数据结构:
+                    {
+                        "title": "讲义标题",
+                        "sections": [
+                            {
+                                "title": "章节标题",
+                                "content": "章节概述",
+                                "subsections": [
+                                    {
+                                        "title": "子标题",
+                                        "content": "详细内容",
+                                        "key_points": ["要点1", "要点2"]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                    3. 内容要求:
+                       - 使用##标记重要概念
+                       - 使用**加粗**关键术语
+                       - 层级分明(章节>子章节>要点)
+                       - 保持学术严谨性
+                    """},
+                    {"role": "user", "content": f"请基于以下内容生成结构化讲义:\n{text}"}
+                ],
+                response_format={"type": "json_object"},
+                temperature=0.3,
+                max_tokens=2048
+            )
+            ai_response = response.choices[0].message.content
+        try:
+            result = json.loads(ai_response)
+            if not isinstance(result, dict) or 'sections' not in result:
+                raise ValueError("返回结构不符合要求")
+
+            # 对内容进行安全处理和格式化
+            def sanitize_content(content):
+                content = re.sub(r'\n{3,}', '\n\n', content)  # 合并多余空行
+                return content.strip()
+
+            # 递归处理所有文本内容
+            def process_structure(data):
+                if isinstance(data, dict):
+                    return {k: process_structure(v) for k, v in data.items()}
+                elif isinstance(data, list):
+                    return [process_structure(item) for item in data]
+                elif isinstance(data, str):
+                    return sanitize_content(data)
+                return data
+
+            processed_result = process_structure(result)
+
+            return jsonify({
+                'status': 'success',
+                'lecture': processed_result,
+                'source_file': file.filename,
+                'generated_at': datetime.now().isoformat(),
+                'format_version': '1.1'  # 标识返回格式版本
+            })
+
+        except json.JSONDecodeError:
+            return jsonify({'error': 'AI返回的数据不是有效JSON'}), 500
+        except ValueError as e:
+            return jsonify({'error': f'内容格式验证失败: {str(e)}'}), 500
+
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'error': str(e),
+            'traceback': traceback.format_exc() if app.debug else None
+        }), 500
+
+    finally:
+        shutil.rmtree(temp_dir, ignore_errors=True)
+
+
+# 智能出题
+# 智能出题系统路由
+@app.route('/api/ai/generate-question', methods=['POST'])
+def generate_question():
+    if 'file' not in request.files:
+        print("没有收到文件")  # 调试日志
+        return jsonify({'error': '未提供文件'}), 400
+    file = request.files['file']
+    print(f"收到的文件名: {file.filename}")  # 调试日志
+
+    if not allowed_file(file.filename):
+        print("文件类型不允许")  # 调试日志
+        return jsonify({'error': '不支持的文件类型'}), 400
+
+    difficulty = request.form.get('difficulty', 'medium')
+    num_questions = int(request.form.get('num_questions', 3))
+
+    # 生成唯一的题目集ID
+    question_set_id = str(uuid.uuid4())
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        file_path = os.path.join(temp_dir, secure_filename(file.filename))
+        file.save(file_path)
+
+        # 解析文件内容
+        ext = file.filename.rsplit('.', 1)[1].lower()
+        if ext == 'pdf':
+            text = parse_pdf(file_path)
+        elif ext == 'docx':
+            text = parse_docx(file_path)
+        elif ext == 'pptx':
+            text = parse_pptx(file_path)
+        else:
+            return jsonify({'error': '不支持的文件类型'}), 400
+
+        # 使用DeepSeek API生成题目
+            client = OpenAI(api_key=config.DEEPSEEK_API_KEY, base_url=config.DEEPSEEK_BASE_URL)
+            response = client.chat.completions.create(
+                model=config.DEEPSEEK_MODEL,
+                messages=[
+                    {"role": "system", "content": "你是一个专业的题目生成助手，根据提供的材料生成考试题目。"},
+                    {"role": "user", "content": f"""
+                    根据以下材料生成{difficulty}难度的{num_questions}道题目:
+                    {text}
+
+                    要求:
+                    1. 包含选择题、填空题和简答题
+                    2. 题目考察核心知识点
+                    3. 返回的JSON中必须包含correct_answer字段
+
+                    返回格式:
+                    {{
+                        "status": "success",
+                        "questions": [
+                            {{
+                                "type": "question_type",
+                                "question": "题目内容",
+                                "options": ["选项1", "选项2"] (仅选择题),
+                                "correct_answer": "正确答案"
+                            }}
+                        ],
+                        "source_file": "文件名",
+                        "generated_at": "生成时间"
+                    }}
+                    """}
+                ],
+                response_format={"type": "json_object"},
+                temperature=0.7
+            )
+            ai_content = response.choices[0].message.content
+            result = parse_ai_response(ai_content)
+
+        try:
+
+            # 保存到题库，使用UUID作为question_id
+            questions_result = []
+            for q in result['questions']:
+                question_id = str(uuid.uuid4())  # 为每个题目生成唯一ID
+                new_question = QuestionBank(
+                    question_id=question_id,
+                    question_set_id=question_set_id,  # 记录题目集ID
+                    question_text=q['question'],
+                    question_type=q['type'],
+                    options=q.get('options', []),
+                    correct_answer=q.get('correct_answer', ''),
+                    created_at=datetime.utcnow()
+                )
+                db.session.add(new_question)
+
+                # 构建返回给前端的结果
+                questions_result.append({
+                    'id': question_id,
+                    'type': q['type'],
+                    'question': q['question'],
+                    'options': q.get('options', []),
+                    'correct_answer': q.get('correct_answer', '')
+                })
+
+            db.session.commit()
+
+            return jsonify({
+                'status': 'success',
+                'questions': questions_result,
+                'question_set_id': question_set_id,  # 返回题目集ID给前端
+                'source_file': file.filename,
+                'generated_at': datetime.utcnow().isoformat()
+            })
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'error': str(e)}), 500
+
+
+# 新增的题目解答路由
+@app.route('/api/ai/answer-questions', methods=['POST'])
+def answer_questions():
+    data = request.json
+    if not data or 'questions' not in data:
+        return jsonify({'error': '未提供题目数据或格式不正确'}), 400
+    questions = data['questions']
+    if not isinstance(questions, list) or len(questions) == 0:
+        return jsonify({'error': '题目数据格式错误'}), 400
+    try:
+        client = OpenAI(api_key=config.DEEPSEEK_API_KEY, base_url=config.DEEPSEEK_BASE_URL)
+
+        # 构建问题解答提示
+        questions_json = json.dumps(questions, ensure_ascii=False)
+        user_prompt = f"""
+        请解答以下题目，并按照要求返回答案：
+        题目列表：
+        {questions_json}
+        回答要求：
+        1. 为每道题目提供详细解答
+        2. 选择题要标明正确选项并解释原因
+        3. 填空题要给出完整答案
+        4. 判断题要有明确答案和解释
+        5. 简答题要提供完整回答
+        返回格式必须是严格的JSON格式：
+        {{
+            "answers": [
+                {{
+                    "id": "题目ID",
+                    "type": "题目类型",
+                    "question": "原问题",
+                    "answer": "详细答案",
+                    "explanation": "解答说明"
+                }},
+                // 更多答案...
+            ]
+        }}
+        注意：
+        - 必须严格按照题目ID对应回答
+        - 保持原始问题内容不变
+        """
+
+        response = client.chat.completions.create(
+            model=config.DEEPSEEK_MODEL,
+            messages=[
+                {"role": "system",
+                 "content": "你是一位专业教师，负责解答各类考题问题。解答过程要专业、全面和准确。"},
+                {"role": "user", "content": user_prompt}
+            ],
+            response_format={"type": "json_object"},
+            temperature=0.2,  # 降低温度值以获得更准确的答案
+            max_tokens=4096,
+            stream=False
+        )
+        ai_response = response.choices[0].message.content.strip()
+
+        try:
+            answers = parse_ai_response(ai_response)
+            if not isinstance(answers, dict) or 'answers' not in answers:
+                return jsonify({'error': 'AI 返回结果格式不正确，缺少 answers 字段'}), 500
+            return jsonify({
+                'status': 'success',
+                'answers': answers['answers'],
+                'answered_at': datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
+            }), 200
+        except ValueError as e:
+            return jsonify({'error': f'无法解析AI返回的答案数据: {str(e)}'}), 500
+    except Exception as e:
+        return jsonify({'error': f'解答题目过程中出错: {str(e)}'}), 500
+
+
+# 题目解答路由
+@app.route('/api/question/submit-answers', methods=['POST'])
+def submit_answers():
+    data = request.get_json()
+    if not data or 'student_id' not in data or 'answers' not in data:
+        return jsonify({'error': '缺少必要参数'}), 400
+
+    try:
+        student = Student.query.filter_by(student_id=data['student_id']).first()
+        if not student:
+            return jsonify({'error': '学生不存在'}), 404
+
+        results = []
+        total_score = 0
+
+        for answer in data['answers']:
+            question = QuestionBank.query.filter_by(question_id=answer['question_id']).first()
+            if not question:
+                continue
+
+            is_correct = False
+            score = 0
+            feedback = ""
+
+            # 选择题直接比对答案
+            if question.question_type == 'choice':
+                is_correct = answer['answer'].strip().lower() == question.correct_answer.strip().lower()
+                score = 10 if is_correct else 0  # 假设每道选择题10分
+                feedback = "回答正确" if is_correct else f"正确答案是: {question.correct_answer}"
+            else:
+                # 对于非选择题（简答/填空），直接比较学生答案和标准答案
+                # 这里可以更严格地比较，比如忽略大小写、空格等
+                is_correct = answer['answer'].strip().casefold() == question.correct_answer.strip().casefold()
+                score = 10 if is_correct else 0  # 假设每道非选择题也是10分
+
+                # 如果不是完全匹配，提供标准答案作为反馈
+                if not is_correct:
+                    feedback = f"参考答案: {question.correct_answer}"
+                else:
+                    feedback = "回答正确"
+
+            # 记录答题结果
+            submission = QuestionSubmission(
+                student_id=data['student_id'],
+                question_id=answer['question_id'],
+                answer_text=answer['answer'],
+                is_correct=is_correct,
+                score=score,
+                feedback=feedback,
+                submission_time=datetime.utcnow()
+            )
+            db.session.add(submission)
+            total_score += score
+
+            results.append({
+                'question_id': answer['question_id'],
+                'question': question.question_text,
+                'student_answer': answer['answer'],
+                'correct_answer': question.correct_answer,
+                'score': score,
+                'feedback': feedback,
+                'is_correct': is_correct
+            })
+
+        avg_score = total_score / len(data['answers']) if data['answers'] else 0
+
+        db.session.commit()
+
+        return jsonify({
+            'status': 'success',
+            'student_id': data['student_id'],
+            'total_score': total_score,
+            'average_score': round(avg_score, 2),
+            'results': results,
+            'submitted_at': datetime.utcnow().isoformat()
+        })
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+
+# 题目统计路由
+@app.route('/api/question/stats/<student_id>', methods=['GET'])
+def get_question_stats(student_id):
+    try:
+        student = Student.query.filter_by(student_id=student_id).first()
+        if not student:
+            return jsonify({'error': '学生不存在'}), 404
+
+        # 获取答题总体统计
+        submissions = QuestionSubmission.query.filter_by(student_id=student_id).all()
+        total = len(submissions)
+        if total == 0:
+            return jsonify({'error': '没有答题记录'}), 404
+
+        correct = sum(1 for s in submissions if s.is_correct)
+        accuracy = round((correct / total) * 100, 2)
+        avg_score = round(sum(s.score for s in submissions) / total, 2)
+
+        # 按题型统计
+        type_stats = db.session.execute(
+            db.select(
+                QuestionBank.question_type,
+                db.func.count(QuestionSubmission.id),
+                db.func.avg(QuestionSubmission.score),
+                db.func.sum(db.case((QuestionSubmission.is_correct == True, 1), else_=0))
+            )
+            .join(QuestionBank, QuestionBank.question_id == QuestionSubmission.question_id)
+            .filter(QuestionSubmission.student_id == student_id)
+            .group_by(QuestionBank.question_type)
+        ).all()
+
+        type_results = [
+            {
+                'type': stat[0],
+                'count': stat[1],
+                'avg_score': round(float(stat[2] or 0), 2),
+                'accuracy': round((stat[3] / stat[1]) * 100, 2) if stat[1] > 0 else 0
+            }
+            for stat in type_stats
+        ]
+
+        # 最近5次答题情况
+        recent_submissions = (
+            QuestionSubmission.query
+            .filter_by(student_id=student_id)
+            .order_by(QuestionSubmission.submission_time.desc())
+            .limit(5)
+            .all()
+        )
+
+        recent_results = [
+            {
+                'question_id': sub.question_id,
+                'question': QuestionBank.query.filter_by(question_id=sub.question_id).first().question_text[
+                            :50] + '...',
+                'score': sub.score,
+                'is_correct': sub.is_correct,
+                'submitted_at': sub.submission_time.isoformat()
+            }
+            for sub in recent_submissions
+        ]
+
+        return jsonify({
+            'status': 'success',
+            'student_id': student_id,
+            'student_name': student.name,
+            'total_questions': total,
+            'correct_answers': correct,
+            'accuracy': accuracy,
+            'average_score': avg_score,
+            'type_stats': type_results,
+            'recent_results': recent_results
+        })
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+# 获取题目详情
+@app.route('/api/question/<question_id>', methods=['GET'])
+def get_question_detail(question_id):
+    question = QuestionBank.query.filter_by(question_id=question_id).first()
+    if not question:
+        return jsonify({'error': '题目不存在'}), 404
+
+    return jsonify({
+        'status': 'success',
+        'question': question.to_dict()
+    })
+
+
+# 新增笔记相关的API路由
+@app.route('/api/notes', methods=['GET', 'POST'])
+def video_notes():
+    if request.method == 'GET':
+        # 获取特定视频的笔记
+        video_source = request.args.get('video_source')
+        if not video_source:
+            return jsonify({'error': '缺少video_source参数'}), 400
+
+        notes = VideoNote.query.filter_by(video_source=video_source).order_by(VideoNote.timestamp.desc()).all()
+        return jsonify({
+            'video_source': video_source,
+            'notes': [note.to_dict() for note in notes]
+        })
+
+    elif request.method == 'POST':
+        # 创建新笔记
+        data = request.json
+        if not data or 'video_source' not in data or 'content' not in data:
+            return jsonify({'error': '缺少必要参数'}), 400
+
+        new_note = VideoNote(
+            video_source=data['video_source'],
+            content=data['content']
+        )
+        db.session.add(new_note)
+        db.session.commit()
+
+        return jsonify(new_note.to_dict()), 201
+
+
+@app.route('/generate-ppt')
+def generate_ppt_page():
+    return render_template('generate_ppt.html')
+
+
+@app.route('/api/ai/generate-ppt', methods=['POST'])
+def generate_ppt():
+    try:
+        if 'file' not in request.files:
+            return jsonify({'error': '未提供PPT文件'}), 400
+
+        file = request.files['file']
+        if not file.filename.lower().endswith('.pptx'):
+            return jsonify({'error': '请上传PPTX格式文件'}), 400
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            # 保存上传的PPT
+            upload_path = os.path.join(temp_dir, 'template.pptx')
+            file.save(upload_path)
+            prs = Presentation(upload_path)
+
+            # === 定义每页小标题与内容的精准对应关系 ===
+            SLIDE_CONFIGS = {
+                1: {  # 第二页(索引1): 项目概述
+                    'title': '项目概述 PROJECT OVERVIEW',
+                    'header_positions': {
+                        '01 已成立安徽臻锦科技有限公司': {
+                            'position': 0,  # 第1个标题的位置
+                            'content': '已组建10人核心研发团队，完成工商注册，申请发明专利3项、实用新型专利2项。'
+                        },
+                        '02 行业领先，综合性能行业一流': {
+                            'position': 1,
+                            'content': '探测器灵敏度0.01μSv/h(比国标高10倍)，通过CNAS认证，量程覆盖0.01μSv/h-10Sv/h。'
+                        },
+                        '03 市场破局，与10余家企业达成合作': {
+                            'position': 2,
+                            'content': '已与中核集团、中国辐射防护研究院等12家企业签订采购协议，获得首批订单200台。'
+                        },
+                        '04 企业认可，使用反馈极佳': {
+                            'position': 3,
+                            'content': '实测数据显示：稳定性99.9%，误报率<0.1%，平均无故障时间>5000小时。'
+                        },
+                        '05 军民融合 ，助力核安全强国建设': {
+                            'position': 4,
+                            'content': '产品满足GJB5313-2004军用标准，已列入军队核应急监测设备采购目录。'
+                        }
+                    }
+                },
+                2: {  # 第三页: 未来蓝图
+                    'title': '未来蓝图 FUTURE BLUEPRINT',
+                    'header_positions': {
+                        '01 研发便携化电离室': {
+                            'position': 0,
+                            'content': '2024年推出重量<1kg的手持设备，体积减小80%，保持同等精度(±5%)。'
+                        },
+                        '02 培养技术人才': {
+                            'position': 1,
+                            'content': '与中科大共建"核检测实验室"，计划每年培养硕士以上专业人才30名。'
+                        },
+                        '03 市场破局，启动A轮融资': {
+                            'position': 2,
+                            'content': '计划融资2000万元用于生产线建设，目标2025年市场份额达到15%。'
+                        },
+                        '04 打通上下游产业链': {
+                            'position': 3,
+                            'content': '已与3家传感器供应商达成战略合作，元器件成本可降低25%。'
+                        },
+                        '05 打开国际市场': {
+                            'position': 4,
+                            'content': '正在申请CE/FDA认证，2024年进入东南亚和欧洲市场，预计出口额500万美元。'
+                        }
+                    }
+                },
+                3: {  # 第四页: 项目背景
+                    'title': '项目背景 PROJECT BACKGROUND',
+                    'header_positions': {
+                        '日本排放核废水': {
+                            'position': 0,
+                            'content': '福岛核废水含氚、铯-137等放射性物质，预计5年内扩散至全球海域。'
+                        },
+                        '沿海城市忧虑': {
+                            'position': 1,
+                            'content': '2023年抽检显示：2%海鲜样本检出微量铯-137(0.1-0.3Bq/kg)。'
+                        },
+                        '大理石核辐射': {
+                            'position': 2,
+                            'content': '市场抽检不合格率8%，主要超标元素为镭-226(最高达1.5倍限值)。'
+                        },
+                        '海鲜安全': {
+                            'position': 3,
+                            'content': '自主研发的快速检测仪可在3分钟内完成检测，精度达0.01Bq/kg。'
+                        },
+                        '衣物核辐射超标 政策': {
+                            'position': 4,
+                            'content': '新修订《核安全法》要求加强日用消费品辐射监测，创造百亿级市场空间。'
+                        }
+                    }
+                }
+            }
+
+            # === 精准填充逻辑 ===
+            filled_slides = 0
+            content_details = []
+
+            for slide_num, config in SLIDE_CONFIGS.items():
+                if slide_num >= len(prs.slides):
+                    continue
+
+                slide = prs.slides[slide_num]
+
+                # 步骤1：收集所有文本框并分类
+                text_shapes = []
+                for shape in slide.shapes:
+                    if shape.has_text_frame:
+                        text_shapes.append(shape)
+
+                # 步骤2：识别标题和内容框的对应关系
+                # 假设小标题是左对齐，内容框是右对齐(根据实际模板结构调整)
+                header_boxes = {}
+                content_boxes = {}
+
+                for i, shape in enumerate(text_shapes):
+                    text = shape.text_frame.text.strip()
+
+                    # 通过文本内容识别小标题(包含数字编号)
+                    if any(char.isdigit() for char in text[:3]):
+                        for header in config['header_positions']:
+                            if header in text:
+                                header_boxes[config['header_positions'][header]['position']] = i
+                                break
+                    # 通过布局识别内容框(可根据实际模板调整识别逻辑)
+                    elif shape.text_frame.paragraphs[0].alignment == PP_ALIGN.LEFT:
+                        pos = len(content_boxes)
+                        if pos < 5:  # 最多5个内容框
+                            content_boxes[pos] = i
+
+                # 步骤3：按位置对应关系填充内容
+                for header_pos, header_idx in header_boxes.items():
+                    if header_pos in content_boxes:
+                        content_idx = content_boxes[header_pos]
+                        header_text = text_shapes[header_idx].text_frame.text.strip()
+
+                        # 找到对应的配置内容
+                        matched_content = None
+                        for header, details in config['header_positions'].items():
+                            if header in header_text:
+                                matched_content = details['content']
+                                break
+
+                        if matched_content:
+                            # 填充内容
+                            content_shape = text_shapes[content_idx]
+                            content_shape.text_frame.clear()
+                            p = content_shape.text_frame.paragraphs[0]
+                            run = p.add_run()
+                            run.text = matched_content
+
+                            # 统一样式
+                            run.font.name = '微软雅黑'
+                            run.font.size = Pt(12)
+                            run.font.color.rgb = RGBColor(0, 0, 0)
+
+                filled_slides += 1
+                content_details.append({
+                    'slide': slide_num + 1,
+                    'title': config['title'],
+                    'contents': [f"{header}: {details['content']}"
+                                 for header, details in config['header_positions'].items()]
+                })
+
+            # 保存并返回结果
+            output_path = os.path.join(temp_dir, 'filled.pptx')
+            prs.save(output_path)
+
+            with open(output_path, 'rb') as f:
+                ppt_data = base64.b64encode(f.read()).decode('utf-8')
+
+            return jsonify({
+                'success': True,
+                'filename': '挑战杯_核辐射检测项目_已填充.pptx',
+                'data': ppt_data,
+                'details': content_details,
+                'stats': {
+                    'filled_slides': filled_slides,
+                    'content_matches': sum(len(slide['contents']) for slide in content_details)
+                }
+            })
+
+    except Exception as e:
+        app.logger.error(f"PPT填充错误: {str(e)}\n{traceback.format_exc()}")
+        return jsonify({
+            'success': False,
+            'error': 'PPT处理失败',
+            'detail': str(e) if app.debug else None
+        }), 500
+
+
+def set_default_styles(prs):
+    # 设置默认字体
+    prs.font.name = '微软雅黑'
+
+    # 定义颜色主题
+    colors = prs.slide_master.color_scheme
+    colors.accent1.color.rgb = RGBColor(79, 129, 189)  # 主色
+    colors.accent6.color.rgb = RGBColor(165, 165, 165)  # 副色
+
+    # 设置标题样式
+    title_style = prs.slide_master.title_style
+    title_style.font.size = Pt(24)
+    title_style.font.color.rgb = colors.accent1.color.rgb
+
+    # 设置内容样式
+    content_style = prs.slide_master.text_style
+    content_style.font.size = Pt(14)
+    content_style.font.color.rgb = RGBColor(0, 0, 0)
+
+
+def generate_ppt_fill_content(ppt_structure, theme, instructions):
+    """调用AI生成填充内容"""
+    prompt = f"""根据以下PPT结构和要求生成内容：
+    主题: {theme}
+    要求: {instructions}
+    当前PPT结构: {json.dumps(ppt_structure, indent=2)}
+
+    返回JSON格式填充数据"""
+    # 这里调用AI接口获取填充内容
+    return {'fills': []}  # 示例返回值
+
+
+def apply_ppt_fills(presentation, fill_data):
+    """将填充内容应用到PPT"""
+    for fill in fill_data.get('fills', []):
+        try:
+            slide = presentation.slides[fill['slide'] - 1]
+            shape = slide.shapes[fill['placeholder']]
+            if shape.has_text_frame:
+                shape.text_frame.text = fill.get('content', '')
+        except:
+            continue
+    return presentation
+
+
+def generate_ppt_structure_from_text(text, theme):
+    """根据文本内容生成PPT结构"""
+    prompt = f"""
+    根据以下内容生成PPT结构大纲：
+    - 主题: {theme}
+    - 内容:
+    {text}
+
+    返回JSON格式：
+    {{
+        "slides": [
+            {{
+                "title": "幻灯片标题",
+                "content": [
+                    "主要内容点1",
+                    "主要内容点2"
+                ],
+                "layout": "标题和内容/两栏/图片+文字 等",
+                "notes": "幻灯片备注"
+            }},
+            ...
+        ]
+    }}
+    """
+
+    client = OpenAI(api_key=config.DEEPSEEK_API_KEY, base_url=config.DEEPSEEK_BASE_URL)
+    response = client.chat.completions.create(
+        model=config.DEEPSEEK_MODEL,
+        messages=[
+            {"role": "system", "content": "你是PPT结构设计专家，根据文本内容生成合理的PPT结构"},
+            {"role": "user", "content": prompt}
+        ],
+        response_format={"type": "json_object"}
+    )
+
+    try:
+        return json.loads(response.choices[0].message.content)
+    except json.JSONDecodeError:
+        # 默认结构
+        return {
+            "slides": [
+                {
+                    "title": f"{theme}演示",
+                    "content": ["请在此处添加内容"],
+                    "layout": "标题和内容",
+                    "notes": ""
+                }
+            ]
+        }
+
+
+def build_presentation_from_structure(structure, theme):
+    """根据结构创建PPT文档"""
+    presentation = Presentation()
+
+    # 设置幻灯片尺寸 (16:9)
+    presentation.slide_width = Inches(13.33)
+    presentation.slide_height = Inches(7.5)
+
+    # 添加幻灯片
+    slide_layout_map = {
+        '标题和内容': 1,
+        '两栏': 3,
+        '图片+文字': 5,
+        '仅标题': 0
+    }
+
+    for slide_data in structure.get('slides', []):
+        layout_type = slide_data.get('layout', '标题和内容')
+        layout_idx = slide_layout_map.get(layout_type, 1)
+
+        # 创建幻灯片
+        slide = presentation.slides.add_slide(presentation.slide_layouts[layout_idx])
+
+        # 设置标题
+        title = slide.shapes.title
+        title.text = slide_data.get('title', '')
+
+        # 设置内容 (根据布局类型)
+        if layout_idx == 1:  # 标题和内容
+            content = slide.placeholders[1]
+            content.text = '\n'.join(slide_data.get('content', []))
+        elif layout_idx == 3:  # 两栏
+            left = slide.placeholders[1]
+            left.text = '\n'.join(slide_data.get('content', [])[::2])  # 奇数项
+            right = slide.placeholders[2]
+            right.text = '\n'.join(slide_data.get('content', [])[1::2])  # 偶数项
+
+    return presentation
+
+
+def hex_to_rgb(hex_color):
+    """十六进制颜色转RGB"""
+    hex_color = hex_color.lstrip('#')
+    if len(hex_color) == 3:
+        hex_color = ''.join([c * 2 for c in hex_color])
+    return tuple(int(hex_color[i:i + 2], 16) for i in (0, 2, 4))
+
+
+@app.route('/api/students/upload-avatar', methods=['POST'])
+def upload_student_avatar():
+    """上传学生头像"""
+    if 'file' not in request.files:
+        return jsonify({'error': '未选择文件'}), 400
+    
+    file = request.files['file']
+    student_id = request.form.get('student_id')
+    
+    if not student_id:
+        return jsonify({'error': '缺少学生ID'}), 400
+    
+    if file.filename == '':
+        return jsonify({'error': '未选择文件'}), 400
+    
+    # 检查文件类型
+    allowed_extensions = {'png', 'jpg', 'jpeg', 'gif'}
+    if not ('.' in file.filename and file.filename.rsplit('.', 1)[1].lower() in allowed_extensions):
+        return jsonify({'error': '不支持的文件类型，请上传图片文件'}), 400
+    
+    # 检查学生是否存在
+    student = Student.query.filter_by(student_id=student_id).first()
+    if not student:
+        return jsonify({'error': '学生不存在'}), 404
+    
+    try:
+        # 创建上传目录
+        upload_dir = os.path.join('static', 'uploads', 'avatars')
+        os.makedirs(upload_dir, exist_ok=True)
+        
+        # 生成文件名
+        file_extension = file.filename.rsplit('.', 1)[1].lower()
+        filename = f"{student_id}_{int(datetime.utcnow().timestamp())}.{file_extension}"
+        file_path = os.path.join(upload_dir, filename)
+        
+        # 保存文件
+        file.save(file_path)
+        
+        # 删除旧头像文件
+        if student.avatar and os.path.exists(student.avatar):
+            try:
+                os.remove(student.avatar)
+            except:
+                pass
+        
+        # 更新数据库
+        student.avatar = file_path
+        student.updated_at = datetime.utcnow()
+        db.session.commit()
+        
+        return jsonify({
+            'message': '头像上传成功',
+            'avatar_url': f'/{file_path}'
+        }), 200
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': f'上传失败: {str(e)}'}), 500
+
+
+@app.route('/api/students/batch-import', methods=['POST'])
+def batch_import_students():
+    """批量导入学生信息"""
+    if 'file' not in request.files:
+        return jsonify({'error': '未选择文件'}), 400
+    
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': '未选择文件'}), 400
+    
+    # 检查文件类型
+    if not file.filename.lower().endswith(('.xlsx', '.xls', '.csv')):
+        return jsonify({'error': '不支持的文件类型，请上传Excel或CSV文件'}), 400
+    
+    try:
+        import pandas as pd
+        
+        # 读取文件
+        if file.filename.lower().endswith('.csv'):
+            df = pd.read_csv(file, encoding='utf-8')
+        else:
+            df = pd.read_excel(file)
+        
+        # 检查必需的列
+        required_columns = ['student_id', 'name']
+        missing_columns = [col for col in required_columns if col not in df.columns]
+        if missing_columns:
+            return jsonify({'error': f'缺少必需的列: {", ".join(missing_columns)}'}), 400
+        
+        success_count = 0
+        error_count = 0
+        errors = []
+        
+        for index, row in df.iterrows():
+            try:
+                # 检查学号是否已存在
+                existing_student = Student.query.filter_by(student_id=str(row['student_id'])).first()
+                if existing_student:
+                    error_count += 1
+                    errors.append(f'第{index+2}行: 学号{row["student_id"]}已存在')
+                    continue
+                
+                # 创建新学生
+                new_student = Student(
+                    student_id=str(row['student_id']),
+                    name=str(row['name']),
+                    gender=str(row.get('gender', '')) if pd.notna(row.get('gender')) else None,
+                    birth_date=pd.to_datetime(row['birth_date']).date() if pd.notna(row.get('birth_date')) else None,
+                    id_card=str(row.get('id_card', '')) if pd.notna(row.get('id_card')) else None,
+                    phone=str(row.get('phone', '')) if pd.notna(row.get('phone')) else None,
+                    email=str(row.get('email', '')) if pd.notna(row.get('email')) else None,
+                    major=str(row.get('major', '')) if pd.notna(row.get('major')) else None,
+                    class_name=str(row.get('class_name', '')) if pd.notna(row.get('class_name')) else None,
+                    grade=str(row.get('grade', '')) if pd.notna(row.get('grade')) else None,
+                    education_level=str(row.get('education_level', '')) if pd.notna(row.get('education_level')) else None,
+                    student_status=str(row.get('student_status', '在读')) if pd.notna(row.get('student_status')) else '在读',
+                    address=str(row.get('address', '')) if pd.notna(row.get('address')) else None,
+                    emergency_contact=str(row.get('emergency_contact', '')) if pd.notna(row.get('emergency_contact')) else None,
+                    emergency_phone=str(row.get('emergency_phone', '')) if pd.notna(row.get('emergency_phone')) else None,
+                    parent_name=str(row.get('parent_name', '')) if pd.notna(row.get('parent_name')) else None,
+                    parent_phone=str(row.get('parent_phone', '')) if pd.notna(row.get('parent_phone')) else None,
+                    notes=str(row.get('notes', '')) if pd.notna(row.get('notes')) else None
+                )
+                
+                db.session.add(new_student)
+                success_count += 1
+                
+            except Exception as e:
+                error_count += 1
+                errors.append(f'第{index+2}行: {str(e)}')
+        
+        db.session.commit()
+        
+        return jsonify({
+            'message': '批量导入完成',
+            'success_count': success_count,
+            'error_count': error_count,
+            'errors': errors[:10]  # 只返回前10个错误
+        }), 200
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': f'导入失败: {str(e)}'}), 500
+
+
+@app.route('/api/students/export', methods=['GET'])
+def export_students():
+    """导出学生信息"""
+    try:
+        import pandas as pd
+        from io import BytesIO
+        
+        # 获取查询参数
+        format_type = request.args.get('format', 'excel')  # excel 或 csv
+        
+        # 查询学生数据
+        students = Student.query.all()
+        
+        # 准备数据
+        data = []
+        for student in students:
+            data.append({
+                'student_id': student.student_id,
+                'name': student.name,
+                'gender': student.gender,
+                'birth_date': student.birth_date.strftime('%Y-%m-%d') if student.birth_date else '',
+                'id_card': student.id_card,
+                'phone': student.phone,
+                'email': student.email,
+                'major': student.major,
+                'class_name': student.class_name,
+                'grade': student.grade,
+                'education_level': student.education_level,
+                'student_status': student.student_status,
+                'address': student.address,
+                'emergency_contact': student.emergency_contact,
+                'emergency_phone': student.emergency_phone,
+                'parent_name': student.parent_name,
+                'parent_phone': student.parent_phone,
+                'admission_date': student.admission_date.strftime('%Y-%m-%d') if student.admission_date else '',
+                'notes': student.notes,
+                'created_at': student.created_at.strftime('%Y-%m-%d %H:%M:%S') if student.created_at else '',
+                'updated_at': student.updated_at.strftime('%Y-%m-%d %H:%M:%S') if student.updated_at else ''
+            })
+        
+        df = pd.DataFrame(data)
+        
+        # 设置列名映射
+        column_mapping = {
+            'student_id': '学号',
+            'name': '姓名',
+            'gender': '性别',
+            'birth_date': '出生日期',
+            'id_card': '身份证号',
+            'phone': '联系电话',
+            'email': '邮箱',
+            'major': '专业',
+            'class_name': '班级',
+            'grade': '年级',
+            'education_level': '学制',
+            'student_status': '状态',
+            'address': '地址',
+            'emergency_contact': '紧急联系人',
+            'emergency_phone': '紧急联系电话',
+            'parent_name': '家长姓名',
+            'parent_phone': '家长电话',
+            'admission_date': '入学日期',
+            'notes': '备注',
+            'created_at': '创建时间',
+            'updated_at': '更新时间'
+        }
+        
+        df = df.rename(columns=column_mapping)
+        
+        # 生成文件
+        output = BytesIO()
+        filename = f'学生信息_{datetime.now().strftime("%Y%m%d_%H%M%S")}'
+        
+        if format_type == 'csv':
+            df.to_csv(output, index=False, encoding='utf-8-sig')
+            filename += '.csv'
+            mimetype = 'text/csv'
+        else:
+            df.to_excel(output, index=False, engine='openpyxl')
+            filename += '.xlsx'
+            mimetype = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        
+        output.seek(0)
+        
+        return send_file(
+            output,
+            mimetype=mimetype,
+            as_attachment=True,
+            download_name=filename
+        )
+        
+    except Exception as e:
+        return jsonify({'error': f'导出失败: {str(e)}'}), 500
+
+
+@app.route('/api/students/batch-delete', methods=['POST'])
+def batch_delete_students():
+    """批量删除学生"""
+    data = request.json
+    student_ids = data.get('student_ids', [])
+    
+    if not student_ids:
+        return jsonify({'error': '未提供要删除的学生ID'}), 400
+    
+    try:
+        deleted_count = 0
+        errors = []
+        
+        for student_id in student_ids:
+            student = Student.query.filter_by(student_id=student_id).first()
+            if student:
+                try:
+                    # 删除相关的作业记录
+                    Assignment.query.filter_by(student_id=student_id).delete()
+                    
+                    # 删除相关的问题提交记录
+                    QuestionSubmission.query.filter_by(student_id=student_id).delete()
+                    
+                    # 删除头像文件
+                    if student.avatar and os.path.exists(student.avatar):
+                        try:
+                            os.remove(student.avatar)
+                        except:
+                            pass
+                    
+                    # 删除学生记录
+                    db.session.delete(student)
+                    deleted_count += 1
+                except Exception as e:
+                    errors.append(f'删除学生{student_id}失败: {str(e)}')
+            else:
+                errors.append(f'学生{student_id}不存在')
+        
+        db.session.commit()
+        
+        return jsonify({
+            'message': f'成功删除{deleted_count}个学生',
+            'deleted_count': deleted_count,
+            'errors': errors
+        }), 200
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': f'批量删除失败: {str(e)}'}), 500
+
+
+@app.route('/test/students')
+def test_students():
+    """学生管理测试页面"""
+    return render_template('test_students.html')
+
+
+@app.route('/api/assignments/add-score', methods=['POST'])
+def add_manual_score():
+    """手动添加学生成绩记录"""
+    try:
+        data = request.get_json()
+        
+        # 验证必要字段
+        required_fields = ['student_id', 'assignment_name', 'subject', 'score']
+        for field in required_fields:
+            if field not in data:
+                return jsonify({'error': f'缺少必要字段: {field}'}), 400
+        
+        # 验证学生是否存在
+        student = Student.query.filter_by(student_id=data['student_id']).first()
+        if not student:
+            return jsonify({'error': '学生不存在'}), 404
+        
+        # 验证分数范围
+        score = float(data['score'])
+        if score < 0 or score > 100:
+            return jsonify({'error': '分数必须在0-100之间'}), 400
+        
+        # 创建作业记录
+        assignment = Assignment(
+            student_id=data['student_id'],
+            assignment_name=data['assignment_name'],
+            subject=data['subject'],
+            chapter=data.get('chapter', '手动录入'),
+            score=score,
+            feedback=data.get('feedback', ''),
+            submission_time=datetime.utcnow()
+        )
+        
+        db.session.add(assignment)
+        db.session.commit()
+        
+        return jsonify({
+            'message': '成绩录入成功',
+            'assignment': assignment.to_dict()
+        }), 201
+        
+    except ValueError:
+        return jsonify({'error': '分数格式错误'}), 400
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': f'录入失败: {str(e)}'}), 500
+
+
+@app.route('/api/assignments/batch-scores', methods=['POST'])
+def batch_add_scores():
+    """批量录入学生成绩"""
+    try:
+        data = request.get_json()
+        scores_data = data.get('scores', [])
+        
+        if not scores_data:
+            return jsonify({'error': '没有提供成绩数据'}), 400
+        
+        success_count = 0
+        error_count = 0
+        errors = []
+        
+        for index, score_data in enumerate(scores_data):
+            try:
+                # 验证必要字段
+                required_fields = ['student_id', 'assignment_name', 'subject', 'score']
+                for field in required_fields:
+                    if field not in score_data:
+                        raise ValueError(f'第{index+1}行缺少字段: {field}')
+                
+                # 验证学生是否存在
+                student = Student.query.filter_by(student_id=score_data['student_id']).first()
+                if not student:
+                    raise ValueError(f'第{index+1}行学生不存在: {score_data["student_id"]}')
+                
+                # 验证分数
+                score = float(score_data['score'])
+                if score < 0 or score > 100:
+                    raise ValueError(f'第{index+1}行分数超出范围: {score}')
+                
+                # 创建作业记录
+                assignment = Assignment(
+                    student_id=score_data['student_id'],
+                    assignment_name=score_data['assignment_name'],
+                    subject=score_data['subject'],
+                    chapter=score_data.get('chapter', '批量录入'),
+                    score=score,
+                    feedback=score_data.get('feedback', ''),
+                    submission_time=datetime.utcnow()
+                )
+                
+                db.session.add(assignment)
+                success_count += 1
+                
+            except Exception as e:
+                error_count += 1
+                errors.append(f'第{index+1}行: {str(e)}')
+        
+        if success_count > 0:
+            db.session.commit()
+        
+        return jsonify({
+            'message': f'批量录入完成',
+            'success_count': success_count,
+            'error_count': error_count,
+            'errors': errors
+        }), 200 if error_count == 0 else 207
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': f'批量录入失败: {str(e)}'}), 500
+
+
+@app.route('/api/students/<student_id>/assignments', methods=['GET'])
+def get_student_assignments(student_id):
+    """获取特定学生的所有作业记录"""
+    try:
+        # 验证学生是否存在
+        student = Student.query.filter_by(student_id=student_id).first()
+        if not student:
+            return jsonify({'error': '学生不存在'}), 404
+        
+        # 获取学生的所有作业
+        assignments = Assignment.query.filter_by(student_id=student_id).order_by(
+            Assignment.submission_time.desc()
+        ).all()
+        
+        # 计算统计信息
+        total_assignments = len(assignments)
+        avg_score = sum(a.score for a in assignments if a.score) / total_assignments if total_assignments > 0 else 0
+        max_score = max((a.score for a in assignments if a.score), default=0)
+        min_score = min((a.score for a in assignments if a.score), default=0)
+        
+        # 按科目统计
+        subject_stats = {}
+        for assignment in assignments:
+            subject = assignment.subject
+            if subject not in subject_stats:
+                subject_stats[subject] = {
+                    'subject': subject,
+                    'count': 0,
+                    'avg_score': 0,
+                    'total_score': 0
+                }
+            
+            subject_stats[subject]['count'] += 1
+            if assignment.score:
+                subject_stats[subject]['total_score'] += assignment.score
+        
+        # 计算各科目平均分
+        for subject, stats in subject_stats.items():
+            if stats['count'] > 0:
+                stats['avg_score'] = round(stats['total_score'] / stats['count'], 2)
+        
+        return jsonify({
+            'student': student.to_dict(),
+            'assignments': [assignment.to_dict() for assignment in assignments],
+            'statistics': {
+                'total_assignments': total_assignments,
+                'avg_score': round(avg_score, 2),
+                'max_score': max_score,
+                'min_score': min_score,
+                'subject_stats': list(subject_stats.values())
+            }
+        })
+        
+    except Exception as e:
+        return jsonify({'error': f'获取学生作业失败: {str(e)}'}), 500
+
+
+if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()  # 确保创建所有表，包括新的VideoNote表
+    app.run(host='0.0.0.0', port=5000)

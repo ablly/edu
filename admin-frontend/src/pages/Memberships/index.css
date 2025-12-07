@@ -1,0 +1,394 @@
+/* 会员管理页面样式 */
+.memberships-page {
+  padding: 24px;
+  min-height: 100vh;
+}
+
+/* 套餐卡片样式 */
+.tier-card {
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.tier-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tier-card:hover::before {
+  opacity: 1;
+}
+
+.tier-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.tier-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--card-bg-secondary);
+  border: 2px solid var(--border-color);
+}
+
+.tier-info {
+  flex: 1;
+  margin-left: 12px;
+}
+
+.tier-name {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+}
+
+.tier-code {
+  margin: 4px 0 0 0;
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.limited-tag {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  transform: rotate(15deg);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.tier-price {
+  text-align: center;
+  margin: 20px 0;
+  padding: 16px;
+  background: var(--card-bg-secondary);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+}
+
+.current-price {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--primary-color);
+  font-family: var(--font-mono);
+  text-shadow: 0 0 10px var(--primary-glow);
+}
+
+.original-price {
+  font-size: 14px;
+  color: var(--text-disabled);
+  text-decoration: line-through;
+  margin-top: 4px;
+}
+
+.tier-duration {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-top: 8px;
+}
+
+.tier-quota {
+  margin: 16px 0;
+  padding: 12px;
+  background: var(--card-bg-secondary);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+}
+
+.quota-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.tier-features {
+  margin: 16px 0;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+  padding-left: 4px;
+}
+
+.feature-item::before {
+  content: '✓';
+  color: var(--success-color);
+  font-weight: 600;
+  margin-right: 8px;
+}
+
+.more-features {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-style: italic;
+  text-align: center;
+  margin-top: 8px;
+  padding: 4px;
+  background: var(--card-bg-secondary);
+  border-radius: 4px;
+}
+
+.tier-actions {
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* 早鸟优惠样式 */
+.early-bird-countdown {
+  text-align: center;
+  margin-bottom: 24px;
+  padding: 20px;
+  background: linear-gradient(135deg, var(--danger-color-10), var(--warning-color-10));
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--danger-color-20);
+}
+
+.early-bird-tier {
+  background: var(--card-bg);
+  border: 1px solid var(--danger-color-20);
+  transition: all 0.3s ease;
+}
+
+.early-bird-tier:hover {
+  border-color: var(--danger-color);
+  box-shadow: 0 4px 12px var(--danger-glow);
+}
+
+.early-bird-tier .tier-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.early-bird-tier h4 {
+  margin: 0;
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+.tier-progress {
+  margin: 12px 0;
+}
+
+.tier-remaining {
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* 会员记录表格样式 */
+.membership-records-table {
+  background: transparent;
+}
+
+.membership-records-table .ant-table-thead > tr > th {
+  background: linear-gradient(135deg, var(--primary-color-20), var(--secondary-color-20));
+  border-bottom: 1px solid var(--primary-color-40);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.membership-records-table .ant-table-tbody > tr:hover {
+  background: var(--hover-bg);
+  box-shadow: inset 0 0 20px rgba(0, 212, 255, 0.1);
+}
+
+/* 统计卡片动画 */
+.stat-card-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.stat-card-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.3s ease;
+}
+
+/* 模态框样式覆盖 */
+.ant-modal-content {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.ant-modal-header {
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.ant-modal-title {
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+}
+
+.ant-modal-body {
+  background: var(--card-bg);
+}
+
+.ant-modal-footer {
+  background: var(--card-bg);
+  border-top: 1px solid var(--border-color);
+}
+
+/* 表单样式 */
+.ant-form-item-label > label {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.ant-input,
+.ant-input-number,
+.ant-select-selector {
+  background: var(--card-bg-secondary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.ant-input:focus,
+.ant-input-number:focus,
+.ant-select-focused .ant-select-selector {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 8px var(--primary-glow);
+}
+
+.ant-input::placeholder,
+.ant-input-number-input::placeholder {
+  color: var(--text-disabled);
+}
+
+/* 开关样式 */
+.ant-switch {
+  background: var(--text-disabled);
+}
+
+.ant-switch-checked {
+  background: var(--primary-color);
+}
+
+/* 选择器样式 */
+.ant-select-dropdown {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.ant-select-item {
+  color: var(--text-primary);
+}
+
+.ant-select-item:hover {
+  background: var(--hover-bg);
+}
+
+.ant-select-item-option-selected {
+  background: var(--primary-color-20);
+  color: var(--primary-color);
+}
+
+/* 标签页样式 */
+.ant-tabs-tab {
+  color: var(--text-secondary);
+}
+
+.ant-tabs-tab-active {
+  color: var(--primary-color);
+}
+
+.ant-tabs-ink-bar {
+  background: var(--primary-color);
+}
+
+.ant-tabs-content-holder {
+  background: transparent;
+}
+
+/* 统计数字样式 */
+.ant-statistic-content {
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+
+.ant-statistic-title {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+/* 倒计时样式 */
+.ant-statistic-content-value {
+  color: var(--danger-color);
+  text-shadow: 0 0 10px var(--danger-glow);
+  font-weight: 700;
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+  .memberships-page {
+    padding: 16px;
+  }
+  
+  .tier-card {
+    margin-bottom: 16px;
+  }
+  
+  .tier-name {
+    font-size: 16px;
+  }
+  
+  .current-price {
+    font-size: 24px;
+  }
+  
+  .early-bird-countdown {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 576px) {
+  .tier-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .tier-icon {
+    margin-bottom: 8px;
+  }
+  
+  .tier-info {
+    margin-left: 0;
+  }
+  
+  .limited-tag {
+    position: static;
+    transform: none;
+    margin-top: 8px;
+  }
+}
+

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试会员套餐CRUD</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .delete-btn {
+            background: #dc3545;
+        }
+        .delete-btn:hover {
+            background: #c82333;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .result {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>会员套餐CRUD测试</h1>
+
+    <div class="section">
+        <h2>1. 获取套餐列表</h2>
+        <button onclick="getTiers()">获取套餐列表</button>
+        <div id="getTiersResult" class="result"></div>
+    </div>
+
+    <div class="section">
+        <h2>2. 更新套餐（测试早鸟和限量标签）</h2>
+        <input type="number" id="updateTierId" placeholder="套餐ID" value="5">
+        <button onclick="updateTier()">开启早鸟+限量</button>
+        <button onclick="updateTierNormal()">关闭早鸟+限量</button>
+        <div id="updateTierResult" class="result"></div>
+    </div>
+
+    <div class="section">
+        <h2>3. 删除套餐</h2>
+        <input type="number" id="deleteTierId" placeholder="套餐ID" value="8">
+        <button class="delete-btn" onclick="deleteTier()">删除套餐</button>
+        <div id="deleteTierResult" class="result"></div>
+    </div>
+
+    <script>
+        const BASE_URL = 'http://localhost:5000/api/admin';
+        const token = localStorage.getItem('admin_token') || 'admin_token';
+
+        async function makeRequest(url, method = 'GET', body = null) {
+            const options = {
+                method,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            if (body) {
+                options.body = JSON.stringify(body);
+            }
+
+            try {
+                const response = await fetch(url, options);
+                const data = await response.json();
+                return { status: response.status, data };
+            } catch (error) {
+                return { status: 0, error: error.message };
+            }
+        }
+
+        async function getTiers() {
+            const result = await makeRequest(`${BASE_URL}/memberships/tiers?_t=${Date.now()}`);
+            document.getElementById('getTiersResult').innerHTML = 
+                `<pre>${JSON.stringify(result, null, 2)}</pre>`;
+        }
+
+        async function updateTier() {
+            const tierId = document.getElementById('updateTierId').value;
+            const body = {
+                is_early_bird: true,
+                is_limited: true,
+                total_quota: 100,
+                early_bird_tier: 1,
+                original_price: 199
+            };
+            
+            const result = await makeRequest(
+                `${BASE_URL}/memberships/tiers/${tierId}`, 
+                'PUT', 
+                body
+            );
+            document.getElementById('updateTierResult').innerHTML = 
+                `<pre>${JSON.stringify(result, null, 2)}</pre>`;
+        }
+
+        async function updateTierNormal() {
+            const tierId = document.getElementById('updateTierId').value;
+            const body = {
+                is_early_bird: false,
+                is_limited: false,
+                total_quota: 0,
+                early_bird_tier: 0,
+                original_price: 0
+            };
+            
+            const result = await makeRequest(
+                `${BASE_URL}/memberships/tiers/${tierId}`, 
+                'PUT', 
+                body
+            );
+            document.getElementById('updateTierResult').innerHTML = 
+                `<pre>${JSON.stringify(result, null, 2)}</pre>`;
+        }
+
+        async function deleteTier() {
+            const tierId = document.getElementById('deleteTierId').value;
+            
+            if (!confirm(`确定要删除套餐 ID: ${tierId} 吗？`)) {
+                return;
+            }
+
+            const result = await makeRequest(
+                `${BASE_URL}/memberships/tiers/${tierId}`, 
+                'DELETE'
+            );
+            document.getElementById('deleteTierResult').innerHTML = 
+                `<pre>${JSON.stringify(result, null, 2)}</pre>`;
+        }
+
+        // 页面加载时自动获取套餐列表
+        window.onload = () => {
+            getTiers();
+        };
+    </script>
+</body>
+</html>
+

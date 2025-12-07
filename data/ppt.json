@@ -1,0 +1,515 @@
+{
+  "template_name": "ppt.pptx",
+  "slides": [
+    {
+      "slide_idx": 0,
+      "layout_name": "包含图像的标题幻灯片",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "标题 1",
+          "text": "单击此处添加标题",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 838199,
+            "top": 2002421,
+            "width": 7252505,
+            "height": 891250
+          }
+        },
+        {
+          "shape_idx": 1,
+          "name": "文本占位符 5",
+          "text": "在此处输入副标题\n",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 838200,
+            "top": 3090444,
+            "width": 7252504,
+            "height": 338549
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 1,
+      "layout_name": "8_自定义版式",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "标题 8",
+          "text": "议程",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 826625,
+            "top": 4867539,
+            "width": 2727803,
+            "height": 1025525
+          }
+        },
+        {
+          "shape_idx": 1,
+          "name": "文本占位符 9",
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit phasellus auctor efficitur.",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 7559432,
+            "top": 2055335,
+            "width": 4294206,
+            "height": 755650
+          }
+        },
+        {
+          "shape_idx": 2,
+          "name": "文本占位符 11",
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit phasellus auctor efficitur.",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 7559432,
+            "top": 2782449,
+            "width": 4294206,
+            "height": 755650
+          }
+        },
+        {
+          "shape_idx": 3,
+          "name": "文本占位符 12",
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit phasellus auctor efficitur.",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 7559432,
+            "top": 4352427,
+            "width": 4294206,
+            "height": 755650
+          }
+        },
+        {
+          "shape_idx": 4,
+          "name": "文本占位符 13",
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit phasellus auctor efficitur.",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 7559432,
+            "top": 3567438,
+            "width": 4294206,
+            "height": 755650
+          }
+        },
+        {
+          "shape_idx": 5,
+          "name": "文本占位符 14",
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit phasellus auctor efficitur.",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 7559432,
+            "top": 5137415,
+            "width": 4294206,
+            "height": 755650
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 2,
+      "layout_name": "1_自定义版式",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "标题 8",
+          "text": "单击\u000b此处添加标题 ",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 2152891,
+            "top": 1691472,
+            "width": 5045593,
+            "height": 1325563
+          }
+        },
+        {
+          "shape_idx": 1,
+          "name": "文本占位符 10",
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.Phasellus auctor efficitur dui et facilisis.Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.Etiam molestie in quam ac viverra.Cras consequat gravida aliquam. ",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 7569843,
+            "top": 1690688,
+            "width": 4155432,
+            "height": 1325562
+          }
+        },
+        {
+          "shape_idx": 2,
+          "name": "文本占位符 11",
+          "text": "单击此处添加标题",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 7569843,
+            "top": 1227698,
+            "width": 4155432,
+            "height": 382749
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 3,
+      "layout_name": "14_自定义版式​​",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "标题 13",
+          "text": "两列布局 ",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 844946,
+            "top": 1193765,
+            "width": 4385843,
+            "height": 1325563
+          }
+        },
+        {
+          "shape_idx": 2,
+          "name": "文本占位符 16",
+          "text": "单击此处添加标题",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 5470816,
+            "top": 2540529,
+            "width": 3046302,
+            "height": 382749
+          }
+        },
+        {
+          "shape_idx": 3,
+          "name": "文本占位符 18",
+          "text": "单击此处添加标题",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 8769606,
+            "top": 2540529,
+            "width": 3023149,
+            "height": 382749
+          }
+        },
+        {
+          "shape_idx": 4,
+          "name": "文本占位符 15",
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nPhasellus auctor efficitur dui et facilisis. \nPellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. \nEtiam molestie in quam ac viverra. \nCras consequat gravida aliquam.Maecenas cursus eleifend risus, in vulputate velit imperdiet non..",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 5470525,
+            "top": 2944813,
+            "width": 3046413,
+            "height": 3044825
+          }
+        },
+        {
+          "shape_idx": 5,
+          "name": "文本占位符 17",
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\u000bPhasellus auctor efficitur dui et facilisis. \nPellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.Etiam molestie in quam ac viverra. \nCras consequat gravida aliquam.Maecenas cursus eleifend risus, in vulputate velit imperdiet non.Aenean tincidunt euismod ultricies.Fusce tempor dui ipsum, nec ultricies ante eleifend vel curabitur.\n",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 8769606,
+            "top": 2944813,
+            "width": 3023149,
+            "height": 3044825
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 4,
+      "layout_name": "3_空白",
+      "shapes": [
+        {
+          "shape_idx": 3,
+          "name": "标题 5",
+          "text": "单击此处\u000b添加幻灯片标题",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 518160,
+            "top": 524172,
+            "width": 2578099,
+            "height": 2508588
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 5,
+      "layout_name": "5_自定义版式",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "标题 2",
+          "text": "节标题 ",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 838200,
+            "top": 365125,
+            "width": 7634288,
+            "height": 1325563
+          }
+        },
+        {
+          "shape_idx": 1,
+          "name": "文本占位符 3",
+          "text": "1",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 8530361,
+            "top": 4719574,
+            "width": 2489200,
+            "height": 3124200
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 6,
+      "layout_name": "图像和内容",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "标题 4",
+          "text": "单击此处添加图标幻灯片标题 ",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 841057,
+            "top": 1100290,
+            "width": 4578841,
+            "height": 1395208
+          }
+        },
+        {
+          "shape_idx": 1,
+          "name": "文本占位符 7",
+          "text": "在此处输入副标题",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 841058,
+            "top": 2561159,
+            "width": 4008437,
+            "height": 602887
+          }
+        },
+        {
+          "shape_idx": 6,
+          "name": "文本占位符 6",
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.Phasellus auctor efficitur\u000bduiet facilisis. ",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 7718323,
+            "top": 1074809,
+            "width": 3977648,
+            "height": 731694
+          }
+        },
+        {
+          "shape_idx": 7,
+          "name": "文本占位符 19",
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.Phasellus auctor efficitur\u000bduiet facilisis. ",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 7718323,
+            "top": 2365537,
+            "width": 3977648,
+            "height": 731694
+          }
+        },
+        {
+          "shape_idx": 8,
+          "name": "文本占位符 20",
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.Phasellus auctor efficitur\u000bduiet facilisis. ",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 7718323,
+            "top": 3656265,
+            "width": 3977648,
+            "height": 731694
+          }
+        },
+        {
+          "shape_idx": 9,
+          "name": "文本占位符 21",
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.Phasellus auctor efficitur\u000bduiet facilisis. ",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 7718323,
+            "top": 4946994,
+            "width": 3977648,
+            "height": 731694
+          }
+        },
+        {
+          "shape_idx": 10,
+          "name": "文本占位符 65",
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.Phasellus auctor efficitur dui et facilisis.Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.Etiam molestie in quam ac viverra.Cras consequat gravida aliquam.Maecenas cursus eleifend risus, in vulputate velit imperdiet non.Aenean tincidunt euismod ultricies.Fusce tempor dui ipsum, nec ultricies ante eleifend vel curabitur.",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 838200,
+            "top": 3278528,
+            "width": 4008438,
+            "height": 2560899
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 7,
+      "layout_name": "27_自定义版式​​",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "标题 11",
+          "text": "单击此处\u000b添加团队幻灯片标题 ",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 841682,
+            "top": 971950,
+            "width": 3984960,
+            "height": 2036100
+          }
+        },
+        {
+          "shape_idx": 5,
+          "name": "文本占位符 16",
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 5642770,
+            "top": 2823837,
+            "width": 2517605,
+            "height": 484146
+          }
+        },
+        {
+          "shape_idx": 6,
+          "name": "文本占位符 17",
+          "text": "添加名称",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 5642770,
+            "top": 2419511,
+            "width": 2517605,
+            "height": 382749
+          }
+        },
+        {
+          "shape_idx": 7,
+          "name": "文本占位符 18",
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. \n",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 8544956,
+            "top": 2823837,
+            "width": 2517605,
+            "height": 484146
+          }
+        },
+        {
+          "shape_idx": 8,
+          "name": "文本占位符 19",
+          "text": "添加名称",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 8544956,
+            "top": 2419511,
+            "width": 2517605,
+            "height": 382749
+          }
+        },
+        {
+          "shape_idx": 9,
+          "name": "文本占位符 20",
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. \n",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 5642770,
+            "top": 5740657,
+            "width": 2517605,
+            "height": 484146
+          }
+        },
+        {
+          "shape_idx": 10,
+          "name": "文本占位符 21",
+          "text": "添加名称",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 5642770,
+            "top": 5336331,
+            "width": 2517605,
+            "height": 382749
+          }
+        },
+        {
+          "shape_idx": 11,
+          "name": "文本占位符 22",
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. \n",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 8544956,
+            "top": 5740657,
+            "width": 2517605,
+            "height": 484146
+          }
+        },
+        {
+          "shape_idx": 12,
+          "name": "文本占位符 23",
+          "text": "添加姓名",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 8544956,
+            "top": 5336331,
+            "width": 2517605,
+            "height": 382749
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 8,
+      "layout_name": "空白 ",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "标题 7",
+          "text": "单击此处添加图表\u000b幻灯片标题 ",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 6790780,
+            "top": 839972,
+            "width": 4767262,
+            "height": 1342045
+          }
+        },
+        {
+          "shape_idx": 1,
+          "name": "文本占位符 9",
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.Ut gravida eros erat.Proin a tellus sed risus lobortis sagittis eu quis est.Duis ut aliquam nisi.Suspendisse vehicula mi diam, sit amet lacinia massa sodales ac. \nFusce condimentum egestas nunc a maximus.Quisque et orci purus.Proin dolor mi, ultrices sit amet ipsum placerat, congue mattis turpis.Donec vestibulum eros eget mauris dignissim, ut ultricies dolor viverra.Phasellus efficitur ante nec sem convallis, in ornare est accumsan. \nLorem ipsum dolor sit amet, consectetur adipiscing elit.Ut gravida eros erat.Proin a tellus sed risus lobortis sagittis eu quis est. \n",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 6790780,
+            "top": 2635242,
+            "width": 4767262,
+            "height": 3483263
+          }
+        },
+        {
+          "shape_idx": 2,
+          "name": "文本占位符 11",
+          "text": "在此输入副标题",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 6790780,
+            "top": 2247679,
+            "width": 4767262,
+            "height": 321901
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作业提交 - EduPilot</title>
+    <meta name="description" content="智能作业提交系统，支持单个和批量作业提交">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar_user.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/submit.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 标准化导航栏 -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <a href="{{ url_for('index') }}" class="navbar-brand">EduPilot</a>
+                
+                <button class="navbar-toggle" id="navbarToggle" aria-label="切换导航菜单">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+                
+                <nav class="navbar-nav" id="navbarNav" role="navigation">
+                    <a href="{{ url_for('index') }}" class="nav-link" data-page="index">首页</a>
+                    <a href="{{ url_for('students_page') }}" class="nav-link" data-page="students">学生管理</a>
+                    <a href="{{ url_for('submit_page') }}" class="nav-link active" data-page="submit">作业提交</a>
+                    <a href="{{ url_for('scores_page') }}" class="nav-link" data-page="scores">成绩查询</a>
+                    <a href="{{ url_for('ai_ask_page') }}" class="nav-link" data-page="ai_ask">AI答疑</a>
+                    <a href="{{ url_for('auxiliary_programming_page') }}" class="nav-link" data-page="auxiliary">辅助编程</a>
+                    <a href="{{ url_for('video_summary_page') }}" class="nav-link" data-page="video">视频总结</a>
+                    <a href="{{ url_for('generate_question_page') }}" class="nav-link" data-page="question">智能出题</a>
+                <a href="{{ url_for('generate_lecture_page') }}" class="nav-link" data-page="lecture">智能讲义</a>
+                <a href="{{ url_for('progress_chart') }}" class="nav-link" data-page="progress">成绩分析</a>
+            </nav>
+        </div>
+    </header>
+
+        <main class="main-content">
+            <!-- 页面标题 -->
+            <div class="page-header">
+                <h1><i class="fas fa-upload"></i> 作业提交系统</h1>
+                <p class="page-description">支持单个作业提交和批量作业处理，智能批改和反馈</p>
+            </div>
+
+            <!-- 提交类型选择器 -->
+        <div class="submit-type-selector">
+                <button id="individual-btn" class="submit-type-btn active">
+                    <i class="fas fa-file-upload"></i>
+                    <span>单个作业</span>
+                </button>
+                <button id="batch-btn" class="submit-type-btn">
+                    <i class="fas fa-files"></i>
+                    <span>批量作业</span>
+                </button>
+        </div>
+
+        <!-- 单个作业提交表单 -->
+        <section id="individual-submit" class="submit-form">
+            <h2>单个作业提交</h2>
+            <form id="submit-assignment-form" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="submit-student-id" class="ki">学生:</label>
+                    <select id="submit-student-id" name="student_id" required>
+                        <option value="" class="ki">选择学号</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject-select" class="ki">学科:</label>
+                    <select id="subject-select" name="subject" required>
+                        <option value="" class="ki">选择学科</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="chapter-select" class="ki"> 章节:</label>
+                    <select id="chapter-select" name="chapter" required>
+                        <option value="" class="ki">选择章节</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="assignment-name" class="ki">作业名称:</label>
+                    <input type="text" id="assignment-name" name="assignment_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="assignment-file" class="ki">作业文件:</label>
+                    <input type="file" id="assignment-file" name="file"
+                           accept=".c,.cpp,.java,.py,.zip,.txt,.pdf,.docx,.pptx" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="grading-prompt" class="ki">批改说明:</label>
+                    <textarea id="grading-prompt" name="prompt" rows="3" required></textarea>
+                </div>
+
+                <button type="submit" class="btn" >提交作业</button>
+            </form>
+
+            <div id="submission-status">
+                <div id="submission-message"></div>
+                <div id="submission-progress" class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 批量作业提交表单 -->
+        <section id="batch-submit" class="submit-form" style="display:none;">
+            <h2>批量作业提交</h2>
+            <form id="batch-submit-form" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="batch-name" class="ki">批次名称:</label>
+                    <input type="text" id="batch-name" name="batch_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="batch-subject" class="ki">学科:</label>
+                    <select id="batch-subject" name="subject" required>
+                        <option value="" class="ki">选择学科</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="batch-chapter" class="ki">章节:</label>
+                    <select id="batch-chapter" name="chapter" required>
+                        <option value="" class="ki">选择章节</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="batch-files" class="ki">作业文件:</label>
+                    <input type="file" id="batch-files" name="files[]" multiple
+                           accept=".c,.cpp,.java,.py,.txt,.pdf,.docx,.pptx" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="batch-prompt" class="ki">批改说明:</label>
+                    <textarea id="batch-prompt" name="prompt" rows="3" required></textarea>
+                </div>
+
+                <button type="submit" class="btn">批量提交</button>
+            </form>
+
+            <div id="batch-submission-status">
+                <div id="batch-submission-message"></div>
+                <div id="batch-submission-progress" class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+
+            <div id="batch-results" style="display:none;">
+                <h3>提交结果</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="ki">文件名</th>
+                            <th class="ki">学号</th>
+                            <th class="ki">姓名</th>
+                            <th class="ki">作业</th>
+                            <th class="ki">成绩</th>
+                            <th class="ki">状态</th>
+                        </tr>
+                    </thead>
+                    <tbody id="batch-results-tbody"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    </div>
+
+    <!-- 消息提示容器 -->
+    <div id="message-container" class="message-container"></div>
+
+    <!-- 脚本文件 -->
+    <script src="{{ url_for('static', filename='js/submit.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/navbar.js') }}?v=20251005a"></script>
+</body>
+</html>
+

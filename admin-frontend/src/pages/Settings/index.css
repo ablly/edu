@@ -1,0 +1,12 @@
+.settings-page {
+  padding: 24px;
+}
+
+.settings-page .ant-tabs-nav {
+  margin-bottom: 24px;
+}
+
+.settings-page .ant-form-item-label > label {
+  font-weight: 500;
+}
+

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="智能讲义 - AI自动生成教学讲义">
+    <title>智能讲义 - EduPilot教育协控平台</title>
+    
+    <!-- 基础样式 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar_user.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/generate_lecture.css') }}">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 标准化导航栏 -->
+        <header class="navbar">
+        <div class="navbar-container">
+            <a href="{{ url_for('index') }}" class="navbar-brand">
+                <i class="fas fa-graduation-cap"></i> EduPilot
+            </a>
+            <button class="navbar-toggle" id="navbarToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav class="navbar-nav" id="navbarNav">
+                <a href="{{ url_for('index') }}" class="nav-link">
+                    <i class="fas fa-home"></i> 首页
+                </a>
+                <a href="{{ url_for('students_page') }}" class="nav-link">
+                    <i class="fas fa-users"></i> 学生管理
+                </a>
+                <a href="{{ url_for('submit_page') }}" class="nav-link">
+                    <i class="fas fa-upload"></i> 作业提交
+                </a>
+                <a href="{{ url_for('scores_page') }}" class="nav-link">
+                    <i class="fas fa-chart-line"></i> 成绩查询
+                </a>
+                <a href="{{ url_for('ai_ask_page') }}" class="nav-link">
+                    <i class="fas fa-comments"></i> AI答疑
+                </a>
+                <a href="{{ url_for('auxiliary_programming_page') }}" class="nav-link">
+                    <i class="fas fa-code"></i> 辅助编程
+                </a>
+                <a href="{{ url_for('video_summary_page') }}" class="nav-link">
+                    <i class="fas fa-video"></i> 视频总结
+                </a>
+                <a href="{{ url_for('generate_question_page') }}" class="nav-link">
+                    <i class="fas fa-brain"></i> 智能出题
+                </a>
+                <a href="{{ url_for('generate_lecture_page') }}" class="nav-link active">
+                    <i class="fas fa-book"></i> 智能讲义
+                </a>
+                <a href="{{ url_for('progress_chart') }}" class="nav-link">
+                    <i class="fas fa-chart-bar"></i> 成绩分析
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <div class="container">
+            <!-- 页面标题 -->
+            <div class="page-header">
+                <h1><i class="fas fa-book"></i> 智能讲义</h1>
+                <p class="subtitle">上传教学材料，AI智能生成结构化讲义</p>
+            </div>
+
+            <!-- 功能说明卡片 -->
+            <div class="info-card">
+                <h3><i class="fas fa-info-circle"></i> 功能说明</h3>
+                <div class="info-list">
+                    <div class="info-item">
+                        <i class="fas fa-file-upload"></i>
+                        <div>
+                            <strong>上传教学材料</strong>
+                            <p>支持PDF、Word格式，AI自动提取核心知识点</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-magic"></i>
+                        <div>
+                            <strong>智能生成讲义</strong>
+                            <p>AI自动整理大纲、重点讲解和知识要点</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-download"></i>
+                        <div>
+                            <strong>导出与分享</strong>
+                            <p>支持多种格式导出，适配不同教学场景</p>
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+            <!-- 上传表单卡片 -->
+            <div class="upload-card">
+                <h2><i class="fas fa-cloud-upload-alt"></i> 上传教学文件</h2>
+                
+                <form id="generate-lecture-form" enctype="multipart/form-data">
+                    <!-- 拖拽上传区域 -->
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <h3>拖拽文件到这里，或点击选择</h3>
+                        <p>支持 PDF、Word (DOCX) 格式</p>
+                        <p class="file-size-hint">最大文件大小: 10MB</p>
+                        <input type="file" id="fileInput" name="file" accept=".pdf,.docx" hidden>
+                        <button type="button" class="select-file-btn" id="selectFileBtn">
+                            <i class="fas fa-folder-open"></i> 选择文件
+                        </button>
+                    </div>
+
+                    <!-- 文件信息显示 -->
+                    <div class="file-info" id="fileInfo" style="display: none;">
+                        <div class="file-details">
+                            <i class="fas fa-file-alt file-icon"></i>
+                            <div class="file-text">
+                                <span class="file-name" id="fileName"></span>
+                                <span class="file-size" id="fileSize"></span>
+                            </div>
+                            <button type="button" class="remove-file-btn" id="removeFileBtn">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 提交按钮 -->
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        <i class="fas fa-magic"></i> 生成讲义
+                    </button>
+                </form>
+
+                <!-- 加载状态 -->
+                <div class="loading-container" id="loadingContainer" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <p class="loading-text">AI正在分析文档并生成讲义，请稍候...</p>
+                </div>
+            </div>
+
+            <!-- 讲义展示区域 -->
+            <div class="lecture-display" id="lectureDisplay" style="display: none;">
+                <div class="lecture-header">
+                    <h2 id="lectureTitle"><i class="fas fa-book-open"></i> 讲义内容</h2>
+                    <div class="lecture-actions">
+                        <button class="action-btn primary" id="copyBtn">
+                            <i class="fas fa-copy"></i> 复制
+                        </button>
+                        <button class="action-btn success" id="downloadBtn">
+                            <i class="fas fa-download"></i> 下载
+                        </button>
+                        <button class="action-btn secondary" id="printBtn">
+                            <i class="fas fa-print"></i> 打印
+                        </button>
+                    </div>
+                </div>
+
+                <div class="lecture-body">
+                    <!-- 目录导航 -->
+                    <aside class="lecture-toc" id="lectureToc">
+                        <h3><i class="fas fa-list"></i> 目录</h3>
+                        <nav id="tocNav"></nav>
+                    </aside>
+
+                    <!-- 讲义内容 -->
+                    <article class="lecture-content" id="lectureContent">
+                        <!-- 动态生成的讲义内容 -->
+                    </article>
+                </div>
+            </div>
+        </div>
+        </main>
+
+    <!-- Toast通知容器 -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- 脚本 -->
+    <script src="{{ url_for('static', filename='js/navbar.js') }}?v=20251005a"></script>
+    <script src="{{ url_for('static', filename='js/generate_lecture.js') }}"></script>
+</body>
+</html>

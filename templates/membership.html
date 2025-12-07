@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会员中心 - EduPilot AI</title>
+    
+    <!-- CSS样式 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar_user.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/membership_center.css') }}">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    {% include 'navbar_template.html' %}
+
+    <!-- 主容器 -->
+    <div class="membership-container">
+        <!-- 顶部会员状态卡片 -->
+        <section class="membership-status-card" id="membershipStatusCard">
+            <div class="status-loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                <span>加载中...</span>
+            </div>
+        </section>
+
+        <!-- Tab导航 -->
+        <div class="membership-tabs">
+            <button class="tab-btn active" data-tab="privileges">
+                <i class="fas fa-star"></i>
+                <span>会员特权</span>
+            </button>
+            <button class="tab-btn" data-tab="upgrade">
+                <i class="fas fa-rocket"></i>
+                <span>升级套餐</span>
+            </button>
+            <button class="tab-btn" data-tab="history">
+                <i class="fas fa-chart-line"></i>
+                <span>使用历史</span>
+            </button>
+            <button class="tab-btn" data-tab="billing">
+                <i class="fas fa-file-invoice-dollar"></i>
+                <span>账单管理</span>
+            </button>
+        </div>
+
+        <!-- Tab内容 -->
+        <div class="tab-content">
+            <!-- Tab 1: 会员特权 -->
+            <div class="tab-pane active" id="privileges-pane">
+                <div class="privileges-loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>加载特权信息...</span>
+                </div>
+            </div>
+
+            <!-- Tab 2: 升级套餐 -->
+            <div class="tab-pane" id="upgrade-pane">
+                <div class="upgrade-loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>加载升级选项...</span>
+                </div>
+            </div>
+
+            <!-- Tab 3: 使用历史 -->
+            <div class="tab-pane" id="history-pane">
+                <div class="history-header">
+                    <h3>功能使用统计</h3>
+                    <div class="period-toggle">
+                        <button class="period-btn active" data-period="daily">今日</button>
+                        <button class="period-btn" data-period="weekly">本周</button>
+                        <button class="period-btn" data-period="monthly">本月</button>
+                    </div>
+                </div>
+                <div class="history-stats" id="historyStats">
+                    <div class="history-loading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <span>加载使用历史...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 4: 账单管理 -->
+            <div class="tab-pane" id="billing-pane">
+                <div class="billing-header">
+                    <h3>支付记录</h3>
+                </div>
+                <div class="billing-list" id="billingList">
+                    <div class="billing-loading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <span>加载账单信息...</span>
+                    </div>
+                </div>
+                
+                <div class="auto-renew-section" id="autoRenewSection">
+                    <!-- 自动续费设置 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 支付弹窗 -->
+    <div class="payment-modal" id="paymentModal">
+        <div class="payment-modal-content">
+            <div class="payment-modal-header">
+                <h3>完成支付</h3>
+                <button class="payment-modal-close" id="closePaymentModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="payment-modal-body">
+                <div class="payment-info" id="paymentInfo">
+                    <!-- 支付信息 -->
+                </div>
+                
+                <div class="payment-methods">
+                    <button class="payment-method-btn active" data-method="alipay">
+                        <i class="fab fa-alipay"></i>
+                        <span>支付宝</span>
+                    </button>
+                    <button class="payment-method-btn" data-method="wechat">
+                        <i class="fab fa-weixin"></i>
+                        <span>微信支付</span>
+                    </button>
+                </div>
+                
+                <div class="payment-qrcode" id="paymentQRCode">
+                    <div class="qrcode-loading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <span>生成支付码...</span>
+                    </div>
+                </div>
+                
+                <div class="payment-tips">
+                    <p><i class="fas fa-info-circle"></i> 请使用手机扫码支付</p>
+                    <p class="payment-expire-time" id="paymentExpireTime"></p>
+                </div>
+                
+                <div class="payment-status" id="paymentStatus">
+                    <!-- 支付状态 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast通知 -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/navbar.js') }}?v=20251010a"></script>
+    <script src="{{ url_for('static', filename='js/membership_center.js') }}?v=20251010a"></script>
+</body>
+</html>
+
+

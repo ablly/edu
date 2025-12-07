@@ -1,0 +1,70 @@
+/* ============================================================================
+   Dashboard页面样式
+   ============================================================================ */
+
+.dashboard-page {
+  min-height: 100%;
+}
+
+/* ========== 卡片行间距 ========== */
+.stat-cards-row,
+.revenue-cards-row,
+.charts-row,
+.bottom-row {
+  margin-bottom: var(--spacing-lg);
+}
+
+/* ========== 系统健康度 ========== */
+.system-health {
+  padding: var(--spacing-md) 0;
+}
+
+.health-item {
+  margin-bottom: var(--spacing-lg);
+}
+
+.health-item:last-child {
+  margin-bottom: 0;
+}
+
+.health-label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.health-label .anticon {
+  color: var(--color-primary);
+}
+
+/* ========== 进度条样式覆盖 ========== */
+.system-health .ant-progress-bg {
+  box-shadow: 0 0 10px currentColor;
+}
+
+.system-health .ant-progress-text {
+  color: var(--text-primary);
+  font-family: var(--font-family-number);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* ========== 图表容器 ========== */
+.charts-row .glass-card-body {
+  padding: var(--spacing-lg) var(--spacing-sm);
+}
+
+/* ========== 响应式 ========== */
+@media (max-width: 768px) {
+  .stat-cards-row,
+  .revenue-cards-row,
+  .charts-row,
+  .bottom-row {
+    margin-bottom: var(--spacing-md);
+  }
+}
+
+

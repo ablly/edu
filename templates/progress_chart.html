@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="成绩分析页面">
+    <title>成绩分析 - EduPilot多智能体教育协控平台</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar_user.css') }}">
+    <link rel="stylesheet" href="/static/css/progress_chart.css">
+    <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>-->
+    <script src="/static/js/echarts.min.js"></script>
+    <style>
+        .chart-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .chart-card {
+        flex: 1 1 45%;
+        min-width: 400px;
+        background: rgba(255, 255, 255, 0.9); /* 改为半透明白色 */
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(91, 143, 249, 0.15); /* 改用蓝色系阴影 */
+        border: 1px solid rgba(91, 143, 249, 0.1); /* 添加浅蓝色边框 */
+        position: relative; /* 为伪元素定位做准备 */
+        overflow: hidden; /* 防止伪元素超出边框 */
+    }
+
+    /* 移除可能的重复背景设置 */
+    .chart-container {
+        background: none !important;
+    }
+        .chart-box {
+            width: 100%;
+            height: 400px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .yd {
+            color: #4A6DF8;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部导航保持不变 -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <a href="{{ url_for('index') }}" class="navbar-brand">EduPilot</a>
+            
+            <button class="navbar-toggle" id="navbarToggle" aria-label="切换导航菜单">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <nav class="navbar-nav" id="navbarNav" role="navigation">
+                <a href="{{ url_for('index') }}" class="nav-link" data-page="index">首页</a>
+                <a href="{{ url_for('students_page') }}" class="nav-link" data-page="students">学生管理</a>
+                <a href="{{ url_for('submit_page') }}" class="nav-link" data-page="submit">作业提交</a>
+                <a href="{{ url_for('scores_page') }}" class="nav-link" data-page="scores">成绩查询</a>
+                <a href="{{ url_for('ai_ask_page') }}" class="nav-link" data-page="ai_ask">AI答疑</a>
+                <a href="{{ url_for('auxiliary_programming_page') }}" class="nav-link" data-page="auxiliary">辅助编程</a>
+                <a href="{{ url_for('video_summary_page') }}" class="nav-link" data-page="video">视频总结</a>
+                <a href="{{ url_for('generate_question_page') }}" class="nav-link" data-page="question">智能出题</a>
+                <a href="{{ url_for('generate_lecture_page') }}" class="nav-link" data-page="lecture">智能讲义</a>
+                <a href="{{ url_for('progress_chart') }}" class="nav-link" data-page="progress">成绩分析</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="submit-form">
+            <h2 class="yd">学生成绩分析</h2>
+            <div class="instructions">
+            <h3 class="yp">功能说明</h3>
+            <ul>
+                <li class="ki"><strong>选择学生</strong> - 点击下拉框，从列表中选择要分析的学生。</li>
+                <li class="ki"><strong>选择学科</strong> - 点击下拉框，选择要分析的学科。</li>
+                <li class="ki"><strong>选择章节</strong> - 先选学科，再点击下拉框选择章节，否则会提示“请先选择学科”。</li>
+                <li class="ki"><strong>查看成绩趋势</strong> - 选完学生、学科和章节后，页面下方的“成绩趋势分析”区域会自动展示分析结果。</li>
+            </ul>
+        </div>
+            <!-- 选择表单 -->
+            <div class="form-group">
+                <label for="studentSelect" class="ki">选择学生</label>
+                <select id="studentSelect" class="form-control">
+                    <option value="" selected disabled>请选择学生...</option>
+                    {% for student in students %}
+                    <option value="{{ student.student_id }}">
+                        {{ student.name }} ({{ student.student_id }})
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="subjectSelect" class="ki">选择学科</label>
+                <select id="subjectSelect" class="form-control">
+                    <option value="" selected disabled class="ki">请选择学科...</option>
+                    <option value="数据结构" class="ki">数据结构</option>
+                    <option value="Python编程" class="ki">Python编程</option>
+                    <option value="计算机网络" class="ki">计算机网络</option>
+                    <option value="操作系统" class="ki">操作系统</option>
+                    <option value="数据库原理" class="ki">数据库原理</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="chapterSelect" class="ki">选择章节</label>
+                <select id="chapterSelect" class="form-control" disabled>
+                    <option value="" selected disabled class="ki">请先选择学科</option>
+                </select>
+            </div>
+
+            <!-- 图表容器 -->
+            <div class="chart-container">
+                <!-- 图表1: 总体成绩趋势图 -->
+                <div class="chart-card">
+                    <h3 class="yp">成绩趋势分析</h3>
+                    <div id="lineChart" class="chart-box"></div>
+                </div>
+
+                <!-- 图表2: 成绩分布饼图 -->
+                <div class="chart-card">
+                    <h3 class="yp">成绩分布分析</h3>
+                    <div id="pieChart" class="chart-box"></div>
+                </div>
+
+                <!-- 图表3: 学科-章节成绩趋势图 -->
+                <div class="chart-card">
+                    <h3 class="yp">章节成绩趋势</h3>
+                    <div id="subjectChapterChart" class="chart-box"></div>
+                </div>
+
+                <!-- 图表4: 学科成绩分布饼图 -->
+                <div class="chart-card">
+                    <h3 class="yp">学科成绩分布</h3>
+                    <div id="subjectPieChart" class="chart-box"></div>
+                </div>
+            </div>
+
+            <div class="update-info">
+                <small class="yp">数据更新时间: {{ now.strftime('%Y-%m-%d %H:%M') }}</small>
+            </div>
+        </section>
+    </main>
+
+    <script src="/static/js/progress_chart.js"></script>
+    <script src="{{ url_for('static', filename='js/navbar.js') }}?v=20251005a"></script>
+</body>
+</html>
+
+
+

@@ -1,0 +1,88 @@
+实施清单
+错误处理 (14项)
+创建 templates/errors/ 目录
+创建 404.html 错误页面
+创建 500.html 错误页面
+创建 403.html 错误页面
+创建 400.html 错误页面
+创建 static/css/error.css 样式文件
+在 app.py 添加404错误处理器
+在 app.py 添加500错误处理器
+在 app.py 添加403错误处理器
+在 app.py 添加400错误处理器
+配置logging模块
+创建日志配置函数 setup_logging()
+创建 logs/ 目录和 .gitignore
+为关键操作添加日志记录
+安全性增强 (18项)
+安装 Flask-WTF 和 Flask-Limiter
+在 app.py 配置 SECRET_KEY
+初始化 CSRFProtect
+为所有POST表单添加CSRF令牌
+创建 utils/security.py 安全工具模块
+实现密码强度验证函数
+更新注册API密码验证
+更新修改密码API密码验证
+前端添加密码强度提示
+配置Flask-Limiter
+为登录/注册API添加限流
+创建登录失败记录表
+实现账户临时锁定机制
+添加安全响应头中间件
+配置Content-Security-Policy
+输入验证和清理函数
+XSS过滤中间件
+更新所有用户输入验证
+生产环境配置 (12项)
+创建 config.py 配置类
+创建 .env.example 文件
+更新 app.py 使用配置类
+生产数据库连接配置
+数据库迁移脚本 migrations/
+创建 DEPLOYMENT.md 部署文档
+更新 README.md 项目文档
+创建 requirements.txt 依赖清单
+Nginx配置示例文件
+Gunicorn配置文件
+Supervisor配置示例
+数据库备份脚本
+性能优化 (15项)
+分析并添加数据库索引
+优化用户查询(eager loading)
+优化会员查询(join优化)
+优化使用统计查询
+安装Redis和redis-py
+配置Redis连接
+实现会员信息缓存
+实现API响应缓存装饰器
+Session存储迁移到Redis
+压缩CSS文件
+压缩JavaScript文件
+配置Gzip响应压缩
+静态文件版本化(已部分完成)
+浏览器缓存头配置
+慢查询日志配置
+管理员后台 (23项)
+创建 models_admin.py 管理员模型
+创建管理员数据表
+创建 templates/admin/ 目录
+创建 admin_login.html 登录页面
+创建 admin_dashboard.html 总览页面
+创建 admin_users.html 用户管理页面
+创建 admin_memberships.html 会员管理页面
+创建 admin_orders.html 订单管理页面
+创建 static/css/admin.css 管理样式
+创建 static/js/admin.js 管理脚本
+添加 /admin/login 登录路由
+添加 /admin/dashboard 总览路由
+添加 /admin/users 用户管理API
+添加 /admin/memberships 会员管理API
+添加 /admin/orders 订单管理API
+实现管理员权限装饰器
+实现用户搜索和筛选
+实现用户禁用/启用功能
+实现会员手动开通
+实现订单退款处理
+实现数据导出功能
+实现统计图表API
+管理员操作日志记录

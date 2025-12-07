@@ -1,0 +1,94 @@
+/* ============================================================================
+   页面头部样式
+   ============================================================================ */
+
+.page-header {
+  margin-bottom: var(--spacing-2xl);
+}
+
+/* ========== 面包屑 ========== */
+.page-breadcrumb {
+  margin-bottom: var(--spacing-md);
+}
+
+.page-breadcrumb .ant-breadcrumb-link {
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+}
+
+.page-breadcrumb .ant-breadcrumb-link:hover {
+  color: var(--color-primary);
+}
+
+.page-breadcrumb .ant-breadcrumb-separator {
+  color: var(--text-disabled);
+}
+
+.breadcrumb-icon {
+  margin-right: 6px;
+}
+
+/* ========== 头部内容 ========== */
+.page-header-content {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* ========== 标题区域 ========== */
+.page-header-title-area {
+  flex: 1;
+}
+
+.page-title {
+  font-size: var(--font-size-3xl);
+  margin: 0 0 var(--spacing-sm) 0;
+  letter-spacing: 0.1em;
+}
+
+.page-subtitle {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* ========== 额外操作 ========== */
+.page-header-extra {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+/* ========== 装饰线 ========== */
+.page-header-divider {
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--color-primary),
+    var(--color-secondary),
+    transparent
+  );
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+  border-radius: var(--radius-full);
+}
+
+/* ========== 响应式 ========== */
+@media (max-width: 768px) {
+  .page-header-content {
+    flex-direction: column;
+  }
+
+  .page-title {
+    font-size: var(--font-size-2xl);
+  }
+
+  .page-header-extra {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+

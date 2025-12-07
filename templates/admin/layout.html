@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}管理后台{% endblock %} - EduPilot</title>
+    
+    <!-- CSS - 使用本地完整样式 -->
+    <link href="{{ url_for('static', filename='admin/vendor/bootstrap.min.css') }}" rel="stylesheet" onerror="this.onerror=null; this.href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'">
+    <link href="{{ url_for('static', filename='admin/vendor/fontawesome.min.css') }}" rel="stylesheet" onerror="this.onerror=null; this.href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'">
+    <link href="{{ url_for('static', filename='admin/css/admin.css') }}?v={{ timestamp }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='admin/css/dashboard.css') }}?v={{ timestamp }}" rel="stylesheet">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    {% if admin_context.is_logged_in %}
+    <!-- 顶部导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('admin_dashboard') }}">
+                <i class="fas fa-shield-alt"></i>
+                EduPilot 管理后台
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'admin_dashboard' %}active{% endif %}" 
+                           href="{{ url_for('admin_dashboard') }}">
+                            <i class="fas fa-dashboard"></i> 总览
+                        </a>
+                    </li>
+                    
+                    {% if admin_context.is_super_admin or 'user_view' in admin_context.permissions %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'admin_users' %}active{% endif %}" 
+                           href="{{ url_for('admin_users') }}">
+                            <i class="fas fa-users"></i> 用户管理
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    {% if admin_context.is_super_admin or 'membership_view' in admin_context.permissions %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'admin_memberships' %}active{% endif %}" 
+                           href="{{ url_for('admin_memberships') }}">
+                            <i class="fas fa-crown"></i> 会员管理
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    {% if admin_context.is_super_admin or 'order_view' in admin_context.permissions %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'admin_orders' %}active{% endif %}" 
+                           href="{{ url_for('admin_orders') }}">
+                            <i class="fas fa-shopping-cart"></i> 订单管理
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    {% if admin_context.is_super_admin or 'log_view' in admin_context.permissions %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'admin_logs' %}active{% endif %}" 
+                           href="{{ url_for('admin_logs') }}">
+                            <i class="fas fa-list"></i> 操作日志
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" 
+                           data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle"></i>
+                            {{ admin_context.admin.username }}
+                            {% if admin_context.is_super_admin %}
+                            <span class="badge bg-danger">超级管理员</span>
+                            {% elif admin_context.admin.role == 'readonly' %}
+                            <span class="badge bg-secondary">只读</span>
+                            {% endif %}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('admin_profile') }}">
+                                    <i class="fas fa-user"></i> 个人资料
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('admin_logout_page') }}">
+                                    <i class="fas fa-sign-out-alt"></i> 退出登录
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% endif %}
+    
+    <!-- 主内容区域 -->
+    <div class="{% if admin_context.is_logged_in %}container-fluid mt-4{% endif %}">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                    {% if category == 'success' %}
+                        <i class="fas fa-check-circle"></i>
+                    {% elif category == 'error' %}
+                        <i class="fas fa-exclamation-circle"></i>
+                    {% elif category == 'warning' %}
+                        <i class="fas fa-exclamation-triangle"></i>
+                    {% else %}
+                        <i class="fas fa-info-circle"></i>
+                    {% endif %}
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </div>
+    
+    <!-- 页脚 -->
+    {% if admin_context.is_logged_in %}
+    <footer class="footer mt-5 py-3 bg-light">
+        <div class="container-fluid text-center text-muted">
+            <small>
+                &copy; 2025 EduPilot AI教育协控系统 | 管理后台
+                {% if admin_context.admin.last_login_at %}
+                | 最后登录: {{ admin_context.admin.last_login_at }}
+                {% endif %}
+            </small>
+        </div>
+    </footer>
+    {% endif %}
+    
+    <!-- JavaScript - Bootstrap + jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='admin/js/admin.js') }}?v={{ timestamp }}"></script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
+

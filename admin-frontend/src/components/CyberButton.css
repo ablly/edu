@@ -1,0 +1,76 @@
+/* ============================================================================
+   科幻按钮样式
+   ============================================================================ */
+
+.cyber-button {
+  position: relative;
+  overflow: hidden;
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  background: rgba(0, 212, 255, 0.1);
+  color: var(--color-primary);
+  transition: all var(--transition-base);
+}
+
+.cyber-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.cyber-button:hover::before {
+  left: 100%;
+}
+
+.cyber-button:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.cyber-button-glow {
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+}
+
+.cyber-button-glow:hover {
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+}
+
+/* Primary按钮样式 */
+.cyber-button.ant-btn-primary {
+  background: var(--gradient-primary);
+  border: none;
+  color: var(--bg-main);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+}
+
+.cyber-button.ant-btn-primary:hover {
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+}
+
+/* Danger按钮样式 */
+.cyber-button.ant-btn-dangerous {
+  background: rgba(255, 51, 102, 0.1);
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+.cyber-button.ant-btn-dangerous:hover {
+  border-color: var(--color-danger);
+  box-shadow: 0 0 20px rgba(255, 51, 102, 0.5);
+}
+
+

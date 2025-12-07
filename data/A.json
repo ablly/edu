@@ -1,0 +1,683 @@
+{
+  "template_name": "A.pptx",
+  "slides": [
+    {
+      "slide_idx": 0,
+      "layout_name": "空白",
+      "shapes": [
+        {
+          "shape_idx": 1,
+          "name": "任意多边形 2",
+          "text": "",
+          "placeholder_type": null,
+          "position": {
+            "left": 6985,
+            "top": -3175,
+            "width": 12907010,
+            "height": 6861175
+          }
+        },
+        {
+          "shape_idx": 2,
+          "name": "任意多边形 13",
+          "text": "",
+          "placeholder_type": null,
+          "position": {
+            "left": -431800,
+            "top": -86995,
+            "width": 13017500,
+            "height": 7113270
+          }
+        },
+        {
+          "shape_idx": 3,
+          "name": "任意多边形 14",
+          "text": "",
+          "placeholder_type": null,
+          "position": {
+            "left": -913765,
+            "top": -188595,
+            "width": 13106400,
+            "height": 7303770
+          }
+        },
+        {
+          "shape_idx": 4,
+          "name": "矩形 7",
+          "text": "",
+          "placeholder_type": null,
+          "position": {
+            "left": -431800,
+            "top": -86995,
+            "width": 12616815,
+            "height": 7113270
+          }
+        },
+        {
+          "shape_idx": 6,
+          "name": "文本框 19",
+          "text": "第十四届“挑战杯”中国大学生创业计划竞赛\nThe 14th \"Challenge Cup\" Entrepreneurship Program Competition for Chinese University Students",
+          "placeholder_type": null,
+          "position": {
+            "left": 1206244,
+            "top": 126753,
+            "width": 6039596,
+            "height": 506730
+          }
+        },
+        {
+          "shape_idx": 7,
+          "name": "文本框 1",
+          "text": "核",
+          "placeholder_type": null,
+          "position": {
+            "left": 265457,
+            "top": 2157017,
+            "width": 1699171,
+            "height": 2246769
+          }
+        },
+        {
+          "shape_idx": 8,
+          "name": "文本框 3",
+          "text": "必",
+          "placeholder_type": null,
+          "position": {
+            "left": 2096961,
+            "top": 1429515,
+            "width": 2158371,
+            "height": 2246769
+          }
+        },
+        {
+          "shape_idx": 9,
+          "name": "文本框 4",
+          "text": "深",
+          "placeholder_type": null,
+          "position": {
+            "left": 3919824,
+            "top": 2085673,
+            "width": 1699171,
+            "height": 2246769
+          }
+        },
+        {
+          "shape_idx": 10,
+          "name": "文本框 5",
+          "text": "究",
+          "placeholder_type": null,
+          "position": {
+            "left": 5770777,
+            "top": 1513823,
+            "width": 2158371,
+            "height": 2246769
+          }
+        },
+        {
+          "shape_idx": 11,
+          "name": "文本框 6",
+          "text": "做高精度核辐射检测的新生力量",
+          "placeholder_type": null,
+          "position": {
+            "left": 265457,
+            "top": 4645421,
+            "width": 9805481,
+            "height": 769441
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 1,
+      "layout_name": "空白",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "矩形: 剪去左右顶角 22",
+          "text": "",
+          "placeholder_type": null,
+          "position": {
+            "left": 6126480,
+            "top": 5638799,
+            "width": 6050709,
+            "height": 1130301
+          }
+        },
+        {
+          "shape_idx": 1,
+          "name": "矩形: 剪去左右顶角 23",
+          "text": "",
+          "placeholder_type": null,
+          "position": {
+            "left": 6716191,
+            "top": 3329632,
+            "width": 4717915,
+            "height": 1638244
+          }
+        },
+        {
+          "shape_idx": 2,
+          "name": "矩形: 剪去左右顶角 21",
+          "text": "",
+          "placeholder_type": null,
+          "position": {
+            "left": 30480,
+            "top": 5587914,
+            "width": 5933071,
+            "height": 1181186
+          }
+        },
+        {
+          "shape_idx": 3,
+          "name": "矩形: 剪去左右顶角 20",
+          "text": "",
+          "placeholder_type": null,
+          "position": {
+            "left": 543296,
+            "top": 3230880,
+            "width": 4813218,
+            "height": 1736996
+          }
+        },
+        {
+          "shape_idx": 4,
+          "name": "矩形 5",
+          "text": "项目概述\nPROJECT OVERVIEW",
+          "placeholder_type": null,
+          "position": {
+            "left": 744736,
+            "top": 108536,
+            "width": 1620957,
+            "height": 630942
+          }
+        },
+        {
+          "shape_idx": 6,
+          "name": "矩形: 圆角 16",
+          "text": "02 行业领先，综合性能行业一流 ",
+          "placeholder_type": null,
+          "position": {
+            "left": 757354,
+            "top": 2811472,
+            "width": 4479321,
+            "height": 518160
+          }
+        },
+        {
+          "shape_idx": 7,
+          "name": "矩形: 圆角 17",
+          "text": "04 企业认可，使用反馈极佳",
+          "placeholder_type": null,
+          "position": {
+            "left": 383747,
+            "top": 5265782,
+            "width": 5162143,
+            "height": 518160
+          }
+        },
+        {
+          "shape_idx": 8,
+          "name": "矩形: 圆角 18",
+          "text": "05 军民融合 ，助力核安全强国建设",
+          "placeholder_type": null,
+          "position": {
+            "left": 6587829,
+            "top": 5265782,
+            "width": 5008770,
+            "height": 518160
+          }
+        },
+        {
+          "shape_idx": 9,
+          "name": "矩形: 圆角 19",
+          "text": "03 市场破局，与10余家企业达成合作",
+          "placeholder_type": null,
+          "position": {
+            "left": 6835487,
+            "top": 2811472,
+            "width": 4479321,
+            "height": 518160
+          }
+        },
+        {
+          "shape_idx": 10,
+          "name": "矩形: 剪去左右顶角 28",
+          "text": "",
+          "placeholder_type": null,
+          "position": {
+            "left": 3276408,
+            "top": 1027840,
+            "width": 5531733,
+            "height": 1611984
+          }
+        },
+        {
+          "shape_idx": 11,
+          "name": "矩形: 圆角 29",
+          "text": "01 已成立安徽臻锦科技有限公司",
+          "placeholder_type": null,
+          "position": {
+            "left": 3886819,
+            "top": 650146,
+            "width": 4479321,
+            "height": 518160
+          }
+        },
+        {
+          "shape_idx": 12,
+          "name": "矩形: 圆角 31",
+          "text": "",
+          "placeholder_type": null,
+          "position": {
+            "left": 360502,
+            "top": 904088,
+            "width": 2740453,
+            "height": 1708084
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 2,
+      "layout_name": "空白",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "矩形: 剪去左右顶角 22",
+          "text": "",
+          "placeholder_type": null,
+          "position": {
+            "left": 6126480,
+            "top": 5638799,
+            "width": 6050709,
+            "height": 1130301
+          }
+        },
+        {
+          "shape_idx": 1,
+          "name": "矩形: 剪去左右顶角 23",
+          "text": "。",
+          "placeholder_type": null,
+          "position": {
+            "left": 6716191,
+            "top": 3329632,
+            "width": 4717915,
+            "height": 1638244
+          }
+        },
+        {
+          "shape_idx": 2,
+          "name": "矩形: 剪去左右顶角 21",
+          "text": "",
+          "placeholder_type": null,
+          "position": {
+            "left": 30480,
+            "top": 5587914,
+            "width": 5933071,
+            "height": 1181186
+          }
+        },
+        {
+          "shape_idx": 3,
+          "name": "矩形: 剪去左右顶角 20",
+          "text": "",
+          "placeholder_type": null,
+          "position": {
+            "left": 698236,
+            "top": 3397885,
+            "width": 4813218,
+            "height": 1736996
+          }
+        },
+        {
+          "shape_idx": 4,
+          "name": "矩形 5",
+          "text": "未来蓝图PROJECT OVERVIEW",
+          "placeholder_type": null,
+          "position": {
+            "left": 877035,
+            "top": 108536,
+            "width": 2523490,
+            "height": 521970
+          }
+        },
+        {
+          "shape_idx": 6,
+          "name": "矩形: 圆角 16",
+          "text": "02  培养技术人才",
+          "placeholder_type": null,
+          "position": {
+            "left": 757354,
+            "top": 2811472,
+            "width": 4479321,
+            "height": 518160
+          }
+        },
+        {
+          "shape_idx": 7,
+          "name": "矩形: 圆角 17",
+          "text": "04  打通上下游产业链",
+          "placeholder_type": null,
+          "position": {
+            "left": 383747,
+            "top": 5265782,
+            "width": 5162143,
+            "height": 518160
+          }
+        },
+        {
+          "shape_idx": 8,
+          "name": "矩形: 圆角 18",
+          "text": "05 打开国际市场",
+          "placeholder_type": null,
+          "position": {
+            "left": 6587829,
+            "top": 5265782,
+            "width": 5008770,
+            "height": 518160
+          }
+        },
+        {
+          "shape_idx": 9,
+          "name": "矩形: 圆角 19",
+          "text": "03 市场破局，启动A轮融资",
+          "placeholder_type": null,
+          "position": {
+            "left": 6835487,
+            "top": 2811472,
+            "width": 4479321,
+            "height": 518160
+          }
+        },
+        {
+          "shape_idx": 10,
+          "name": "矩形: 剪去左右顶角 28",
+          "text": "",
+          "placeholder_type": null,
+          "position": {
+            "left": 3276408,
+            "top": 1027840,
+            "width": 5531733,
+            "height": 1611984
+          }
+        },
+        {
+          "shape_idx": 11,
+          "name": "矩形: 圆角 29",
+          "text": "01 研发便携化电离室 ",
+          "placeholder_type": null,
+          "position": {
+            "left": 3886819,
+            "top": 650146,
+            "width": 4479321,
+            "height": 518160
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 3,
+      "layout_name": "空白",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "矩形: 圆角 1",
+          "text": "研发高精度核辐射检测仪迫在眉睫",
+          "placeholder_type": null,
+          "position": {
+            "left": 3277385,
+            "top": 102787,
+            "width": 5637229,
+            "height": 630497
+          }
+        },
+        {
+          "shape_idx": 1,
+          "name": "矩形: 圆角 3",
+          "text": "",
+          "placeholder_type": null,
+          "position": {
+            "left": 173835,
+            "top": 4791549,
+            "width": 11789923,
+            "height": 1890475
+          }
+        },
+        {
+          "shape_idx": 2,
+          "name": "矩形: 圆角 4",
+          "text": "",
+          "placeholder_type": null,
+          "position": {
+            "left": 173835,
+            "top": 985323,
+            "width": 11789923,
+            "height": 1890476
+          }
+        },
+        {
+          "shape_idx": 3,
+          "name": "矩形 5",
+          "text": "项目背景\nPROJECT BACKGROUND",
+          "placeholder_type": null,
+          "position": {
+            "left": 744735,
+            "top": 108536,
+            "width": 1620957,
+            "height": 630942
+          }
+        },
+        {
+          "shape_idx": 5,
+          "name": "矩形: 圆角 54",
+          "text": "日本排放核废水",
+          "placeholder_type": null,
+          "position": {
+            "left": 1358510,
+            "top": 1155456,
+            "width": 1918865,
+            "height": 369055
+          }
+        },
+        {
+          "shape_idx": 6,
+          "name": "矩形: 圆角 56",
+          "text": "沿海城市忧虑",
+          "placeholder_type": null,
+          "position": {
+            "left": 8834080,
+            "top": 4884935,
+            "width": 1918865,
+            "height": 369055
+          }
+        },
+        {
+          "shape_idx": 7,
+          "name": "矩形: 圆角 65",
+          "text": "大理石核辐射",
+          "placeholder_type": null,
+          "position": {
+            "left": 8582131,
+            "top": 1210155,
+            "width": 2084449,
+            "height": 369055
+          }
+        },
+        {
+          "shape_idx": 8,
+          "name": "矩形: 圆角 69",
+          "text": "海鲜安全",
+          "placeholder_type": null,
+          "position": {
+            "left": 4580851,
+            "top": 1155738,
+            "width": 1850941,
+            "height": 369055
+          }
+        },
+        {
+          "shape_idx": 9,
+          "name": "矩形: 圆角 9",
+          "text": "衣物核辐射超标",
+          "placeholder_type": null,
+          "position": {
+            "left": 4898879,
+            "top": 4949851,
+            "width": 1918865,
+            "height": 369055
+          }
+        },
+        {
+          "shape_idx": 10,
+          "name": "矩形: 圆角 56",
+          "text": "政策",
+          "placeholder_type": null,
+          "position": {
+            "left": 1442680,
+            "top": 4884935,
+            "width": 1918865,
+            "height": 369055
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 4,
+      "layout_name": "空白",
+      "shapes": [
+        {
+          "shape_idx": 2,
+          "name": "平行四边形 3",
+          "text": "",
+          "placeholder_type": null,
+          "position": {
+            "left": -1680845,
+            "top": 0,
+            "width": 8684895,
+            "height": 6858000
+          }
+        },
+        {
+          "shape_idx": 3,
+          "name": "文本框 1",
+          "text": "第十四届“挑战杯”中国大学生创业计划竞赛\nThe 14th \"Challenge Cup\" Entrepreneurship Program Competition for Chinese University Students",
+          "placeholder_type": null,
+          "position": {
+            "left": 1163699,
+            "top": 293758,
+            "width": 6039596,
+            "height": 506730
+          }
+        },
+        {
+          "shape_idx": 5,
+          "name": "文本框 9",
+          "text": "",
+          "placeholder_type": null,
+          "position": {
+            "left": 5302250,
+            "top": 2785730,
+            "width": 5358662,
+            "height": 694661
+          }
+        },
+        {
+          "shape_idx": 6,
+          "name": "矩形 7",
+          "text": "",
+          "placeholder_type": null,
+          "position": {
+            "left": 0,
+            "top": 4257675,
+            "width": 12192635,
+            "height": 2702560
+          }
+        },
+        {
+          "shape_idx": 7,
+          "name": "文本框 14",
+          "text": "为人类的健康幸福\n   提供安全保障",
+          "placeholder_type": null,
+          "position": {
+            "left": 890270,
+            "top": 4639945,
+            "width": 5083810,
+            "height": 1198880
+          }
+        },
+        {
+          "shape_idx": 8,
+          "name": "文本框 13",
+          "text": "为核辐射检测发展\n注入青春活力",
+          "placeholder_type": null,
+          "position": {
+            "left": 6816090,
+            "top": 4639310,
+            "width": 5148580,
+            "height": 1200329
+          }
+        },
+        {
+          "shape_idx": 9,
+          "name": "文本框 5",
+          "text": "核",
+          "placeholder_type": null,
+          "position": {
+            "left": 2256817,
+            "top": 1390099,
+            "width": 1699171,
+            "height": 2246769
+          }
+        },
+        {
+          "shape_idx": 10,
+          "name": "文本框 8",
+          "text": "必",
+          "placeholder_type": null,
+          "position": {
+            "left": 4088321,
+            "top": 662597,
+            "width": 2158371,
+            "height": 2246769
+          }
+        },
+        {
+          "shape_idx": 11,
+          "name": "文本框 11",
+          "text": "深",
+          "placeholder_type": null,
+          "position": {
+            "left": 5911184,
+            "top": 1318755,
+            "width": 1699171,
+            "height": 2246769
+          }
+        },
+        {
+          "shape_idx": 12,
+          "name": "文本框 15",
+          "text": "究",
+          "placeholder_type": null,
+          "position": {
+            "left": 7762137,
+            "top": 746905,
+            "width": 2158371,
+            "height": 2246769
+          }
+        },
+        {
+          "shape_idx": 13,
+          "name": "文本框 16",
+          "text": "做高精度核辐射检测的新生力量",
+          "placeholder_type": null,
+          "position": {
+            "left": 2227638,
+            "top": 3706242,
+            "width": 9805481,
+            "height": 769441
+          }
+        }
+      ]
+    }
+  ]
+}

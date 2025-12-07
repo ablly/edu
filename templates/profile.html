@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人中心 - EduPilot AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar_user.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <a href="{{ url_for('index') }}" class="navbar-brand">EduPilot</a>
+            
+            <button class="navbar-toggle" id="navbarToggle" aria-label="切换导航菜单">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <nav class="navbar-nav" id="navbarNav" role="navigation">
+                <a href="{{ url_for('index') }}" class="nav-link">首页</a>
+                <a href="{{ url_for('students_page') }}" class="nav-link">学生管理</a>
+                <a href="{{ url_for('ai_ask_page') }}" class="nav-link">AI答疑</a>
+                <a href="{{ url_for('auxiliary_programming_page') }}" class="nav-link">辅助编程</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main class="profile-container">
+        <!-- 页面标题 -->
+        <div class="profile-header">
+            <div class="header-content">
+                <h1 class="page-title">
+                    <i class="fas fa-user-circle"></i> 个人中心
+                </h1>
+                <p class="page-subtitle">管理您的账户信息和使用数据</p>
+            </div>
+        </div>
+
+        <!-- 内容区域 -->
+        <div class="profile-content">
+            <!-- 侧边栏 -->
+            <aside class="profile-sidebar">
+                <div class="sidebar-menu">
+                    <button class="menu-item active" data-tab="info">
+                        <i class="fas fa-user"></i> 基本信息
+                    </button>
+                    <button class="menu-item" data-tab="membership">
+                        <i class="fas fa-crown"></i> 会员状态
+                    </button>
+                    <button class="menu-item" data-tab="usage">
+                        <i class="fas fa-chart-bar"></i> 使用统计
+                    </button>
+                    <button class="menu-item" data-tab="security">
+                        <i class="fas fa-shield-alt"></i> 账户安全
+                    </button>
+                </div>
+            </aside>
+
+            <!-- 主要内容 -->
+            <div class="profile-main">
+                <!-- 加载中 -->
+                <div class="loading-container" id="loadingContainer">
+                    <div class="spinner"></div>
+                    <p>加载中...</p>
+                </div>
+
+                <!-- 基本信息 -->
+                <div class="tab-content active" id="infoTab">
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-user"></i> 基本信息
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <label>用户名</label>
+                                    <div class="info-value" id="username">-</div>
+                                </div>
+                                <div class="info-item">
+                                    <label>邮箱</label>
+                                    <div class="info-value" id="email">-</div>
+                                </div>
+                                <div class="info-item">
+                                    <label>注册时间</label>
+                                    <div class="info-value" id="createdAt">-</div>
+                                </div>
+                                <div class="info-item">
+                                    <label>账户状态</label>
+                                    <div class="info-value">
+                                        <span class="status-badge active">正常</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 会员状态 -->
+                <div class="tab-content" id="membershipTab">
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-crown"></i> 会员状态
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="membership-info" id="membershipInfo">
+                                <!-- 动态加载 -->
+                            </div>
+                            <div class="action-buttons">
+                                <a href="/" class="btn btn-primary">
+                                    <i class="fas fa-arrow-up"></i> 升级会员
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 使用统计 -->
+                <div class="tab-content" id="usageTab">
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-chart-bar"></i> 使用统计
+                            </h2>
+                            <div class="period-tabs">
+                                <button class="period-tab active" data-period="daily">今日</button>
+                                <button class="period-tab" data-period="weekly">本周</button>
+                                <button class="period-tab" data-period="monthly">本月</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="stats-grid" id="statsGrid">
+                                <!-- 动态加载 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 账户安全 -->
+                <div class="tab-content" id="securityTab">
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-shield-alt"></i> 账户安全
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="security-section">
+                                <div class="security-item">
+                                    <div class="security-info">
+                                        <i class="fas fa-key"></i>
+                                        <div>
+                                            <h3>修改密码</h3>
+                                            <p>定期更换密码以保护账户安全</p>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-outline" onclick="profileManager.showPasswordModal()">
+                                        修改密码
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 修改密码弹窗 -->
+    <div class="modal" id="passwordModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>修改密码</h3>
+                <button class="modal-close" onclick="profileManager.hidePasswordModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="passwordForm">
+                    <div class="form-group">
+                        <label>当前密码</label>
+                        <input type="password" id="currentPassword" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>新密码</label>
+                        <input type="password" id="newPassword" class="form-control" required minlength="6">
+                        <small>密码长度至少6位</small>
+                    </div>
+                    <div class="form-group">
+                        <label>确认新密码</label>
+                        <input type="password" id="confirmPassword" class="form-control" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="profileManager.hidePasswordModal()">
+                            取消
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            确认修改
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast通知 -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="{{ url_for('static', filename='js/navbar.js') }}?v=20251005a"></script>
+    <script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+</body>
+</html>
+
+

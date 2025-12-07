@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPilot - 多智能体教育协控平台</title>
+    <meta name="description" content="EduPilot是一个基于多智能体协同的教育协控平台，提供智能作业批改、AI答疑、视频总结等功能">
+    <meta name="keywords" content="教育平台,AI教育,智能批改,多智能体,教学管理">
+    <link rel="stylesheet" href="/static/css/base.css?v=20251005f">
+    <link rel="stylesheet" href="/static/css/components.css?v=20251005f">
+    <link rel="stylesheet" href="/static/css/ai-components.css?v=20251005f">
+    <link rel="stylesheet" href="/static/css/index.css?v=20251005f">
+    <link rel="stylesheet" href="/static/css/navbar_user.css?v=20251005f">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    {% include 'navbar_template.html' %}
+    <main>
+        <div class="ai-hero-section">
+            <div class="ai-hero-background"></div>
+            <div class="ai-hero-content animate-slide-up">
+                <!-- AI特性轮播 -->
+                <div class="ai-features-carousel">
+                    <div class="ai-feature-badge animate-ai-float">
+                       
+                        <span class="ai-badge-text">多智能体协同架构</span>
+                    </div>
+                    <div class="ai-feature-badge animate-ai-float" style="animation-delay: 0.5s;">
+                        
+                        <span class="ai-badge-text">智能化数据处理</span>
+                    </div>
+                    <div class="ai-feature-badge animate-ai-float" style="animation-delay: 1s;">
+                        
+                        <span class="ai-badge-text">个性化学习体验</span>
+                    </div>
+                </div>
+                
+                <!-- 主标题 -->
+                <h1 class="ai-hero-title">
+                    <span class="ai-title-main">EduPilot</span>
+                    <span class="ai-title-gradient">智能教育协控平台</span>
+                </h1>
+                
+                <!-- 副标题 -->
+                <p class="ai-hero-subtitle">
+                    基于多智能体协同的下一代教育平台，提供智能化的教学管理、AI答疑、自动批改等功能
+                </p>
+                
+                <!-- 核心特性 */
+                <div class="ai-core-features">
+                    <div class="ai-feature-tag">🧠 智能AI助教</div>
+                    <div class="ai-feature-tag">📊 数据驱动分析</div>
+                    <div class="ai-feature-tag">🎨 个性化学习</div>
+                    <div class="ai-feature-tag">⚡ 实时协同</div>
+                </div>
+                
+                <!-- 行动按钮 -->
+                <div class="ai-hero-actions">
+                    <a href="{{ url_for('students_page') }}" class="btn-ai-primary animate-ai-glow">
+                        <span>开始智能教学</span>
+                        <span class="btn-icon">→</span>
+                    </a>
+                    <a href="{{ url_for('ai_ask_page') }}" class="btn-ai-outline">
+                        <span>体验AI答疑</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- AI智能功能导航 -->
+        <div class="ai-capabilities-nav">
+            <div class="ai-nav-item animate-slide-right" style="animation-delay: 0.2s;">
+                
+                <div class="ai-nav-content">
+                    <div class="ai-nav-title">多智能体协同</div>
+                    <div class="ai-nav-desc">智能分工协作</div>
+                </div>
+            </div>
+            <div class="ai-nav-item animate-slide-right" style="animation-delay: 0.4s;">
+               
+                <div class="ai-nav-content">
+                    <div class="ai-nav-title">智能批改</div>
+                    <div class="ai-nav-desc">自动评估反馈</div>
+                </div>
+            </div>
+            <div class="ai-nav-item animate-slide-right" style="animation-delay: 0.6s;">
+                
+                <div class="ai-nav-content">
+                    <div class="ai-nav-title">内容生成</div>
+                    <div class="ai-nav-desc">一键创建教材</div>
+                </div>
+            </div>
+            <div class="ai-nav-item animate-slide-right" style="animation-delay: 0.8s;">
+               
+                <div class="ai-nav-content">
+                    <div class="ai-nav-title">AI答疑</div>
+                    <div class="ai-nav-desc">智能对话助教</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 💎 会员定价板块 - 显示在AI功能导航下方 -->
+        <section class="membership-pricing" id="membership-section" style="padding: 60px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: block !important; margin-top: 40px;">
+            <div class="pricing-container" style="max-width: 1200px; margin: 0 auto; position: relative; z-index: 1;">
+                <div class="pricing-header" style="text-align: center; margin-bottom: 60px; color: white;">
+                    <h2 class="pricing-title" style="font-size: 48px; font-weight: 700; margin-bottom: 16px;">
+                        <span class="title-icon" style="font-size: 56px;">💎</span>
+                        选择适合您的会员方案
+                    </h2>
+                    <p class="pricing-subtitle" style="font-size: 20px; opacity: 0.9;">解锁更多强大功能，提升教学效率</p>
+                </div>
+                
+                <div class="pricing-cards" id="pricingCards" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 40px;">
+                    <!-- 会员卡片将通过JavaScript动态加载 -->
+                    <div class="pricing-loading" style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: white;">
+                        <div class="spinner" style="border: 4px solid rgba(255, 255, 255, 0.3); border-top: 4px solid white; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+                        <p style="font-size: 18px;">正在加载会员方案...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- AI平台能力展示 -->
+    <section class="ai-platform-capabilities">
+        <div class="container">
+            <h2 class="ai-section-title">
+                
+                <span>EduPilot AI教育能力</span>
+            </h2>
+            <!-- AI功能卡片网格 -->
+            <div class="ai-features-grid">
+                <!-- 多智能体协同 -->
+                <div class="ai-feature-card interactive-hover">
+                   
+                    <h3 class="ai-feature-title">多智能体协同架构</h3>
+                    <p class="ai-feature-description">
+                        EduPilot采用多智能体协同，任务分解并行处理，知识共享协作，提升教学效率与灵活性
+                    </p>
+                    <div class="ai-feature-highlights">
+                        <div class="ai-highlight-item"> 任务智能分解</div>
+                        <div class="ai-highlight-item"> 并行协作处理</div>
+                        <div class="ai-highlight-item"> 知识共享学习</div>
+                    </div>
+                    <div class="ai-feature-stats">
+                        <div class="ai-stat">
+                            <span class="ai-stat-value">5+</span>
+                            <span class="ai-stat-label">智能体协同</span>
+                        </div>
+                        <div class="ai-stat">
+                            <span class="ai-stat-value">3x</span>
+                            <span class="ai-stat-label">效率提升</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 强大的AI处理能力 -->
+                <div class="ai-feature-card interactive-hover">
+                    
+                    <h3 class="ai-feature-title">强大的AI处理能力</h3>
+                    <p class="ai-feature-description">
+                        集成AI联动技术，实现智能作业批改与个性化辅导，精准高效，助力学生学习与成长
+                    </p>
+                    <div class="ai-feature-highlights">
+                        <div class="ai-highlight-item"> 智能作业批改</div>
+                        <div class="ai-highlight-item"> 个性化学习辅导</div>
+                        <div class="ai-highlight-item"> 学习效果分析</div>
+                    </div>
+                    
+                    <div class="ai-feature-stats">
+                        <div class="ai-stat">
+                            <span class="ai-stat-value">95%</span>
+                            <span class="ai-stat-label">准确率</span>
+                        </div>
+                        <div class="ai-stat">
+                            <span class="ai-stat-value">10x</span>
+                            <span class="ai-stat-label">处理速度</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 数据处理与可视化 -->
+                <div class="ai-feature-card interactive-hover">
+                    
+                    <h3 class="ai-feature-title">高效的数据处理与可视化</h3>
+                    <p class="ai-feature-description">
+                        多智能体收集分析学生数据，学情可视化展示，成绩查询分析直观，优化教学策略
+                    </p>
+                    <div class="ai-feature-highlights">
+                        <div class="ai-highlight-item"> 学情可视化分析</div>
+                        <div class="ai-highlight-item"> 成绩查询与分析</div>
+                        <div class="ai-highlight-item"> 教学策略优化</div>
+                    </div>
+                   
+                    <div class="ai-feature-stats">
+                        <div class="ai-stat">
+                            <span class="ai-stat-value">100+</span>
+                            <span class="ai-stat-label">数据维度</span>
+                        </div>
+                        <div class="ai-stat">
+                            <span class="ai-stat-value">实时</span>
+                            <span class="ai-stat-label">数据更新</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 系统扩展与部署 -->
+                <div class="ai-feature-card interactive-hover">
+                    
+                    <h3 class="ai-feature-title">灵活的系统扩展与部署</h3>
+                    <p class="ai-feature-description">
+                        模块化设计支持功能扩展，容器化部署灵活稳定，适应不同规模教学需求，保障高效运行
+                    </p>
+                    <div class="ai-feature-highlights">
+                        <div class="ai-highlight-item"> 模块化设计</div>
+                        <div class="ai-highlight-item"> 容器化部署</div>
+                        <div class="ai-highlight-item"> 弹性扩容</div>
+                    </div>
+                    
+                    <div class="ai-feature-stats">
+                        <div class="ai-stat">
+                            <span class="ai-stat-value">99.9%</span>
+                            <span class="ai-stat-label">可用性</span>
+                        </div>
+                        <div class="ai-stat">
+                            <span class="ai-stat-value">秒级</span>
+                            <span class="ai-stat-label">部署速度</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI技术创新展示 -->
+    <section class="ai-innovation-showcase">
+        <div class="container">
+            <h2 class="ai-section-title">
+               
+                <span>EduPilot AI技术创新</span>
+            </h2>
+            
+            <!-- 创新技术导航 -->
+            <div class="ai-tech-navigation">
+                <button class="ai-tech-nav-btn active" data-tech="context">
+                   
+                    <span>上下文理解</span>
+                </button>
+                <button class="ai-tech-nav-btn" data-tech="prompt">
+                    
+                    <span>提示词工程</span>
+                </button>
+                <button class="ai-tech-nav-btn" data-tech="temperature">
+                  
+                    <span>温度参数</span>
+                </button>
+                <button class="ai-tech-nav-btn" data-tech="interaction">
+                    
+                    <span>AI交互赋能</span>
+                </button>
+                <button class="ai-tech-nav-btn" data-tech="collaboration">
+                    
+                    <span>协同作业</span>
+                </button>
+            </div>
+
+            <!-- 技术详情展示 -->
+            <div class="ai-tech-details">
+                <!-- 上下文理解机制 -->
+                <div class="ai-tech-panel active" id="context">
+                    <div class="ai-tech-content">
+                        <div class="ai-tech-info">
+                            <h3 class="ai-tech-title">多智能体上下文理解机制</h3>
+                            <div class="ai-tech-features">
+                                <div class="ai-tech-feature">
+                                   
+                                    <div class="feature-text">动态角色分配</div>
+                                </div>
+                                <div class="ai-tech-feature">
+                                    
+                                    <div class="feature-text">跨模态协同</div>
+                                </div>
+                                <div class="ai-tech-feature">
+                                    
+                                    <div class="feature-text">冗余容错机制</div>
+                                </div>
+                                <div class="ai-tech-feature">
+                                   
+                                    <div class="feature-text">知识共享进化</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <!-- 提示词工程技术 -->
+                <div class="ai-tech-panel" id="prompt">
+                    <div class="ai-tech-content">
+                        <div class="ai-tech-info">
+                            <h3 class="ai-tech-title">智能体提示词工程技术</h3>
+                            <div class="ai-tech-features">
+                                <div class="ai-tech-feature">
+                               
+                                    <div class="feature-text">任务要素锚定</div>
+                                </div>
+                                <div class="ai-tech-feature">
+                              
+                                    <div class="feature-text">流程结构化分解</div>
+                                </div>
+                                <div class="ai-tech-feature">
+                                  
+                                    <div class="feature-text">输出格式标准化</div>
+                                </div>
+                                <div class="ai-tech-feature">
+                                    
+                                    <div class="feature-text">链式思维引导</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ai-tech-visual">
+                            <div class="ai-prompt-animation">
+                                <div class="prompt-flow">
+                                    <div class="prompt-step active">输入</div>
+                                    <div class="prompt-arrow">→</div>
+                                    <div class="prompt-step">处理</div>
+                                    <div class="prompt-arrow">→</div>
+                                    <div class="prompt-step">输出</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 温度参数分层设计 -->
+                <div class="ai-tech-panel" id="temperature">
+                    <div class="ai-tech-content">
+                        <div class="ai-tech-info">
+                            <h3 class="ai-tech-title">温度参数分层设计</h3>
+                            <div class="ai-tech-features">
+                                <div class="ai-tech-feature">
+                                    
+                                    <div class="feature-text">精确控制层</div>
+                                </div>
+                                <div class="ai-tech-feature">
+                                    
+                                    <div class="feature-text">平衡探索层</div>
+                                </div>
+                                <div class="ai-tech-feature">
+                                    
+                                    <div class="feature-text">创新突破层</div>
+                                </div>
+                                <div class="ai-tech-feature">
+                                    
+                                    <div class="feature-text">自适应调节</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ai-tech-visual">
+                            <div class="ai-temperature-animation">
+                                <div class="temperature-gauge">
+                                    <div class="gauge-fill" style="height: 70%"></div>
+                                    <div class="gauge-label">0.7</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI交互赋能 -->
+                <div class="ai-tech-panel" id="interaction">
+                    <div class="ai-tech-content">
+                        <div class="ai-tech-info">
+                            <h3 class="ai-tech-title">AI交互赋能</h3>
+                            <div class="ai-tech-features">
+                                <div class="ai-tech-feature">
+                                   
+                                    <div class="feature-text">实时对话系统</div>
+                                </div>
+                                <div class="ai-tech-feature">
+                                   
+                                    <div class="feature-text">多轮对话记忆</div>
+                                </div>
+                                <div class="ai-tech-feature">
+                                    
+                                    <div class="feature-text">个性化推荐</div>
+                                </div>
+                                <div class="ai-tech-feature">
+                                    
+                                    <div class="feature-text">智能反馈机制</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ai-tech-visual">
+                            <div class="ai-interaction-animation">
+                                <div class="interaction-bubble user">你好</div>
+                                <div class="interaction-bubble ai">你好！我是AI助教</div>
+                                <div class="interaction-typing">AI正在思考...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 多智能体协同作业 -->
+                <div class="ai-tech-panel" id="collaboration">
+                    <div class="ai-tech-content">
+                        <div class="ai-tech-info">
+                            <h3 class="ai-tech-title">多智能体协同作业</h3>
+                            <div class="ai-tech-features">
+                                <div class="ai-tech-feature">
+                                   
+                                    <div class="feature-text">任务分解协调</div>
+                                </div>
+                                <div class="ai-tech-feature">
+                                   
+                                    <div class="feature-text">并行处理优化</div>
+                                </div>
+                                <div class="ai-tech-feature">
+                                    
+                                    <div class="feature-text">结果融合集成</div>
+                                </div>
+                                <div class="ai-tech-feature">
+                                    
+                                    <div class="feature-text">质量监控评估</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ai-tech-visual">
+                            <div class="ai-collaboration-animation">
+                                <div class="collab-agent agent-1">A1</div>
+                                <div class="collab-agent agent-2">A2</div>
+                                <div class="collab-agent agent-3">A3</div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI教育平台底部 -->
+    <footer class="ai-footer">
+        <div class="container">
+            <div class="ai-footer-content">
+                <div class="ai-footer-section">
+                    <h3 class="ai-footer-title">EduPilot</h3>
+                    <p class="ai-footer-desc">基于多智能体协同的下一代AI教育平台</p>
+                    
+                </div>
+                
+                <div class="ai-footer-section">
+                    <h4 class="ai-footer-subtitle">核心功能</h4>
+                    <div class="ai-footer-links">
+                        <a href="{{ url_for('students_page') }}" class="ai-footer-link">学生管理</a>
+                        <a href="{{ url_for('ai_ask_page') }}" class="ai-footer-link">AI答疑</a>
+                        <a href="{{ url_for('submit_page') }}" class="ai-footer-link">作业提交</a>
+                        <a href="{{ url_for('scores_page') }}" class="ai-footer-link">成绩查询</a>
+                    </div>
+                </div>
+                
+                <div class="ai-footer-section">
+                    <h4 class="ai-footer-subtitle">智能工具</h4>
+                    <div class="ai-footer-links">
+                        <a href="{{ url_for('auxiliary_programming_page') }}" class="ai-footer-link">辅助编程</a>
+                        <a href="{{ url_for('video_summary_page') }}" class="ai-footer-link">视频总结</a>
+                        <a href="{{ url_for('generate_question_page') }}" class="ai-footer-link">智能出题</a>
+                        <a href="{{ url_for('generate_lecture_page') }}" class="ai-footer-link">智能讲义</a>
+                    </div>
+                </div>
+                
+                <div class="ai-footer-section">
+                    <h4 class="ai-footer-subtitle">技术支持</h4>
+                    <div class="ai-footer-tech">
+                        <div class="tech-badge">多智能体协同</div>
+                        <div class="tech-badge">AI深度学习</div>
+                        <div class="tech-badge">智能化处理</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ai-footer-bottom">
+                <div class="ai-footer-copyright">
+                    <p>&copy; 2025 EduPilot AI教育协控平台</p>
+                </div>
+                <div class="ai-footer-stats">
+                    <div class="footer-stat">
+                        <span class="stat-value">5+</span>
+                        <span class="stat-label">智能体</span>
+                    </div>
+                    <div class="footer-stat">
+                        <span class="stat-value">10+</span>
+                        <span class="stat-label">AI功能</span>
+                    </div>
+                    <div class="footer-stat">
+                        <span class="stat-value">99.9%</span>
+                        <span class="stat-label">可用性</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/common.js') }}?v=20251010b"></script>
+    <script src="{{ url_for('static', filename='js/index.js') }}?v=20251010b"></script>
+    <script src="{{ url_for('static', filename='js/navbar.js') }}?v=20251010b"></script>
+    <script src="{{ url_for('static', filename='js/membership.js') }}?v=20251010b"></script>
+
+</body>
+</html>

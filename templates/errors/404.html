@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - 页面未找到 | EduPilot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/error.css') }}?v=1.0.0">
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-content">
+            <div class="error-code">404</div>
+            <h1 class="error-title">页面未找到</h1>
+            <p class="error-message">
+                抱歉，您访问的页面不存在或已被移除。
+            </p>
+            <div class="error-suggestions">
+                <h3>您可以尝试：</h3>
+                <ul>
+                    <li>检查URL地址是否正确</li>
+                    <li>返回首页重新导航</li>
+                    <li>使用搜索功能查找内容</li>
+                </ul>
+            </div>
+            <div class="error-actions">
+                <a href="/" class="btn btn-primary">返回首页</a>
+                <a href="javascript:history.back()" class="btn btn-secondary">返回上一页</a>
+            </div>
+        </div>
+        <div class="error-illustration">
+            <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="200" cy="150" r="100" fill="#e3f2fd" opacity="0.5"/>
+                <path d="M150 120 Q200 80 250 120" stroke="#5e72e4" stroke-width="4" fill="none"/>
+                <circle cx="170" cy="140" r="8" fill="#5e72e4"/>
+                <circle cx="230" cy="140" r="8" fill="#5e72e4"/>
+                <path d="M170 180 Q200 200 230 180" stroke="#5e72e4" stroke-width="4" fill="none"/>
+            </svg>
+        </div>
+    </div>
+</body>
+</html>

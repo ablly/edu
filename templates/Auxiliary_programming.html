@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="辅助编程页面">
+    <title>辅助编程 - EduPilot多智能体教育协控平台</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar_user.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Auxiliary_programming.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css">
+    <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>
+</head>
+<body class="programming-page">
+    <div class="container">
+        <!-- 导航栏 -->
+        <header class="navbar">
+        <div class="navbar-container">
+            <a href="{{ url_for('index') }}" class="navbar-brand">EduPilot</a>
+            
+            <button class="navbar-toggle" id="navbarToggle" aria-label="切换导航菜单">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <nav class="navbar-nav" id="navbarNav" role="navigation">
+                <a href="{{ url_for('index') }}" class="nav-link" data-page="index">首页</a>
+                <a href="{{ url_for('students_page') }}" class="nav-link" data-page="students">学生管理</a>
+                <a href="{{ url_for('submit_page') }}" class="nav-link" data-page="submit">作业提交</a>
+                <a href="{{ url_for('scores_page') }}" class="nav-link" data-page="scores">成绩查询</a>
+                <a href="{{ url_for('ai_ask_page') }}" class="nav-link" data-page="ai_ask">AI答疑</a>
+                <a href="{{ url_for('auxiliary_programming_page') }}" class="nav-link" data-page="auxiliary">辅助编程</a>
+                <a href="{{ url_for('video_summary_page') }}" class="nav-link" data-page="video">视频总结</a>
+                <a href="{{ url_for('generate_question_page') }}" class="nav-link" data-page="question">智能出题</a>
+                <a href="{{ url_for('generate_lecture_page') }}" class="nav-link" data-page="lecture">智能讲义</a>
+                <a href="{{ url_for('progress_chart') }}" class="nav-link" data-page="progress">成绩分析</a>
+            </nav>
+        </div>
+    </header>
+
+        <main class="main-content">
+            <div class="programming-container">
+                <h2 class="page-title">AI辅助编程</h2>
+                
+                <!-- 功能选择区 -->
+                <div class="function-tabs">
+                    <button class="tab-btn active" data-tab="help">编程助手</button>
+                    <button class="tab-btn" data-tab="review">代码审查</button>
+                    <button class="tab-btn" data-tab="explain">代码解释</button>
+                    <button class="tab-btn" data-tab="debug">调试帮助</button>
+                </div>
+
+                <!-- 编程助手 -->
+                <div id="help-tab" class="tab-content active">
+                    <div class="input-section">
+                        <div class="form-group">
+                            <label for="help-language">编程语言:</label>
+                            <select id="help-language" class="language-select">
+                                <option value="python">Python</option>
+                                <option value="java">Java</option>
+                                <option value="cpp">C++</option>
+                                <option value="c">C</option>
+                                <option value="javascript">JavaScript</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="help-code">代码 (可选):</label>
+                            <textarea id="help-code" class="code-input" placeholder="粘贴您的代码..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="help-question">问题描述:</label>
+                            <textarea id="help-question" class="question-input" placeholder="描述您遇到的编程问题..." required></textarea>
+                        </div>
+                        <button id="help-submit" class="submit-btn">获取帮助</button>
+                    </div>
+                    <div id="help-result" class="result-section"></div>
+                </div>
+
+                <!-- 代码审查 -->
+                <div id="review-tab" class="tab-content">
+                    <div class="input-section">
+                        <div class="form-group">
+                            <label for="review-language">编程语言:</label>
+                            <select id="review-language" class="language-select">
+                                <option value="python">Python</option>
+                                <option value="java">Java</option>
+                                <option value="cpp">C++</option>
+                                <option value="c">C</option>
+                                <option value="javascript">JavaScript</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="review-code">代码:</label>
+                            <textarea id="review-code" class="code-input" placeholder="粘贴需要审查的代码..." required></textarea>
+                        </div>
+                        <button id="review-submit" class="submit-btn">开始审查</button>
+                    </div>
+                    <div id="review-result" class="result-section"></div>
+                </div>
+
+                <!-- 代码解释 -->
+                <div id="explain-tab" class="tab-content">
+                    <div class="explain-container">
+                        <!-- 左侧：代码输入区 -->
+                        <div class="explain-left-panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title">
+                                    <i class="fas fa-code"></i>
+                                    代码输入
+                                </h3>
+                                <div class="panel-controls">
+                            <select id="explain-language" class="language-select">
+                                <option value="python">Python</option>
+                                <option value="java">Java</option>
+                                <option value="cpp">C++</option>
+                                <option value="c">C</option>
+                                <option value="javascript">JavaScript</option>
+                                        <option value="typescript">TypeScript</option>
+                                        <option value="html">HTML</option>
+                                        <option value="css">CSS</option>
+                                        <option value="sql">SQL</option>
+                                        <option value="go">Go</option>
+                                        <option value="rust">Rust</option>
+                                        <option value="php">PHP</option>
+                                    </select>
+                                    <button class="control-btn" id="clear-code-btn" title="清空代码">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    <button class="control-btn" id="copy-code-btn" title="复制代码">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                    <button class="control-btn" id="fullscreen-btn" title="全屏模式">
+                                        <i class="fas fa-expand"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- 代码示例快速选择 -->
+                            <div class="code-examples">
+                                <div class="examples-header">
+                                    <span>快速示例：</span>
+                                </div>
+                                <div class="examples-list">
+                                    <button class="example-btn" data-example="fibonacci">斐波那契数列</button>
+                                    <button class="example-btn" data-example="quicksort">快速排序</button>
+                                    <button class="example-btn" data-example="binary-search">二分查找</button>
+                                    <button class="example-btn" data-example="linked-list">链表操作</button>
+                                    <button class="example-btn" data-example="decorator">装饰器模式</button>
+                                    <button class="example-btn" data-example="async">异步编程</button>
+                                </div>
+                            </div>
+                            
+                            <!-- 代码编辑器容器 -->
+                            <div class="code-editor-container">
+                                <div class="editor-toolbar">
+                                    <div class="line-numbers-toggle">
+                                        <input type="checkbox" id="show-line-numbers" checked>
+                                        <label for="show-line-numbers">显示行号</label>
+                                    </div>
+                                    <div class="theme-selector">
+                                        <select id="editor-theme">
+                                            <option value="default">默认主题</option>
+                                            <option value="dark">暗色主题</option>
+                                            <option value="monokai">Monokai</option>
+                                            <option value="github">GitHub</option>
+                            </select>
+                                    </div>
+                                </div>
+                                <textarea id="explain-code" class="code-input enhanced-editor" 
+                                    placeholder="在此粘贴或输入需要解释的代码...&#10;&#10;支持的功能：&#10;• Ctrl+A - 全选&#10;• Ctrl+Z - 撤销&#10;• Ctrl+Y - 重做&#10;• Tab - 缩进&#10;• Shift+Tab - 取消缩进&#10;• Ctrl+/ - 注释/取消注释&#10;• F11 - 全屏模式" 
+                                    spellcheck="false"></textarea>
+                                <div class="editor-status">
+                                    <span class="status-info">
+                                        <span id="line-count">行数: 0</span>
+                                        <span id="char-count">字符: 0</span>
+                                        <span id="cursor-position">位置: 1:1</span>
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <!-- 操作按钮 -->
+                            <div class="action-buttons">
+                                <button id="explain-submit" class="submit-btn primary">
+                                    <i class="fas fa-magic"></i>
+                                    解释代码
+                                </button>
+                                <button id="explain-realtime" class="submit-btn secondary">
+                                    <i class="fas fa-sync-alt"></i>
+                                    实时解释
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 右侧：解释结果区 -->
+                        <div class="explain-right-panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title">
+                                    <i class="fas fa-lightbulb"></i>
+                                    代码解释
+                                </h3>
+                                <div class="panel-controls">
+                                    <button class="control-btn" id="copy-explanation-btn" title="复制解释">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                    <button class="control-btn" id="export-explanation-btn" title="导出解释">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="control-btn" id="clear-explanation-btn" title="清空解释">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- 解释结果显示区 -->
+                            <div id="explain-result" class="result-section enhanced-result">
+                                <div class="result-placeholder">
+                                    <div class="placeholder-icon">
+                                        <i class="fas fa-code"></i>
+                                    </div>
+                                    <h4>欢迎使用AI代码解释</h4>
+                                    <p>在左侧输入代码，点击"解释代码"按钮获取详细解释</p>
+                                    <div class="features-list">
+                                        <div class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>支持多种编程语言</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>逐行详细解释</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>算法和数据结构分析</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>最佳实践建议</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 调试帮助 -->
+                <div id="debug-tab" class="tab-content">
+                    <div class="input-section">
+                        <div class="form-group">
+                            <label for="debug-language">编程语言:</label>
+                            <select id="debug-language" class="language-select">
+                                <option value="python">Python</option>
+                                <option value="java">Java</option>
+                                <option value="cpp">C++</option>
+                                <option value="c">C</option>
+                                <option value="javascript">JavaScript</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="debug-code">代码:</label>
+                            <textarea id="debug-code" class="code-input" placeholder="粘贴有问题的代码..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="debug-error">错误信息:</label>
+                            <textarea id="debug-error" class="error-input" placeholder="粘贴错误信息..."></textarea>
+                        </div>
+                        <button id="debug-submit" class="submit-btn">获取调试建议</button>
+                    </div>
+                    <div id="debug-result" class="result-section"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/Auxiliary_programming.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/navbar.js') }}?v=20251005a"></script>
+</body>
+</html>

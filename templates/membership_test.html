@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>会员测试</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { margin: 0; padding: 20px; font-family: Arial, sans-serif; }
+        .membership-pricing {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .pricing-header { text-align: center; color: white; margin-bottom: 40px; }
+        .pricing-title { font-size: 36px; }
+    </style>
+</head>
+<body>
+    <h1>如果能看到紫色背景，说明CSS工作正常</h1>
+    <section class="membership-pricing">
+        <div class="pricing-header">
+            <h2 class="pricing-title"> 会员定价测试</h2>
+            <p>如果您能看到这个紫色渐变背景，说明样式已加载</p>
+        </div>
+        <div id="pricingCards">
+            <div style="color: white; text-align: center; padding: 40px;">
+                正在加载会员卡片...
+            </div>
+        </div>
+    </section>
+    <script src="/static/js/membership.js"></script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+/* ============================================================================
+   EduPilot 管理后台 - CSS变量定义
+   科幻风格 Dark Mode 主题
+   ============================================================================ */
+
+:root {
+  /* ========== 主色调系统 ========== */
+  /* 科技蓝 */
+  --color-primary: #00D4FF;
+  --color-primary-light: #33E0FF;
+  --color-primary-dark: #0099CC;
+  --color-primary-glow: rgba(0, 212, 255, 0.5);
+  
+  /* 科幻紫 */
+  --color-secondary: #B15BFF;
+  --color-secondary-light: #C780FF;
+  --color-secondary-dark: #8B3FCC;
+  --color-secondary-glow: rgba(177, 91, 255, 0.5);
+  
+  /* 功能色 */
+  --color-success: #00FF88;
+  --color-success-glow: rgba(0, 255, 136, 0.5);
+  
+  --color-warning: #FFB800;
+  --color-warning-glow: rgba(255, 184, 0, 0.5);
+  
+  --color-danger: #FF3366;
+  --color-danger-glow: rgba(255, 51, 102, 0.5);
+  
+  --color-info: #00D4FF;
+  --color-info-glow: rgba(0, 212, 255, 0.5);
+  
+  /* ========== 背景色系统 ========== */
+  --bg-main: #0A0E1A;              /* 深空背景 */
+  --bg-card: #141824;              /* 卡片背景 */
+  --bg-hover: #1C2332;             /* 悬停背景 */
+  --bg-border: #2A3447;            /* 边框颜色 */
+  --bg-glass: rgba(20, 24, 36, 0.7);  /* 玻璃态背景 */
+  
+  /* ========== 文字色系统 ========== */
+  --text-primary: #FFFFFF;         /* 主要文字 */
+  --text-secondary: #CBD5E0;       /* 次要文字 - 提高对比度 */
+  --text-disabled: #718096;        /* 禁用文字 - 提高可读性 */
+  --text-highlight: #00D4FF;       /* 高亮文字 */
+  
+  /* ========== 渐变色组合 ========== */
+  --gradient-primary: linear-gradient(135deg, #00D4FF 0%, #B15BFF 100%);
+  --gradient-success: linear-gradient(135deg, #00FF88 0%, #00D4FF 100%);
+  --gradient-danger: linear-gradient(135deg, #FF3366 0%, #FF9933 100%);
+  --gradient-card: linear-gradient(135deg, rgba(20, 24, 36, 0.95) 0%, rgba(26, 32, 50, 0.95) 100%);
+  
+  /* ========== 字体系统 ========== */
+  --font-family-base: 'Inter', 'Microsoft YaHei', 'PingFang SC', sans-serif;
+  --font-family-title: 'Orbitron', 'Microsoft YaHei', monospace;
+  --font-family-number: 'Orbitron', monospace;
+  
+  --font-size-xs: 13px;
+  --font-size-sm: 15px;
+  --font-size-base: 17px;
+  --font-size-lg: 19px;
+  --font-size-xl: 22px;
+  --font-size-2xl: 26px;
+  --font-size-3xl: 32px;
+  --font-size-4xl: 38px;
+  
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 900;
+  
+  /* ========== 间距系统 ========== */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+  
+  /* ========== 圆角系统 ========== */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+  
+  /* ========== 阴影系统 ========== */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.5);
+  
+  --shadow-glow-primary: 0 0 20px var(--color-primary-glow);
+  --shadow-glow-success: 0 0 20px var(--color-success-glow);
+  --shadow-glow-warning: 0 0 20px var(--color-warning-glow);
+  --shadow-glow-danger: 0 0 20px var(--color-danger-glow);
+  
+  /* ========== 布局尺寸 ========== */
+  --topbar-height: 64px;
+  --sidebar-width: 240px;
+  --sidebar-width-collapsed: 64px;
+  
+  /* ========== 过渡动画 ========== */
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* ========== Z-index 层级 ========== */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+}
+
+

@@ -1,0 +1,791 @@
+[2025-10-05 11:12:57,323] ERROR in app: 登录错误: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+[2025-10-05 16:06:53,353] ERROR in app: 安全事件 - 账户锁定: 用户=admin, IP=127.0.0.1, 锁定至=2025-10-05T08:21:53.337249
+[2025-10-11 22:14:23,821] ERROR in app: 登录错误: record_login_attempt() got an unexpected keyword argument 'user_agent'
+[2025-10-11 22:14:30,266] ERROR in app: 登录错误: record_login_attempt() got an unexpected keyword argument 'user_agent'
+[2025-10-11 22:14:37,668] ERROR in app: 登录错误: record_login_attempt() got an unexpected keyword argument 'user_agent'
+[2025-10-11 22:14:43,766] ERROR in app: 登录错误: record_login_attempt() got an unexpected keyword argument 'user_agent'
+[2025-10-11 22:15:43,995] ERROR in app: 登录错误: record_login_attempt() got an unexpected keyword argument 'user_agent'
+[2025-10-11 22:16:26,388] ERROR in app: 登录错误: record_login_attempt() got an unexpected keyword argument 'user_agent'
+[2025-10-11 22:17:00,807] ERROR in app: 登录错误: record_login_attempt() got an unexpected keyword argument 'user_agent'
+[2025-10-11 22:17:03,049] ERROR in app: 登录错误: record_login_attempt() got an unexpected keyword argument 'user_agent'
+[2025-10-11 22:52:37,886] ERROR in app: 获取会员列表失败: type object 'UserMembership' has no attribute 'expires_at'
+[2025-10-11 22:52:37,887] ERROR in app: 获取套餐列表失败: 'MembershipTier' object has no attribute 'color'
+[2025-10-11 22:52:46,858] ERROR in app: 获取会员列表失败: type object 'UserMembership' has no attribute 'expires_at'
+[2025-10-11 22:52:46,866] ERROR in app: 获取套餐列表失败: 'MembershipTier' object has no attribute 'color'
+[2025-10-11 22:53:00,541] ERROR in app: 导出用户数据失败: 'User' object has no attribute 'last_login_at'
+[2025-10-12 02:54:38,215] ERROR in app: 发送验证码错误: cannot unpack non-iterable bool object
+[2025-10-12 02:55:23,119] ERROR in app: 发送验证码错误: cannot unpack non-iterable bool object
+[2025-10-12 02:55:44,359] ERROR in app: 发送验证码错误: cannot unpack non-iterable bool object
+[2025-10-12 14:20:04,838] ERROR in app: 管理员登录失败: name 'get_admin_permissions' is not defined
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 5582, in api_admin_login
+    'permissions': get_admin_permissions(admin),
+NameError: name 'get_admin_permissions' is not defined
+[2025-10-12 15:02:24,430] ERROR in app: 获取用户详情失败: 'UsageLog' object has no attribute 'feature_name'
+[2025-10-12 15:02:25,778] ERROR in app: 获取用户详情失败: 'UsageLog' object has no attribute 'feature_name'
+[2025-10-12 15:02:36,383] ERROR in app: 获取用户详情失败: 'UsageLog' object has no attribute 'feature_name'
+[2025-10-12 15:02:37,406] ERROR in app: 获取用户详情失败: 'UsageLog' object has no attribute 'feature_name'
+[2025-10-12 15:02:45,566] ERROR in app: 获取用户详情失败: 'UsageLog' object has no attribute 'feature_name'
+[2025-10-12 15:02:46,908] ERROR in app: 获取用户详情失败: 'UsageLog' object has no attribute 'feature_name'
+[2025-10-12 15:17:50,750] ERROR in app: 更新用户失败: 'target' is an invalid keyword argument for AdminLog
+[2025-10-12 15:17:51,990] ERROR in app: 更新用户失败: 'target' is an invalid keyword argument for AdminLog
+[2025-10-12 15:18:05,528] ERROR in app: 重置密码失败: 'target' is an invalid keyword argument for AdminLog
+[2025-10-12 15:36:16,400] ERROR in app: 创建套餐失败: 'display_order' is an invalid keyword argument for MembershipTier
+[2025-10-12 15:36:17,781] ERROR in app: 创建套餐失败: 'display_order' is an invalid keyword argument for MembershipTier
+[2025-10-12 15:36:18,938] ERROR in app: 创建套餐失败: 'display_order' is an invalid keyword argument for MembershipTier
+[2025-10-12 15:36:20,298] ERROR in app: 创建套餐失败: 'display_order' is an invalid keyword argument for MembershipTier
+[2025-10-12 15:36:21,218] ERROR in app: 创建套餐失败: 'display_order' is an invalid keyword argument for MembershipTier
+[2025-10-12 15:36:21,735] ERROR in app: 创建套餐失败: 'display_order' is an invalid keyword argument for MembershipTier
+[2025-10-13 01:22:47,449] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 5878, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 01:22:48,788] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 5878, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 01:23:08,094] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 5878, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 01:23:09,117] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 5878, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 01:23:32,271] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 5878, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 01:23:33,316] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 5878, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 01:24:03,152] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 5878, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 01:24:04,502] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 5878, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 01:25:10,535] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 5878, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 01:25:11,887] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 5878, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 01:29:06,077] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 5995, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 01:29:07,128] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 5995, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 01:29:15,304] ERROR in app: 获取订单详情失败: 'PaymentTransaction' object has no attribute 'notes'
+[2025-10-13 01:29:16,326] ERROR in app: 获取订单详情失败: 'PaymentTransaction' object has no attribute 'notes'
+[2025-10-13 01:29:24,004] ERROR in app: 获取订单详情失败: 'PaymentTransaction' object has no attribute 'notes'
+[2025-10-13 01:29:25,337] ERROR in app: 获取订单详情失败: 'PaymentTransaction' object has no attribute 'notes'
+[2025-10-13 01:29:57,130] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 5995, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 01:29:58,500] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 5995, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 01:36:34,346] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 5995, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 01:36:35,723] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 5995, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 01:37:00,296] ERROR in app: 创建套餐失败: (psycopg2.errors.UniqueViolation) 错误:  重复键违反唯一约束"membership_tiers_pkey"
+DETAIL:  键值"(id)=(1)" 已经存在
+
+[SQL: INSERT INTO membership_tiers (name, code, level, price, currency, duration_days, permissions, description, features, is_active, sort_order, is_limited, total_quota, sold_count, min_order, max_order, is_early_bird, early_bird_tier, original_price, created_at, updated_at) VALUES (%(name)s, %(code)s, %(level)s, %(price)s, %(currency)s, %(duration_days)s, %(permissions)s, %(description)s, %(features)s, %(is_active)s, %(sort_order)s, %(is_limited)s, %(total_quota)s, %(sold_count)s, %(min_order)s, %(max_order)s, %(is_early_bird)s, %(early_bird_tier)s, %(original_price)s, %(created_at)s, %(updated_at)s) RETURNING membership_tiers.id]
+[parameters: {'name': '天卡', 'code': 'dayly', 'level': 0, 'price': 1.0, 'currency': 'CNY', 'duration_days': 1, 'permissions': None, 'description': '', 'features': None, 'is_active': True, 'sort_order': 0, 'is_limited': False, 'total_quota': 0, 'sold_count': 0, 'min_order': 0, 'max_order': 0, 'is_early_bird': False, 'early_bird_tier': 0, 'original_price': 0.0, 'created_at': datetime.datetime(2025, 10, 12, 17, 37, 0, 288811), 'updated_at': datetime.datetime(2025, 10, 12, 17, 37, 0, 288811)}]
+(Background on this error at: https://sqlalche.me/e/14/gkpj)
+[2025-10-13 01:37:02,523] ERROR in app: 创建套餐失败: (psycopg2.errors.UniqueViolation) 错误:  重复键违反唯一约束"membership_tiers_pkey"
+DETAIL:  键值"(id)=(2)" 已经存在
+
+[SQL: INSERT INTO membership_tiers (name, code, level, price, currency, duration_days, permissions, description, features, is_active, sort_order, is_limited, total_quota, sold_count, min_order, max_order, is_early_bird, early_bird_tier, original_price, created_at, updated_at) VALUES (%(name)s, %(code)s, %(level)s, %(price)s, %(currency)s, %(duration_days)s, %(permissions)s, %(description)s, %(features)s, %(is_active)s, %(sort_order)s, %(is_limited)s, %(total_quota)s, %(sold_count)s, %(min_order)s, %(max_order)s, %(is_early_bird)s, %(early_bird_tier)s, %(original_price)s, %(created_at)s, %(updated_at)s) RETURNING membership_tiers.id]
+[parameters: {'name': '天卡', 'code': 'dayly', 'level': 0, 'price': 1.0, 'currency': 'CNY', 'duration_days': 1, 'permissions': None, 'description': '', 'features': None, 'is_active': True, 'sort_order': 0, 'is_limited': False, 'total_quota': 0, 'sold_count': 0, 'min_order': 0, 'max_order': 0, 'is_early_bird': False, 'early_bird_tier': 0, 'original_price': 0.0, 'created_at': datetime.datetime(2025, 10, 12, 17, 37, 2, 521436), 'updated_at': datetime.datetime(2025, 10, 12, 17, 37, 2, 521436)}]
+(Background on this error at: https://sqlalche.me/e/14/gkpj)
+[2025-10-13 01:37:03,911] ERROR in app: 创建套餐失败: (psycopg2.errors.UniqueViolation) 错误:  重复键违反唯一约束"membership_tiers_pkey"
+DETAIL:  键值"(id)=(3)" 已经存在
+
+[SQL: INSERT INTO membership_tiers (name, code, level, price, currency, duration_days, permissions, description, features, is_active, sort_order, is_limited, total_quota, sold_count, min_order, max_order, is_early_bird, early_bird_tier, original_price, created_at, updated_at) VALUES (%(name)s, %(code)s, %(level)s, %(price)s, %(currency)s, %(duration_days)s, %(permissions)s, %(description)s, %(features)s, %(is_active)s, %(sort_order)s, %(is_limited)s, %(total_quota)s, %(sold_count)s, %(min_order)s, %(max_order)s, %(is_early_bird)s, %(early_bird_tier)s, %(original_price)s, %(created_at)s, %(updated_at)s) RETURNING membership_tiers.id]
+[parameters: {'name': '天卡', 'code': 'dayly', 'level': 0, 'price': 1.0, 'currency': 'CNY', 'duration_days': 1, 'permissions': None, 'description': '', 'features': None, 'is_active': True, 'sort_order': 0, 'is_limited': False, 'total_quota': 0, 'sold_count': 0, 'min_order': 0, 'max_order': 0, 'is_early_bird': False, 'early_bird_tier': 0, 'original_price': 0.0, 'created_at': datetime.datetime(2025, 10, 12, 17, 37, 3, 910581), 'updated_at': datetime.datetime(2025, 10, 12, 17, 37, 3, 910581)}]
+(Background on this error at: https://sqlalche.me/e/14/gkpj)
+[2025-10-13 01:37:05,256] ERROR in app: 创建套餐失败: (psycopg2.errors.UniqueViolation) 错误:  重复键违反唯一约束"membership_tiers_pkey"
+DETAIL:  键值"(id)=(4)" 已经存在
+
+[SQL: INSERT INTO membership_tiers (name, code, level, price, currency, duration_days, permissions, description, features, is_active, sort_order, is_limited, total_quota, sold_count, min_order, max_order, is_early_bird, early_bird_tier, original_price, created_at, updated_at) VALUES (%(name)s, %(code)s, %(level)s, %(price)s, %(currency)s, %(duration_days)s, %(permissions)s, %(description)s, %(features)s, %(is_active)s, %(sort_order)s, %(is_limited)s, %(total_quota)s, %(sold_count)s, %(min_order)s, %(max_order)s, %(is_early_bird)s, %(early_bird_tier)s, %(original_price)s, %(created_at)s, %(updated_at)s) RETURNING membership_tiers.id]
+[parameters: {'name': '天卡', 'code': 'dayly', 'level': 0, 'price': 1.0, 'currency': 'CNY', 'duration_days': 1, 'permissions': None, 'description': '', 'features': None, 'is_active': True, 'sort_order': 0, 'is_limited': False, 'total_quota': 0, 'sold_count': 0, 'min_order': 0, 'max_order': 0, 'is_early_bird': False, 'early_bird_tier': 0, 'original_price': 0.0, 'created_at': datetime.datetime(2025, 10, 12, 17, 37, 5, 254257), 'updated_at': datetime.datetime(2025, 10, 12, 17, 37, 5, 254257)}]
+(Background on this error at: https://sqlalche.me/e/14/gkpj)
+[2025-10-13 01:37:05,738] ERROR in app: 创建套餐失败: (psycopg2.errors.UniqueViolation) 错误:  重复键违反唯一约束"membership_tiers_pkey"
+DETAIL:  键值"(id)=(5)" 已经存在
+
+[SQL: INSERT INTO membership_tiers (name, code, level, price, currency, duration_days, permissions, description, features, is_active, sort_order, is_limited, total_quota, sold_count, min_order, max_order, is_early_bird, early_bird_tier, original_price, created_at, updated_at) VALUES (%(name)s, %(code)s, %(level)s, %(price)s, %(currency)s, %(duration_days)s, %(permissions)s, %(description)s, %(features)s, %(is_active)s, %(sort_order)s, %(is_limited)s, %(total_quota)s, %(sold_count)s, %(min_order)s, %(max_order)s, %(is_early_bird)s, %(early_bird_tier)s, %(original_price)s, %(created_at)s, %(updated_at)s) RETURNING membership_tiers.id]
+[parameters: {'name': '天卡', 'code': 'dayly', 'level': 0, 'price': 1.0, 'currency': 'CNY', 'duration_days': 1, 'permissions': None, 'description': '', 'features': None, 'is_active': True, 'sort_order': 0, 'is_limited': False, 'total_quota': 0, 'sold_count': 0, 'min_order': 0, 'max_order': 0, 'is_early_bird': False, 'early_bird_tier': 0, 'original_price': 0.0, 'created_at': datetime.datetime(2025, 10, 12, 17, 37, 5, 737178), 'updated_at': datetime.datetime(2025, 10, 12, 17, 37, 5, 737178)}]
+(Background on this error at: https://sqlalche.me/e/14/gkpj)
+[2025-10-13 01:37:06,501] ERROR in app: 创建套餐失败: (psycopg2.errors.UniqueViolation) 错误:  重复键违反唯一约束"membership_tiers_pkey"
+DETAIL:  键值"(id)=(6)" 已经存在
+
+[SQL: INSERT INTO membership_tiers (name, code, level, price, currency, duration_days, permissions, description, features, is_active, sort_order, is_limited, total_quota, sold_count, min_order, max_order, is_early_bird, early_bird_tier, original_price, created_at, updated_at) VALUES (%(name)s, %(code)s, %(level)s, %(price)s, %(currency)s, %(duration_days)s, %(permissions)s, %(description)s, %(features)s, %(is_active)s, %(sort_order)s, %(is_limited)s, %(total_quota)s, %(sold_count)s, %(min_order)s, %(max_order)s, %(is_early_bird)s, %(early_bird_tier)s, %(original_price)s, %(created_at)s, %(updated_at)s) RETURNING membership_tiers.id]
+[parameters: {'name': '天卡', 'code': 'dayly', 'level': 0, 'price': 1.0, 'currency': 'CNY', 'duration_days': 1, 'permissions': None, 'description': '', 'features': None, 'is_active': True, 'sort_order': 0, 'is_limited': False, 'total_quota': 0, 'sold_count': 0, 'min_order': 0, 'max_order': 0, 'is_early_bird': False, 'early_bird_tier': 0, 'original_price': 0.0, 'created_at': datetime.datetime(2025, 10, 12, 17, 37, 6, 499685), 'updated_at': datetime.datetime(2025, 10, 12, 17, 37, 6, 499685)}]
+(Background on this error at: https://sqlalche.me/e/14/gkpj)
+[2025-10-13 01:37:07,992] ERROR in app: 创建套餐失败: (psycopg2.errors.UniqueViolation) 错误:  重复键违反唯一约束"membership_tiers_pkey"
+DETAIL:  键值"(id)=(7)" 已经存在
+
+[SQL: INSERT INTO membership_tiers (name, code, level, price, currency, duration_days, permissions, description, features, is_active, sort_order, is_limited, total_quota, sold_count, min_order, max_order, is_early_bird, early_bird_tier, original_price, created_at, updated_at) VALUES (%(name)s, %(code)s, %(level)s, %(price)s, %(currency)s, %(duration_days)s, %(permissions)s, %(description)s, %(features)s, %(is_active)s, %(sort_order)s, %(is_limited)s, %(total_quota)s, %(sold_count)s, %(min_order)s, %(max_order)s, %(is_early_bird)s, %(early_bird_tier)s, %(original_price)s, %(created_at)s, %(updated_at)s) RETURNING membership_tiers.id]
+[parameters: {'name': '天卡', 'code': 'dayly', 'level': 0, 'price': 1.0, 'currency': 'CNY', 'duration_days': 1, 'permissions': None, 'description': '', 'features': None, 'is_active': True, 'sort_order': 0, 'is_limited': False, 'total_quota': 0, 'sold_count': 0, 'min_order': 0, 'max_order': 0, 'is_early_bird': False, 'early_bird_tier': 0, 'original_price': 0.0, 'created_at': datetime.datetime(2025, 10, 12, 17, 37, 7, 991054), 'updated_at': datetime.datetime(2025, 10, 12, 17, 37, 7, 991054)}]
+(Background on this error at: https://sqlalche.me/e/14/gkpj)
+[2025-10-13 01:44:32,416] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 5995, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 01:44:33,507] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 5995, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 01:48:34,600] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 01:48:35,926] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 01:49:10,565] ERROR in app: 获取订单详情失败: 'PaymentTransaction' object has no attribute 'notes'
+[2025-10-13 01:49:11,584] ERROR in app: 获取订单详情失败: 'PaymentTransaction' object has no attribute 'notes'
+[2025-10-13 01:50:11,207] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 01:50:12,261] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 01:54:23,164] ERROR in app: 获取订单详情失败: 'PaymentTransaction' object has no attribute 'notes'
+[2025-10-13 01:54:24,496] ERROR in app: 获取订单详情失败: 'PaymentTransaction' object has no attribute 'notes'
+[2025-10-13 01:57:41,714] ERROR in app: 删除用户失败: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+[2025-10-13 01:57:41,715] ERROR in app: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 5148, in api_admin_user_delete
+    user = User.query.get_or_404(user_id)
+  File "Z:\E\pachong\python\lib\site-packages\flask_sqlalchemy\query.py", line 34, in get_or_404
+    abort(404, description=description)
+  File "Z:\E\pachong\python\lib\site-packages\flask\helpers.py", line 310, in abort
+    current_app.aborter(code, *args, **kwargs)
+  File "Z:\E\pachong\python\lib\site-packages\werkzeug\exceptions.py", line 864, in __call__
+    raise self.mapping[code](*args, **kwargs)
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+[2025-10-13 01:57:58,923] ERROR in app: 删除用户失败: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+[2025-10-13 01:57:58,924] ERROR in app: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 5148, in api_admin_user_delete
+    user = User.query.get_or_404(user_id)
+  File "Z:\E\pachong\python\lib\site-packages\flask_sqlalchemy\query.py", line 34, in get_or_404
+    abort(404, description=description)
+  File "Z:\E\pachong\python\lib\site-packages\flask\helpers.py", line 310, in abort
+    current_app.aborter(code, *args, **kwargs)
+  File "Z:\E\pachong\python\lib\site-packages\werkzeug\exceptions.py", line 864, in __call__
+    raise self.mapping[code](*args, **kwargs)
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+[2025-10-13 01:58:04,260] ERROR in app: 删除用户失败: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+[2025-10-13 01:58:04,261] ERROR in app: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 5148, in api_admin_user_delete
+    user = User.query.get_or_404(user_id)
+  File "Z:\E\pachong\python\lib\site-packages\flask_sqlalchemy\query.py", line 34, in get_or_404
+    abort(404, description=description)
+  File "Z:\E\pachong\python\lib\site-packages\flask\helpers.py", line 310, in abort
+    current_app.aborter(code, *args, **kwargs)
+  File "Z:\E\pachong\python\lib\site-packages\werkzeug\exceptions.py", line 864, in __call__
+    raise self.mapping[code](*args, **kwargs)
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+[2025-10-13 01:58:25,295] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 01:58:26,330] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 02:05:34,034] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 02:05:34,354] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 02:05:35,061] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 02:06:45,836] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 02:06:46,865] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 02:12:21,214] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 02:12:22,553] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 02:13:45,535] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 02:13:46,858] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 02:19:20,149] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 02:19:21,489] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 02:21:28,987] ERROR in app: 获取订单详情失败: 'PaymentTransaction' object has no attribute 'notes'
+[2025-10-13 02:21:30,331] ERROR in app: 获取订单详情失败: 'PaymentTransaction' object has no attribute 'notes'
+[2025-10-13 02:23:46,663] ERROR in app: 注册错误: (psycopg2.errors.UniqueViolation) 错误:  重复键违反唯一约束"users_pkey"
+DETAIL:  键值"(id)=(1)" 已经存在
+
+[SQL: INSERT INTO users (username, email, password_hash, full_name, phone, avatar, is_active, is_admin, created_at, last_login) VALUES (%(username)s, %(email)s, %(password_hash)s, %(full_name)s, %(phone)s, %(avatar)s, %(is_active)s, %(is_admin)s, %(created_at)s, %(last_login)s) RETURNING users.id]
+[parameters: {'username': 'z1111', 'email': 'sporisvmf37f@outlook.com', 'password_hash': 'pbkdf2:sha256:260000$HeMDYTJObmSHIPEO$c5392e540d99751ac5965819eb7690fdb7449af1158a48b1dee6f511f2ee9cd0', 'full_name': None, 'phone': None, 'avatar': None, 'is_active': True, 'is_admin': False, 'created_at': datetime.datetime(2025, 10, 12, 18, 23, 46, 659749), 'last_login': None}]
+(Background on this error at: https://sqlalche.me/e/14/gkpj)
+[2025-10-13 02:25:57,532] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 02:25:58,894] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 02:30:45,567] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 02:30:46,983] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 02:33:30,434] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 02:39:11,599] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 02:39:12,775] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 02:39:47,052] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 02:39:48,394] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 02:41:40,948] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 02:41:42,292] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 02:46:01,677] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 02:46:03,044] ERROR in app: 获取最近订单失败: 'PaymentTransaction' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 6004, in api_admin_stats_recent_orders
+    'payment_time': order.updated_at.isoformat() if order.updated_at else None,
+AttributeError: 'PaymentTransaction' object has no attribute 'updated_at'
+[2025-10-13 16:11:06,824] ERROR in app: 批量删除用户失败: name 'Order' is not defined
+[2025-10-13 16:11:16,864] ERROR in app: 批量删除用户失败: name 'Order' is not defined
+[2025-10-13 16:11:28,373] ERROR in app: 批量删除用户失败: name 'Order' is not defined
+[2025-10-13 16:12:10,937] ERROR in app: 批量删除用户失败: name 'Order' is not defined
+[2025-10-13 16:57:04,632] ERROR in app: 创建用户失败: name 'log_admin_action' is not defined
+[2025-10-13 16:57:49,779] ERROR in app: 创建用户失败: name 'log_admin_action' is not defined
+[2025-10-14 16:58:00,503] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 16:58:02,134] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 16:58:55,070] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 16:58:56,404] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 17:02:26,931] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 17:02:30,916] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8034, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-14 17:02:31,230] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 17:02:32,239] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8034, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-14 17:04:12,686] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8034, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-14 17:04:13,708] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8034, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-14 17:04:13,885] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8034, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-14 17:04:14,914] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8034, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-14 17:04:37,012] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8034, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-14 17:04:38,065] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8034, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-14 17:05:15,300] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8034, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-14 17:05:18,804] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8034, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-14 17:10:37,536] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8034, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-14 17:10:38,589] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8034, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-14 17:11:19,909] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8034, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-14 17:11:20,998] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8034, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-14 17:11:23,350] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8034, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-14 17:11:24,693] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8034, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-14 17:34:41,577] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 17:34:43,219] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 17:57:10,520] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 17:57:11,550] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 18:02:50,441] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 18:02:51,489] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 18:07:11,423] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 18:07:12,450] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 18:13:58,380] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 18:13:59,414] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 18:19:15,300] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 18:19:16,319] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 18:19:27,769] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8034, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-14 18:19:30,132] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8034, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-14 18:19:31,474] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8034, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-14 18:19:47,831] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8034, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-14 18:19:49,206] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8034, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-14 18:19:52,754] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8034, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-14 18:19:53,803] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8034, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-14 18:24:34,992] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 18:24:36,643] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 18:24:45,361] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 18:24:46,698] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 18:25:36,687] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 18:25:38,031] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 18:30:06,738] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 18:30:08,429] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 18:30:12,093] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 18:30:18,513] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 18:34:11,693] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 18:34:14,198] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 18:34:18,352] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8034, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-14 18:34:27,210] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 18:59:15,314] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 18:59:16,994] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 18:59:19,709] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 19:16:36,787] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 19:16:38,442] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 19:17:48,442] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 19:18:25,343] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 19:18:33,607] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8034, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-14 19:38:46,120] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 19:39:20,285] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 19:49:51,882] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 19:53:07,367] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 19:53:11,379] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 19:53:13,701] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 19:53:20,642] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 19:53:22,288] ERROR in app: 获取AI使用热力图数据失败: type object 'UsageLog' has no attribute 'feature_name'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 7629, in api_admin_dashboard_ai_usage_heatmap
+    UsageLog.feature_name,
+AttributeError: type object 'UsageLog' has no attribute 'feature_name'
+[2025-10-14 22:12:11,899] ERROR in app: 安全事件 - 账户锁定: 用户=张赫, IP=127.0.0.1, 锁定至=2025-10-14T14:27:11.887777
+[2025-10-14 22:34:51,533] ERROR in app: 重置密码失败: 'str' object has no attribute 'get'
+[2025-10-14 22:34:54,521] ERROR in app: 重置密码失败: 'str' object has no attribute 'get'
+[2025-10-14 22:34:58,859] ERROR in app: 重置密码失败: 'str' object has no attribute 'get'
+[2025-10-14 22:35:07,850] ERROR in app: 重置密码失败: 'str' object has no attribute 'get'
+[2025-10-14 22:35:17,404] ERROR in app: 重置密码失败: 'str' object has no attribute 'get'
+[2025-10-14 22:35:45,158] ERROR in app: 安全事件 - 账户锁定: 用户=张赫, IP=127.0.0.1, 锁定至=2025-10-14T14:50:45.150673
+[2025-10-14 22:45:55,348] ERROR in app: 安全事件 - 账户锁定: 用户=张赫, IP=127.0.0.1, 锁定至=2025-10-14T15:00:55.341986
+[2025-10-14 22:46:59,717] ERROR in app: 安全事件 - 账户锁定: 用户=张赫1, IP=127.0.0.1, 锁定至=2025-10-14T15:01:59.706613
+[2025-10-14 22:47:43,458] ERROR in app: 安全事件 - 账户锁定: 用户=周启航, IP=127.0.0.1, 锁定至=2025-10-14T15:02:43.443891
+[2025-10-14 23:03:26,088] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8115, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-14 23:04:06,467] ERROR in app: 安全事件 - 账户锁定: 用户=周启航, IP=127.0.0.1, 锁定至=2025-10-14T15:09:06.454642
+[2025-10-15 01:52:18,199] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8118, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-15 01:52:19,237] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8118, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-15 02:23:17,953] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8118, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-15 02:23:18,989] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8118, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-15 02:28:52,501] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8118, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-10-15 02:28:53,875] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8118, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-11-05 17:33:33,099] ERROR in email_service: 邮件发送失败: Connection unexpectedly closed
+[2025-11-05 17:33:33,100] ERROR in app: 邮件发送失败: 3533912007@qq.com
+[2025-12-07 01:20:59,129] ERROR in email_service: 邮件发送失败: Connection unexpectedly closed
+[2025-12-07 01:20:59,135] ERROR in app: 邮件发送失败: 3533912007@qq.com
+[2025-12-07 01:23:19,047] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8118, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'
+[2025-12-07 01:23:20,082] ERROR in app: 获取管理员列表失败: 'Admin' object has no attribute 'last_login'
+Traceback (most recent call last):
+  File "Z:\appdemo\app\pythonapp\edu\新建文件夹\Edu-PilotAI教育协控系统-终极版本\app.py", line 8118, in api_admin_admins_list
+    'last_login': admin.last_login.strftime('%Y-%m-%d %H:%M:%S') if admin.last_login else None,
+AttributeError: 'Admin' object has no attribute 'last_login'

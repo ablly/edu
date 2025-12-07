@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 - 服务器错误 | EduPilot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/error.css') }}?v=1.0.0">
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-content">
+            <div class="error-code error-500">500</div>
+            <h1 class="error-title">服务器错误</h1>
+            <p class="error-message">
+                抱歉，服务器遇到了一些问题，我们正在努力修复。
+            </p>
+            <div class="error-suggestions">
+                <h3>您可以尝试：</h3>
+                <ul>
+                    <li>刷新页面重试</li>
+                    <li>稍后再次访问</li>
+                    <li>联系技术支持团队</li>
+                </ul>
+            </div>
+            <div class="error-actions">
+                <a href="/" class="btn btn-primary">返回首页</a>
+                <a href="javascript:location.reload()" class="btn btn-secondary">刷新页面</a>
+            </div>
+            {% if config.DEBUG and error %}
+            <div class="error-debug">
+                <h3>调试信息（仅开发模式）:</h3>
+                <pre>{{ error }}</pre>
+            </div>
+            {% endif %}
+        </div>
+        <div class="error-illustration">
+            <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="200" cy="150" r="100" fill="#fdeaea" opacity="0.5"/>
+                <path d="M150 120 Q200 80 250 120" stroke="#f5365c" stroke-width="4" fill="none"/>
+                <circle cx="170" cy="140" r="8" fill="#f5365c"/>
+                <circle cx="230" cy="140" r="8" fill="#f5365c"/>
+                <path d="M170 170 Q200 160 230 170" stroke="#f5365c" stroke-width="4" fill="none"/>
+            </svg>
+        </div>
+    </div>
+</body>
+</html>

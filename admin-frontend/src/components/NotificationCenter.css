@@ -1,0 +1,67 @@
+.notification-dropdown {
+  width: 380px;
+  max-height: 520px;
+  background: var(--bg-card);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  color: var(--text-primary);
+}
+
+.notification-header {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--bg-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, rgba(0, 212, 255, 0.1), rgba(177, 91, 255, 0.1));
+}
+
+.notification-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.notification-item {
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid var(--bg-border);
+  font-size: var(--font-size-sm);
+}
+
+.notification-item:hover {
+  background-color: var(--bg-hover);
+  border-left: 3px solid var(--color-primary);
+}
+
+.notification-item.unread {
+  background-color: rgba(0, 255, 136, 0.05);
+  border-left: 3px solid var(--color-success);
+  font-weight: var(--font-weight-medium);
+}
+
+.notification-item.unread:hover {
+  background-color: rgba(0, 255, 136, 0.1);
+}
+
+.notification-footer {
+  padding: 12px;
+  border-top: 1px solid var(--bg-border);
+  text-align: center;
+  background: rgba(0, 212, 255, 0.05);
+}
+
+.notification-trigger {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 16px;
+}
+
+.notification-trigger:hover {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.notification-dropdown-overlay .ant-dropdown-menu {
+  padding: 0;
+}

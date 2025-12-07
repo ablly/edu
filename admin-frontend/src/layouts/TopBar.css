@@ -1,0 +1,289 @@
+/* ============================================================================
+   顶部导航栏样式
+   ============================================================================ */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--topbar-height);
+  background: rgba(10, 14, 26, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--spacing-lg);
+  z-index: var(--z-sticky);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* ========== 左侧区域 ========== */
+.topbar-left {
+  flex: 0 0 auto;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.logo-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px var(--color-primary-glow);
+  animation: breath 3s ease-in-out infinite;
+}
+
+.logo-text {
+  font-family: var(--font-family-title);
+  font-size: 20px;
+  font-weight: var(--font-weight-extrabold);
+  color: var(--bg-main);
+}
+
+.system-name {
+  font-size: 16px;
+  margin: 0;
+  letter-spacing: 0.15em;
+  white-space: nowrap;
+}
+
+.version-tag {
+  padding: 2px 8px;
+  background: rgba(0, 212, 255, 0.2);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  color: var(--color-primary);
+  font-family: var(--font-family-number);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* ========== 中间区域 ========== */
+.topbar-center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  max-width: 600px;
+  margin: 0 var(--spacing-xl);
+}
+
+.global-search {
+  width: 400px;
+  transition: all var(--transition-base);
+}
+
+.global-search .ant-input-wrapper {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.global-search .ant-input {
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+}
+
+.global-search .ant-input::placeholder {
+  color: var(--text-disabled);
+}
+
+.global-search .ant-input-wrapper:hover,
+.global-search .ant-input-wrapper:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 15px var(--color-primary-glow);
+  width: 450px;
+}
+
+.global-search .ant-input-prefix {
+  color: var(--color-primary);
+  margin-right: var(--spacing-sm);
+}
+
+.search-hint {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-disabled);
+  font-size: var(--font-size-xs);
+}
+
+.search-hint kbd {
+  padding: 2px 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  font-family: var(--font-family-number);
+  font-size: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* ========== 右侧区域 ========== */
+.topbar-right {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+}
+
+/* 系统状态 */
+.system-status {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: rgba(0, 255, 136, 0.1);
+  border: 1px solid var(--color-success);
+  border-radius: var(--radius-md);
+  cursor: help;
+  transition: all var(--transition-base);
+}
+
+.system-status:hover {
+  background: rgba(0, 255, 136, 0.2);
+  box-shadow: 0 0 15px var(--color-success-glow);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.status-online {
+  background: var(--color-success);
+  box-shadow: 0 0 8px var(--color-success-glow);
+}
+
+.status-text {
+  font-size: var(--font-size-sm);
+  color: var(--color-success);
+  font-weight: var(--font-weight-medium);
+}
+
+/* 操作图标 */
+.action-icon {
+  font-size: 20px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.action-icon:hover {
+  color: var(--color-primary);
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 8px var(--color-primary-glow));
+}
+
+/* 通知徽章 */
+.notification-badge .ant-badge-count {
+  background: var(--gradient-danger);
+  box-shadow: 0 0 10px var(--color-danger-glow);
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* 用户信息 */
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.user-profile:hover {
+  background: rgba(0, 212, 255, 0.1);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--color-primary);
+  box-shadow: 0 0 10px var(--color-primary-glow);
+}
+
+.user-info {
+  line-height: 1.2;
+}
+
+.username {
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.user-role {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ========== 响应式 ========== */
+@media (max-width: 1200px) {
+  .system-name {
+    display: none;
+  }
+
+  .global-search {
+    width: 300px;
+  }
+
+  .global-search .ant-input-wrapper:hover,
+  .global-search .ant-input-wrapper:focus-within {
+    width: 350px;
+  }
+}
+
+@media (max-width: 768px) {
+  .topbar {
+    padding: 0 var(--spacing-md);
+  }
+
+  .topbar-center {
+    margin: 0 var(--spacing-md);
+  }
+
+  .global-search {
+    width: 200px;
+  }
+
+  .global-search .ant-input-wrapper:hover,
+  .global-search .ant-input-wrapper:focus-within {
+    width: 250px;
+  }
+
+  .search-hint {
+    display: none;
+  }
+
+  .status-text {
+    display: none;
+  }
+
+  .user-info {
+    display: none;
+  }
+}
+
+

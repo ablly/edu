@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>请求过于频繁 - 429</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/error.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-content">
+            <i class="fas fa-hourglass-half error-icon"></i>
+            <h1 class="error-code">429</h1>
+            <h2 class="error-title">请求过于频繁</h2>
+            <p class="error-message">
+                您的请求已达到速率限制，请稍后重试。
+            </p>
+            <p class="error-description">
+                为了保护系统资源和提供更好的服务质量，我们对API请求设置了合理的限制。<br>
+                请等待片刻后再次尝试，或者联系管理员了解更多信息。
+            </p>
+            <div class="error-actions">
+                <a href="javascript:history.back()" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> 返回上一页
+                </a>
+                <a href="/" class="btn btn-primary">
+                    <i class="fas fa-home"></i> 返回首页
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+

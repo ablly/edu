@@ -1,0 +1,263 @@
+/**
+ * 支付记录管理页面样式
+ */
+
+.payments-page {
+  padding: 0;
+}
+
+/* 交易ID样式 */
+.transaction-id {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  color: var(--primary-color);
+  font-size: 12px;
+}
+
+/* 订单号样式 */
+.order-sn {
+  font-family: 'Courier New', monospace;
+  font-weight: 500;
+  color: var(--secondary-color);
+  font-size: 12px;
+}
+
+/* 用户信息样式 */
+.user-name {
+  font-weight: 500;
+  color: var(--text-color);
+  margin-bottom: 2px;
+}
+
+.user-email {
+  font-size: 12px;
+  color: var(--text-color-secondary);
+}
+
+/* 金额信息样式 */
+.amount-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.amount {
+  font-weight: bold;
+  color: var(--success-color);
+  font-size: 14px;
+}
+
+.currency {
+  font-size: 10px;
+  color: var(--text-color-secondary);
+  margin-top: 2px;
+}
+
+/* 支付方式样式 */
+.payment-method {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+}
+
+.payment-method .anticon {
+  font-size: 16px;
+}
+
+/* 状态标签样式 */
+.payments-page .ant-tag {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 12px;
+}
+
+/* 搜索表单样式 */
+.payments-page .ant-row {
+  margin-bottom: 0;
+}
+
+.payments-page .ant-col {
+  margin-bottom: 16px;
+}
+
+/* 统计卡片动画 */
+.payments-page .stat-card {
+  transition: all 0.3s ease;
+}
+
+.payments-page .stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 212, 255, 0.15);
+}
+
+/* 表格行悬停效果 */
+.payments-page .ant-table-tbody > tr:hover > td {
+  background: var(--hover-background) !important;
+}
+
+/* 操作按钮样式 */
+.payments-page .ant-dropdown-menu-item {
+  transition: all 0.2s ease;
+}
+
+.payments-page .ant-dropdown-menu-item:hover {
+  background: var(--hover-background);
+  color: var(--primary-color);
+}
+
+.payments-page .ant-dropdown-menu-item-disabled {
+  color: var(--text-color-disabled) !important;
+}
+
+/* 模态框样式优化 */
+.payments-page .ant-modal-header {
+  background: var(--card-background);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.payments-page .ant-modal-content {
+  background: var(--card-background);
+}
+
+.payments-page .ant-modal-body {
+  background: var(--card-background);
+}
+
+/* 描述列表样式 */
+.payments-page .ant-descriptions-bordered .ant-descriptions-item-label {
+  background: var(--card-background-secondary);
+  color: var(--text-color-secondary);
+  font-weight: 500;
+}
+
+.payments-page .ant-descriptions-bordered .ant-descriptions-item-content {
+  background: var(--card-background);
+  color: var(--text-color);
+}
+
+/* 表单样式 */
+.payments-page .ant-input,
+.payments-page .ant-select-selector,
+.payments-page .ant-picker {
+  background: var(--input-background);
+  border-color: var(--border-color);
+  color: var(--text-color);
+}
+
+.payments-page .ant-input:focus,
+.payments-page .ant-select-focused .ant-select-selector,
+.payments-page .ant-picker:hover,
+.payments-page .ant-picker-focused {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
+}
+
+/* 警告框样式 */
+.payments-page .ant-alert {
+  background: rgba(0, 212, 255, 0.1);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  color: var(--text-color);
+}
+
+.payments-page .ant-alert-icon {
+  color: var(--primary-color);
+}
+
+/* 进度条样式 */
+.payments-page .ant-progress-bg {
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+}
+
+/* 按钮样式 */
+.payments-page .ant-btn-primary {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--text-color-light);
+}
+
+.payments-page .ant-btn-primary:hover {
+  background: var(--primary-color-light);
+  border-color: var(--primary-color-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .payments-page .ant-col {
+    margin-bottom: 12px;
+  }
+  
+  .payments-page .ant-input,
+  .payments-page .ant-select,
+  .payments-page .ant-picker {
+    width: 100%;
+  }
+  
+  .amount-info {
+    align-items: center;
+  }
+  
+  .payment-method {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .payments-page .transaction-id,
+  .payments-page .order-sn {
+    font-size: 10px;
+    word-break: break-all;
+  }
+  
+  .user-name,
+  .user-email {
+    font-size: 11px;
+  }
+}
+
+/* 加载状态样式 */
+.payments-page .ant-spin-container {
+  background: transparent;
+}
+
+.payments-page .ant-spin-dot-item {
+  background-color: var(--primary-color);
+}
+
+/* 分页样式 */
+.payments-page .ant-pagination {
+  background: transparent;
+}
+
+.payments-page .ant-pagination .ant-pagination-item {
+  background: var(--card-background);
+  border-color: var(--border-color);
+}
+
+.payments-page .ant-pagination .ant-pagination-item a {
+  color: var(--text-color);
+}
+
+.payments-page .ant-pagination .ant-pagination-item-active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.payments-page .ant-pagination .ant-pagination-item-active a {
+  color: var(--text-color-light);
+}
+
+/* 数据网格特殊样式 */
+.payments-page .data-grid-container {
+  border: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+.payments-page .data-grid-container:hover {
+  border-color: rgba(0, 212, 255, 0.4);
+  box-shadow: 0 4px 20px rgba(0, 212, 255, 0.1);
+}
+

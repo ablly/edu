@@ -1,0 +1,25 @@
+<!-- 标准化导航栏模板 - 供所有页面使用 -->
+<header class="navbar">
+    <div class="navbar-container">
+        <a href="{{ url_for('index') }}" class="navbar-brand">EduPilot</a>
+        
+        <button class="navbar-toggle" id="navbarToggle" aria-label="切换导航菜单">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        
+        <nav class="navbar-nav" id="navbarNav" role="navigation">
+            <a href="{{ url_for('index') }}" class="nav-link" data-page="index">首页</a>
+            <a href="{{ url_for('students_page') }}" class="nav-link" data-page="students">学生管理</a>
+            <a href="{{ url_for('submit_page') }}" class="nav-link" data-page="submit">作业提交</a>
+            <a href="{{ url_for('scores_page') }}" class="nav-link" data-page="scores">成绩查询</a>
+            <a href="{{ url_for('ai_ask_page') }}" class="nav-link" data-page="ai_ask">AI答疑</a>
+            <a href="{{ url_for('auxiliary_programming_page') }}" class="nav-link" data-page="auxiliary">辅助编程</a>
+            <a href="{{ url_for('video_summary_page') }}" class="nav-link" data-page="video">视频总结</a>
+            <a href="{{ url_for('generate_question_page') }}" class="nav-link" data-page="question">智能出题</a>
+            <a href="{{ url_for('generate_lecture_page') }}" class="nav-link" data-page="lecture">智能讲义</a>
+            <a href="{{ url_for('progress_chart') }}" class="nav-link" data-page="progress">成绩分析</a>
+        </nav>
+    </div>
+</header> 

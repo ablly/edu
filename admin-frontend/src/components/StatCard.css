@@ -1,0 +1,238 @@
+/* ============================================================================
+   统计卡片样式
+   ============================================================================ */
+
+.stat-card {
+  position: relative;
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  overflow: hidden;
+  transition: all var(--transition-base);
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 
+    0 12px 48px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* ========== 内容区域 ========== */
+.stat-card-content {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-lg);
+  z-index: 1;
+}
+
+/* ========== 图标 ========== */
+.stat-icon {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  transition: all var(--transition-base);
+}
+
+.stat-card:hover .stat-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* ========== 数据区域 ========== */
+.stat-data {
+  flex: 1;
+  min-width: 0;
+}
+
+.stat-title {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-value {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin-bottom: var(--spacing-sm);
+  font-family: var(--font-family-number);
+}
+
+/* ========== 趋势 ========== */
+.stat-trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-family-number);
+}
+
+.trend-up {
+  color: var(--color-success);
+  background: rgba(0, 255, 136, 0.1);
+}
+
+.trend-down {
+  color: var(--color-danger);
+  background: rgba(255, 51, 102, 0.1);
+}
+
+/* ========== 颜色主题 ========== */
+.stat-card-primary {
+  border-color: rgba(0, 212, 255, 0.3);
+}
+
+.stat-card-primary .stat-icon {
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 212, 255, 0.05));
+  color: var(--color-primary);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+}
+
+.stat-card-primary .stat-glow {
+  background: radial-gradient(circle at top right, rgba(0, 212, 255, 0.2), transparent);
+}
+
+.stat-card-success {
+  border-color: rgba(0, 255, 136, 0.3);
+}
+
+.stat-card-success .stat-icon {
+  background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 255, 136, 0.05));
+  color: var(--color-success);
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+}
+
+.stat-card-success .stat-glow {
+  background: radial-gradient(circle at top right, rgba(0, 255, 136, 0.2), transparent);
+}
+
+.stat-card-warning {
+  border-color: rgba(255, 184, 0, 0.3);
+}
+
+.stat-card-warning .stat-icon {
+  background: linear-gradient(135deg, rgba(255, 184, 0, 0.2), rgba(255, 184, 0, 0.05));
+  color: var(--color-warning);
+  box-shadow: 0 0 20px rgba(255, 184, 0, 0.3);
+}
+
+.stat-card-warning .stat-glow {
+  background: radial-gradient(circle at top right, rgba(255, 184, 0, 0.2), transparent);
+}
+
+.stat-card-danger {
+  border-color: rgba(255, 51, 102, 0.3);
+}
+
+.stat-card-danger .stat-icon {
+  background: linear-gradient(135deg, rgba(255, 51, 102, 0.2), rgba(255, 51, 102, 0.05));
+  color: var(--color-danger);
+  box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
+}
+
+.stat-card-danger .stat-glow {
+  background: radial-gradient(circle at top right, rgba(255, 51, 102, 0.2), transparent);
+}
+
+.stat-card-info {
+  border-color: rgba(177, 91, 255, 0.3);
+}
+
+.stat-card-info .stat-icon {
+  background: linear-gradient(135deg, rgba(177, 91, 255, 0.2), rgba(177, 91, 255, 0.05));
+  color: var(--color-secondary);
+  box-shadow: 0 0 20px rgba(177, 91, 255, 0.3);
+}
+
+.stat-card-info .stat-glow {
+  background: radial-gradient(circle at top right, rgba(177, 91, 255, 0.2), transparent);
+}
+
+/* ========== 发光效果 ========== */
+.stat-glow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: 150px;
+  opacity: 0.5;
+  pointer-events: none;
+  transition: opacity var(--transition-base);
+}
+
+.stat-card:hover .stat-glow {
+  opacity: 0.8;
+}
+
+/* ========== 加载状态 ========== */
+.stat-loading {
+  display: flex;
+  align-items: center;
+  height: 40px;
+}
+
+.loading-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.loading-dots span {
+  width: 8px;
+  height: 8px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  animation: bounce 1.4s ease-in-out infinite;
+  box-shadow: 0 0 10px var(--color-primary-glow);
+}
+
+.loading-dots span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.loading-dots span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ========== 响应式 ========== */
+@media (max-width: 768px) {
+  .stat-card {
+    padding: var(--spacing-md);
+  }
+
+  .stat-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 24px;
+  }
+
+  .stat-value {
+    font-size: var(--font-size-2xl);
+  }
+}
+
+

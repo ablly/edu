@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生管理测试页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .test-section h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .api-result {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 10px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .nav-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .nav-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <a href="{{ url_for('students_page') }}" class="nav-link">← 返回学生管理页面</a>
+        <h1>学生管理系统测试</h1>
+        
+        <div class="test-section">
+            <h3>1. API连接测试</h3>
+            <button onclick="testStudentsAPI()">测试学生列表API</button>
+            <button onclick="testStatsAPI()">测试统计API</button>
+            <div id="api-test-result" class="api-result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>2. 数据显示测试</h3>
+            <button onclick="displayStudents()">显示学生数据</button>
+            <div id="students-display"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>3. JavaScript加载测试</h3>
+            <button onclick="testJSLoad()">测试JS加载</button>
+            <div id="js-test-result" class="api-result"></div>
+        </div>
+    </div>
+
+    <script>
+        async function testStudentsAPI() {
+            const resultDiv = document.getElementById('api-test-result');
+            resultDiv.innerHTML = '正在测试学生API...';
+            
+            try {
+                const response = await fetch('/api/students');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `<span class="success">✓ 学生API测试成功</span>\n\n响应数据:\n${JSON.stringify(data, null, 2)}`;
+                } else {
+                    resultDiv.innerHTML = `<span class="error">✗ 学生API测试失败</span>\n\n错误信息:\n${JSON.stringify(data, null, 2)}`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">✗ 网络错误</span>\n\n错误详情:\n${error.message}`;
+            }
+        }
+        
+        async function testStatsAPI() {
+            const resultDiv = document.getElementById('api-test-result');
+            resultDiv.innerHTML = '正在测试统计API...';
+            
+            try {
+                const response = await fetch('/api/students/stats');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `<span class="success">✓ 统计API测试成功</span>\n\n响应数据:\n${JSON.stringify(data, null, 2)}`;
+                } else {
+                    resultDiv.innerHTML = `<span class="error">✗ 统计API测试失败</span>\n\n错误信息:\n${JSON.stringify(data, null, 2)}`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">✗ 网络错误</span>\n\n错误详情:\n${error.message}`;
+            }
+        }
+        
+        async function displayStudents() {
+            const displayDiv = document.getElementById('students-display');
+            displayDiv.innerHTML = '正在加载学生数据...';
+            
+            try {
+                const response = await fetch('/api/students');
+                const data = await response.json();
+                
+                if (response.ok && data.students) {
+                    let html = `<h4>学生列表 (共${data.total}名)</h4><ul>`;
+                    data.students.forEach(student => {
+                        html += `<li><strong>${student.name}</strong> (${student.student_id}) - ${student.major || '未设置专业'} - ${student.student_status}</li>`;
+                    });
+                    html += '</ul>';
+                    displayDiv.innerHTML = html;
+                } else {
+                    displayDiv.innerHTML = '<span class="error">无法加载学生数据</span>';
+                }
+            } catch (error) {
+                displayDiv.innerHTML = `<span class="error">加载失败: ${error.message}</span>`;
+            }
+        }
+        
+        function testJSLoad() {
+            const resultDiv = document.getElementById('js-test-result');
+            
+            // 测试基本JavaScript功能
+            const tests = [
+                { name: 'fetch API', test: () => typeof fetch !== 'undefined' },
+                { name: 'URLSearchParams', test: () => typeof URLSearchParams !== 'undefined' },
+                { name: 'DOM操作', test: () => typeof document.getElementById !== 'undefined' },
+                { name: 'ES6 Classes', test: () => { try { class Test {}; return true; } catch(e) { return false; } } },
+                { name: 'async/await', test: () => { try { eval('async function test() { await Promise.resolve(); }'); return true; } catch(e) { return false; } } }
+            ];
+            
+            let results = 'JavaScript功能测试结果:\n\n';
+            tests.forEach(test => {
+                const passed = test.test();
+                results += `${passed ? '✓' : '✗'} ${test.name}: ${passed ? '支持' : '不支持'}\n`;
+            });
+            
+            resultDiv.innerHTML = results;
+        }
+        
+        // 页面加载完成后自动运行一些测试
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('测试页面加载完成');
+            testJSLoad();
+        });
+    </script>
+</body>
+</html> 

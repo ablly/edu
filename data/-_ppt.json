@@ -1,0 +1,515 @@
+{
+  "template_name": "ppt.pptx",
+  "slides": [
+    {
+      "slide_idx": 0,
+      "layout_name": "包含图像的标题幻灯片",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "标题 1",
+          "text": "人工智能算法工程师职业规划",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 838199,
+            "top": 2002421,
+            "width": 7252505,
+            "height": 891250
+          }
+        },
+        {
+          "shape_idx": 1,
+          "name": "文本占位符 5",
+          "text": "新时代背景下的人工智能关键技术",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 838200,
+            "top": 3090444,
+            "width": 7252504,
+            "height": 338549
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 1,
+      "layout_name": "8_自定义版式",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "标题 8",
+          "text": "议程",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 826625,
+            "top": 4867539,
+            "width": 2727803,
+            "height": 1025525
+          }
+        },
+        {
+          "shape_idx": 1,
+          "name": "文本占位符 9",
+          "text": "前言：新时代背景与个人使命",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 7559432,
+            "top": 2055335,
+            "width": 4294206,
+            "height": 755650
+          }
+        },
+        {
+          "shape_idx": 2,
+          "name": "文本占位符 11",
+          "text": "职业愿景：理想与路径",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 7559432,
+            "top": 2782449,
+            "width": 4294206,
+            "height": 755650
+          }
+        },
+        {
+          "shape_idx": 3,
+          "name": "文本占位符 12",
+          "text": "职业目标定位：技能与贡献",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 7559432,
+            "top": 4352427,
+            "width": 4294206,
+            "height": 755650
+          }
+        },
+        {
+          "shape_idx": 4,
+          "name": "文本占位符 13",
+          "text": "实施策略：规划与执行",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 7559432,
+            "top": 3567438,
+            "width": 4294206,
+            "height": 755650
+          }
+        },
+        {
+          "shape_idx": 5,
+          "name": "文本占位符 14",
+          "text": "结束语：无惧追求梦想",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 7559432,
+            "top": 5137415,
+            "width": 4294206,
+            "height": 755650
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 2,
+      "layout_name": "1_自定义版式",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "标题 8",
+          "text": "前言",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 2152891,
+            "top": 1691472,
+            "width": 5045593,
+            "height": 1325563
+          }
+        },
+        {
+          "shape_idx": 1,
+          "name": "文本占位符 10",
+          "text": "新时代背景下人工智能作为关键技术的重要性\n个人使命：深耕AI领域，贡献国家发展",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 7569843,
+            "top": 1690688,
+            "width": 4155432,
+            "height": 1325562
+          }
+        },
+        {
+          "shape_idx": 2,
+          "name": "文本占位符 11",
+          "text": "新时代与使命",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 7569843,
+            "top": 1227698,
+            "width": 4155432,
+            "height": 382749
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 3,
+      "layout_name": "14_自定义版式​​",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "标题 13",
+          "text": "职业愿景",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 844946,
+            "top": 1193765,
+            "width": 4385843,
+            "height": 1325563
+          }
+        },
+        {
+          "shape_idx": 2,
+          "name": "文本占位符 16",
+          "text": "理想职业",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 5470816,
+            "top": 2540529,
+            "width": 3046302,
+            "height": 382749
+          }
+        },
+        {
+          "shape_idx": 3,
+          "name": "文本占位符 18",
+          "text": "岗位要求",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 8769606,
+            "top": 2540529,
+            "width": 3023149,
+            "height": 382749
+          }
+        },
+        {
+          "shape_idx": 4,
+          "name": "文本占位符 15",
+          "text": "人工智能算法工程师\n受玛格丽特·汉密尔顿事迹启发",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 5470525,
+            "top": 2944813,
+            "width": 3046413,
+            "height": 3044825
+          }
+        },
+        {
+          "shape_idx": 5,
+          "name": "文本占位符 17",
+          "text": "扎实数学基础\n编程技能\n算法知识\n数据分析能力",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 8769606,
+            "top": 2944813,
+            "width": 3023149,
+            "height": 3044825
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 4,
+      "layout_name": "3_空白",
+      "shapes": [
+        {
+          "shape_idx": 3,
+          "name": "标题 5",
+          "text": "职业目标定位",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 518160,
+            "top": 524172,
+            "width": 2578099,
+            "height": 2508588
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 5,
+      "layout_name": "5_自定义版式",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "标题 2",
+          "text": "实施策略",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 838200,
+            "top": 365125,
+            "width": 7634288,
+            "height": 1325563
+          }
+        },
+        {
+          "shape_idx": 1,
+          "name": "文本占位符 3",
+          "text": "前期规划：大二打基础\n中期规划：初级到中级工程师\n后期规划：高级工程师与创新项目",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 8530361,
+            "top": 4719574,
+            "width": 2489200,
+            "height": 3124200
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 6,
+      "layout_name": "图像和内容",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "标题 4",
+          "text": "结束语",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 841057,
+            "top": 1100290,
+            "width": 4578841,
+            "height": 1395208
+          }
+        },
+        {
+          "shape_idx": 1,
+          "name": "文本占位符 7",
+          "text": "无惧追求梦想",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 841058,
+            "top": 2561159,
+            "width": 4008437,
+            "height": 602887
+          }
+        },
+        {
+          "shape_idx": 6,
+          "name": "文本占位符 6",
+          "text": "引用玛格丽特·汉密尔顿",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 7718323,
+            "top": 1074809,
+            "width": 3977648,
+            "height": 731694
+          }
+        },
+        {
+          "shape_idx": 7,
+          "name": "文本占位符 19",
+          "text": "深耕AI领域",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 7718323,
+            "top": 2365537,
+            "width": 3977648,
+            "height": 731694
+          }
+        },
+        {
+          "shape_idx": 8,
+          "name": "文本占位符 20",
+          "text": "贡献国家发展",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 7718323,
+            "top": 3656265,
+            "width": 3977648,
+            "height": 731694
+          }
+        },
+        {
+          "shape_idx": 9,
+          "name": "文本占位符 21",
+          "text": "结合AI与艺术",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 7718323,
+            "top": 4946994,
+            "width": 3977648,
+            "height": 731694
+          }
+        },
+        {
+          "shape_idx": 10,
+          "name": "文本占位符 65",
+          "text": "服务国家战略，参与重点科研项目",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 838200,
+            "top": 3278528,
+            "width": 4008438,
+            "height": 2560899
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 7,
+      "layout_name": "27_自定义版式​​",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "标题 11",
+          "text": "团队与支持",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 841682,
+            "top": 971950,
+            "width": 3984960,
+            "height": 2036100
+          }
+        },
+        {
+          "shape_idx": 5,
+          "name": "文本占位符 16",
+          "text": "家庭支持学习氛围",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 5642770,
+            "top": 2823837,
+            "width": 2517605,
+            "height": 484146
+          }
+        },
+        {
+          "shape_idx": 6,
+          "name": "文本占位符 17",
+          "text": "家庭",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 5642770,
+            "top": 2419511,
+            "width": 2517605,
+            "height": 382749
+          }
+        },
+        {
+          "shape_idx": 7,
+          "name": "文本占位符 18",
+          "text": "就业环境需求大、机会多",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 8544956,
+            "top": 2823837,
+            "width": 2517605,
+            "height": 484146
+          }
+        },
+        {
+          "shape_idx": 8,
+          "name": "文本占位符 19",
+          "text": "就业环境",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 8544956,
+            "top": 2419511,
+            "width": 2517605,
+            "height": 382749
+          }
+        },
+        {
+          "shape_idx": 9,
+          "name": "文本占位符 20",
+          "text": "优势：兴趣强、学习能力",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 5642770,
+            "top": 5740657,
+            "width": 2517605,
+            "height": 484146
+          }
+        },
+        {
+          "shape_idx": 10,
+          "name": "文本占位符 21",
+          "text": "优势",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 5642770,
+            "top": 5336331,
+            "width": 2517605,
+            "height": 382749
+          }
+        },
+        {
+          "shape_idx": 11,
+          "name": "文本占位符 22",
+          "text": "威胁：竞争激烈",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 8544956,
+            "top": 5740657,
+            "width": 2517605,
+            "height": 484146
+          }
+        },
+        {
+          "shape_idx": 12,
+          "name": "文本占位符 23",
+          "text": "威胁",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 8544956,
+            "top": 5336331,
+            "width": 2517605,
+            "height": 382749
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 8,
+      "layout_name": "空白 ",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "标题 7",
+          "text": "总结",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 6790780,
+            "top": 839972,
+            "width": 4767262,
+            "height": 1342045
+          }
+        },
+        {
+          "shape_idx": 1,
+          "name": "文本占位符 9",
+          "text": "深耕AI领域，贡献国家发展\n结合AI与艺术，服务国家战略\n无惧追求梦想",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 6790780,
+            "top": 2635242,
+            "width": 4767262,
+            "height": 3483263
+          }
+        },
+        {
+          "shape_idx": 2,
+          "name": "文本占位符 11",
+          "text": "未来展望",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 6790780,
+            "top": 2247679,
+            "width": 4767262,
+            "height": 321901
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI PPT工具页面">
+    <title>AI PPT工具 - EduPilot多智能体教育协控平台</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar_user.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/generate_ppt.css') }}">
+</head>
+<body>
+    <header class="navbar">
+        <div class="navbar-container">
+            <a href="{{ url_for('index') }}" class="navbar-brand">EduPilot</a>
+            <button class="navbar-toggle" id="navbarToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav class="navbar-nav" id="navbarNav">
+                <a href="{{ url_for('index') }}" class="nav-link">首页</a>
+                <a href="{{ url_for('students_page') }}" class="nav-link">学生管理</a>
+                <a href="{{ url_for('submit_page') }}" class="nav-link">作业提交</a>
+                <a href="{{ url_for('scores_page') }}" class="nav-link">成绩查询</a>
+                <a href="{{ url_for('ai_ask_page') }}" class="nav-link">AI答疑</a>
+                <a href="{{ url_for('auxiliary_programming_page') }}" class="nav-link">辅助编程</a>
+                <a href="{{ url_for('video_summary_page') }}" class="nav-link">视频总结</a>
+                <a href="{{ url_for('generate_question_page') }}" class="nav-link">智能出题</a>
+                <a href="{{ url_for('generate_lecture_page') }}" class="nav-link">智能讲义</a>
+                <a href="{{ url_for('progress_chart') }}" class="nav-link">成绩分析</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>智能PPT生成器</h1>
+        <p class="description">利用AI技术快速生成或完善您的演示文稿</p>
+
+        <div class="instructions">
+            <h3>功能说明</h3>
+            <ul>
+                <li><strong>生成新PPT</strong> - 输入主题和内容要求，AI将为您创建专业演示文稿</li>
+                <li><strong>填充现有PPT</strong> - 上传已有PPT文件，AI将智能填充空白内容</li>
+                <li><strong>一键下载</strong> - 生成后可直接下载PPTX格式文件</li>
+            </ul>
+        </div>
+
+        <div class="mode-selector">
+            <button id="generate-mode-btn" class="active">生成新PPT</button>
+            <button id="fill-mode-btn">填充现有PPT</button>
+        </div>
+
+        <form id="ppt-form" class="ppt-form" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="theme">PPT主题</label>
+                <input type="text" id="theme" name="theme" placeholder="请输入PPT主题" required>
+            </div>
+
+            <div id="generate-content" class="mode-content active">
+                <div class="form-group">
+                    <label for="content">内容要求</label>
+                    <textarea id="content" name="content" placeholder="请详细描述您希望PPT包含的内容，例如章节标题、关键点等..." required></textarea>
+                </div>
+            </div>
+
+            <div id="fill-content" class="mode-content">
+                <div class="form-group">
+                    <label for="file-input">上传PPT文件</label>
+                    <input type="file" id="file-input" name="file" accept=".pptx,.ppt" style="display:none;">
+                    <label for="file-input" id="file-label" class="file-label">
+                        <span id="file-text">点击选择文件 (支持.pptx/.ppt格式)</span>
+                    </label>
+                    <p class="file-hint">最大支持20MB的文件</p>
+                </div>
+                <div class="form-group">
+                    <label for="instructions">填充说明 (可选)</label>
+                    <textarea id="instructions" name="instructions" placeholder="请说明您希望如何填充PPT内容..."></textarea>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-primary" id="submit-btn">生成PPT</button>
+        </form>
+
+        <div id="loading-indicator">
+            <div class="spinner"></div>
+            <p>正在处理您的请求，请稍候...</p>
+        </div>
+
+        <div id="result-section">
+            <h3>操作结果</h3>
+            <p id="result-message"></p>
+            <button id="download-btn" class="btn-download">下载PPT文件</button>
+            <div id="fill-details" class="hidden">
+                <h4>填充详情</h4>
+                <div id="fill-content-details"></div>
+            </div>
+            <a href="/generate-ppt" class="btn-back">开始新的PPT生成</a>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+
+
+    <script src="/static/js/generate_ppt.js"></script>
+</body>
+</html>

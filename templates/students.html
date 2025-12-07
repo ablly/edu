@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生管理 - EduPilot多智能体教育协控平台</title>
+    <meta name="description" content="智能化学生信息管理，添加、查看、编辑和管理学生档案">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar_user.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/students.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="navbar-container">
+            <a href="{{ url_for('index') }}" class="navbar-brand">EduPilot</a>
+            
+            <button class="navbar-toggle" id="navbarToggle" aria-label="切换导航菜单">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <nav class="navbar-nav" id="navbarNav" role="navigation">
+                <a href="{{ url_for('index') }}" class="nav-link" data-page="index">首页</a>
+                <a href="{{ url_for('students_page') }}" class="nav-link" data-page="students">学生管理</a>
+                <a href="{{ url_for('submit_page') }}" class="nav-link" data-page="submit">作业提交</a>
+                <a href="{{ url_for('scores_page') }}" class="nav-link" data-page="scores">成绩查询</a>
+                <a href="{{ url_for('ai_ask_page') }}" class="nav-link" data-page="ai_ask">AI答疑</a>
+                <a href="{{ url_for('auxiliary_programming_page') }}" class="nav-link" data-page="auxiliary">辅助编程</a>
+                <a href="{{ url_for('video_summary_page') }}" class="nav-link" data-page="video">视频总结</a>
+                <a href="{{ url_for('generate_question_page') }}" class="nav-link" data-page="question">智能出题</a>
+                <a href="{{ url_for('generate_lecture_page') }}" class="nav-link" data-page="lecture">智能讲义</a>
+                <a href="{{ url_for('progress_chart') }}" class="nav-link" data-page="progress">成绩分析</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 页面标题和统计 -->
+        <div class="page-header">
+            <div class="header-content">
+                <h1 class="page-title">
+                    <i class="fas fa-users"></i>
+                    学生管理
+                </h1>
+                <p class="page-description">智能化学生信息管理系统，支持完整的学生档案管理</p>
+            </div>
+            <div class="stats-cards" id="stats-cards">
+                <!-- 统计卡片将通过JS动态加载 -->
+            </div>
+        </div>
+
+        <!-- 操作工具栏 -->
+        <div class="toolbar">
+            <div class="toolbar-left">
+                <button class="btn btn-primary" id="add-student-btn">
+                    <i class="fas fa-plus"></i>
+                    添加学生
+                </button>
+                <button class="btn btn-outline" id="batch-import-btn">
+                    <i class="fas fa-upload"></i>
+                    批量导入
+                </button>
+                <button class="btn btn-outline" id="export-btn">
+                    <i class="fas fa-download"></i>
+                    导出数据
+                </button>
+                <button class="btn btn-danger" id="batch-delete-btn" style="display: none;">
+                    <i class="fas fa-trash"></i>
+                    批量删除
+                </button>
+            </div>
+            <div class="toolbar-right">
+                <div class="search-container">
+                    <input type="text" id="search-input" class="search-input" placeholder="搜索学生...">
+                    <button class="search-btn" id="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <button class="btn btn-outline" id="filter-btn">
+                    <i class="fas fa-filter"></i>
+                    筛选
+                </button>
+            </div>
+                        </div>
+
+        <!-- 筛选面板 -->
+        <div class="filter-panel" id="filter-panel" style="display: none;">
+            <div class="filter-content">
+                <div class="filter-group">
+                    <label>专业：</label>
+                    <select id="major-filter">
+                        <option value="">全部专业</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>班级：</label>
+                    <select id="class-filter">
+                        <option value="">全部班级</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>状态：</label>
+                    <select id="status-filter">
+                        <option value="">全部状态</option>
+                        <option value="在读">在读</option>
+                        <option value="休学">休学</option>
+                        <option value="毕业">毕业</option>
+                    </select>
+                        </div>
+                <div class="filter-actions">
+                    <button class="btn btn-primary" id="apply-filter-btn">应用筛选</button>
+                    <button class="btn btn-outline" id="reset-filter-btn">重置</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 学生列表 -->
+        <div class="content-section">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title-group">
+                    <h2 class="card-title">学生列表</h2>
+                        <div class="student-count">
+                            共 <span id="total-count">0</span> 名学生
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <div class="view-toggle">
+                            <button class="view-btn active" data-view="table">
+                                <i class="fas fa-table"></i>
+                            </button>
+                            <button class="view-btn" data-view="grid">
+                                <i class="fas fa-th"></i>
+                            </button>
+                        </div>
+                        <button class="btn btn-outline" id="refresh-btn">
+                            <i class="fas fa-sync-alt"></i>
+                            刷新
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="card-body">
+                    <!-- 加载状态 -->
+                    <div id="loading-students" class="loading-overlay" style="display: none;">
+                        <div class="loading-content">
+                            <div class="loading-spinner"></div>
+                            <div class="loading-text">正在加载学生信息...</div>
+                        </div>
+                    </div>
+
+                    <!-- 表格视图 -->
+                    <div id="table-view" class="table-view">
+                    <div class="table-container">
+                        <table id="students-table" class="data-table">
+                            <thead>
+                                <tr>
+                                        <th>
+                                            <input type="checkbox" id="select-all-checkbox">
+                                        </th>
+                                        <th>头像</th>
+                                        <th class="sortable" data-sort="student_id">学号 <i class="fas fa-sort"></i></th>
+                                        <th class="sortable" data-sort="name">姓名 <i class="fas fa-sort"></i></th>
+                                        <th>性别</th>
+                                        <th>专业</th>
+                                        <th>班级</th>
+                                        <th>联系方式</th>
+                                        <th class="sortable" data-sort="student_status">状态 <i class="fas fa-sort"></i></th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="students-tbody">
+                                <!-- 学生数据将在这里动态加载 -->
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+
+                    <!-- 网格视图 -->
+                    <div id="grid-view" class="grid-view" style="display: none;">
+                        <div id="students-grid" class="students-grid">
+                            <!-- 学生卡片将在这里动态加载 -->
+                        </div>
+                    </div>
+
+                    <!-- 空状态 -->
+                        <div id="empty-state" class="empty-state" style="display: none;">
+                        <div class="empty-icon">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                            <div class="empty-title">暂无学生信息</div>
+                            <div class="empty-description">点击上方"添加学生"按钮来添加第一个学生</div>
+                    </div>
+
+                    <!-- 分页 -->
+                    <div class="pagination-container" id="pagination-container" style="display: none;">
+                        <div class="pagination-info">
+                            显示第 <span id="page-start">1</span>-<span id="page-end">20</span> 条，共 <span id="total-records">0</span> 条记录
+                        </div>
+                        <div class="pagination" id="pagination">
+                            <!-- 分页按钮将通过JS动态生成 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 添加/编辑学生模态框 -->
+    <div class="modal" id="student-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">添加学生</h3>
+                <button class="modal-close" id="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="student-form" class="student-form">
+                    <div class="form-sections">
+                        <!-- 基本信息 -->
+                        <div class="form-section active" data-section="basic">
+                            <h4 class="section-title">基本信息</h4>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="student-id" class="form-label required">学号</label>
+                                    <input type="text" id="student-id" name="student_id" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="student-name" class="form-label required">姓名</label>
+                                    <input type="text" id="student-name" name="name" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="gender" class="form-label">性别</label>
+                                    <select id="gender" name="gender" class="form-control">
+                                        <option value="">请选择</option>
+                                        <option value="男">男</option>
+                                        <option value="女">女</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="birth-date" class="form-label">出生日期</label>
+                                    <input type="date" id="birth-date" name="birth_date" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="id-card" class="form-label">身份证号</label>
+                                    <input type="text" id="id-card" name="id_card" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone" class="form-label">联系电话</label>
+                                    <input type="tel" id="phone" name="phone" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email" class="form-label">邮箱</label>
+                                    <input type="email" id="email" name="email" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 学术信息 -->
+                        <div class="form-section" data-section="academic">
+                            <h4 class="section-title">学术信息</h4>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="major" class="form-label">专业</label>
+                                    <input type="text" id="major" name="major" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="class-name" class="form-label">班级</label>
+                                    <input type="text" id="class-name" name="class_name" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="grade" class="form-label">年级</label>
+                                    <input type="text" id="grade" name="grade" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="education-level" class="form-label">学制</label>
+                                    <select id="education-level" name="education_level" class="form-control">
+                                        <option value="">请选择</option>
+                                        <option value="专科">专科</option>
+                                        <option value="本科">本科</option>
+                                        <option value="硕士">硕士</option>
+                                        <option value="博士">博士</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="admission-date" class="form-label">入学日期</label>
+                                    <input type="date" id="admission-date" name="admission_date" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="student-status" class="form-label">学生状态</label>
+                                    <select id="student-status" name="student_status" class="form-control">
+                                        <option value="在读">在读</option>
+                                        <option value="休学">休学</option>
+                                        <option value="毕业">毕业</option>
+                                        <option value="退学">退学</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 联系信息 -->
+                        <div class="form-section" data-section="contact">
+                            <h4 class="section-title">联系信息</h4>
+                            <div class="form-grid">
+                                <div class="form-group full-width">
+                                    <label for="address" class="form-label">家庭住址</label>
+                                    <textarea id="address" name="address" class="form-control" rows="2"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="emergency-contact" class="form-label">紧急联系人</label>
+                                    <input type="text" id="emergency-contact" name="emergency_contact" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="emergency-phone" class="form-label">紧急联系电话</label>
+                                    <input type="tel" id="emergency-phone" name="emergency_phone" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="parent-name" class="form-label">家长姓名</label>
+                                    <input type="text" id="parent-name" name="parent_name" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="parent-phone" class="form-label">家长电话</label>
+                                    <input type="tel" id="parent-phone" name="parent_phone" class="form-control">
+                                </div>
+                                <div class="form-group full-width">
+                                    <label for="notes" class="form-label">备注</label>
+                                    <textarea id="notes" name="notes" class="form-control" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 表单导航 -->
+                    <div class="form-navigation">
+                        <div class="nav-tabs">
+                            <button type="button" class="nav-tab active" data-target="basic">基本信息</button>
+                            <button type="button" class="nav-tab" data-target="academic">学术信息</button>
+                            <button type="button" class="nav-tab" data-target="contact">联系信息</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" id="cancel-btn">取消</button>
+                <button type="submit" form="student-form" class="btn btn-primary" id="save-btn">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 学生详情模态框 -->
+    <div class="modal" id="student-detail-modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3 class="modal-title">学生详情</h3>
+                <button class="modal-close" id="detail-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="student-detail-content">
+                    <!-- 学生详情内容将通过JS动态加载 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 批量导入模态框 -->
+    <div class="modal" id="import-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">批量导入学生</h3>
+                <button class="modal-close" id="import-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="import-steps">
+                    <div class="step">
+                        <h4>1. 下载模板</h4>
+                        <p>请先下载Excel模板，按照模板格式填写学生信息</p>
+                        <button class="btn btn-outline" id="download-template-btn">
+                            <i class="fas fa-download"></i>
+                            下载模板
+                        </button>
+                    </div>
+                    <div class="step">
+                        <h4>2. 上传文件</h4>
+                        <div class="upload-area" id="upload-area">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>点击选择文件或拖拽文件到此处</p>
+                            <p class="upload-hint">支持 .xlsx, .xls, .csv 格式</p>
+                            <input type="file" id="import-file-input" accept=".xlsx,.xls,.csv" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+                <div id="import-progress" class="import-progress" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="import-progress-fill"></div>
+                    </div>
+                    <div class="progress-text" id="import-progress-text">导入中...</div>
+                </div>
+                <div id="import-result" class="import-result" style="display: none;">
+                    <!-- 导入结果将通过JS显示 -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" id="import-cancel-btn">取消</button>
+                <button type="button" class="btn btn-primary" id="import-confirm-btn" style="display: none;">确认导入</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 消息提示 -->
+    <div id="message-container" class="message-container"></div>
+
+    <!-- 脚本文件 -->
+    <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/students.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/navbar.js') }}?v=20251005a"></script>
+</body>
+</html>
+

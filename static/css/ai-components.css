@@ -1,0 +1,515 @@
+/* ========================================
+   EduPilot AI教育组件库
+   基于Context7 MCP的AI教育设计模式
+   ======================================== */
+
+/* ========================================
+   AI对话界面组件
+   ======================================== */
+
+/* AI聊天容器 */
+.ai-chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+/* 对话消息容器 */
+.ai-conversation {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-md);
+  scroll-behavior: smooth;
+}
+
+/* 消息气泡基础样式 */
+.ai-message {
+  display: flex;
+  margin-bottom: var(--spacing-md);
+  animation: slide-in-up 0.3s ease-out;
+}
+
+/* 用户消息 */
+.ai-message.user {
+  justify-content: flex-end;
+}
+
+.ai-message.user .message-bubble {
+  background: var(--primary-gradient);
+  color: var(--text-inverse);
+  border-radius: var(--radius-lg) var(--radius-lg) var(--radius-sm) var(--radius-lg);
+  max-width: 70%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  box-shadow: var(--shadow-chat-bubble);
+}
+
+/* AI回复消息 */
+.ai-message.assistant {
+  justify-content: flex-start;
+}
+
+.ai-message.assistant .message-bubble {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) var(--radius-sm);
+  max-width: 70%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  box-shadow: var(--shadow-chat-bubble);
+  border: 1px solid var(--border-color);
+}
+
+/* AI思考状态 */
+.ai-thinking {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  color: var(--ai-thinking-color);
+  font-style: italic;
+  padding: var(--spacing-sm) var(--spacing-md);
+}
+
+.ai-thinking::before {
+  content: "🤖";
+  animation: ai-pulse 1.5s infinite;
+}
+
+/* 消息操作按钮 */
+.message-actions {
+  display: flex;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-xs);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.ai-message:hover .message-actions {
+  opacity: 1;
+}
+
+.message-action-btn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-xs);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-secondary);
+}
+
+.message-action-btn:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+/* ========================================
+   智能学习卡片组件
+   ======================================== */
+
+/* 学习进度卡片 */
+.learning-progress-card {
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid var(--border-light);
+  position: relative;
+  overflow: hidden;
+}
+
+.learning-progress-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--learning-progress);
+}
+
+.learning-progress-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+}
+
+/* 进度条 */
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin: var(--spacing-sm) 0;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--learning-progress);
+  border-radius: var(--radius-full);
+  transition: width 0.8s ease;
+  position: relative;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  animation: progress-shimmer 2s infinite;
+}
+
+@keyframes progress-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* ========================================
+   AI功能卡片组件
+   ======================================== */
+
+/* 功能卡片网格 */
+.ai-features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-lg);
+  margin: var(--spacing-lg) 0;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 var(--spacing-lg);
+}
+
+/* AI功能卡片 */
+.ai-feature-card {
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid var(--border-light);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.ai-feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--primary-gradient);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.ai-feature-card:hover::before {
+  opacity: 0.05;
+}
+
+.ai-feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-ai-hover);
+}
+
+/* 功能卡片图标 */
+.ai-feature-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: var(--spacing-md);
+  position: relative;
+  z-index: 1;
+}
+
+.ai-feature-icon.chat {
+  background: var(--ai-chat-bg);
+  color: white;
+}
+
+.ai-feature-icon.analysis {
+  background: var(--knowledge-purple);
+  color: white;
+}
+
+.ai-feature-icon.progress {
+  background: var(--learning-progress);
+  color: white;
+}
+
+.ai-feature-icon.achievement {
+  background: var(--achievement-gold);
+  color: white;
+}
+
+/* ========================================
+   智能按钮组件
+   ======================================== */
+
+/* AI主要按钮 */
+.btn-ai-primary {
+  background: var(--primary-gradient);
+  color: var(--text-inverse);
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-base);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-ai-glow);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-ai-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.btn-ai-primary:hover::before {
+  left: 100%;
+}
+
+.btn-ai-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-ai-hover);
+}
+
+.btn-ai-primary:active {
+  transform: translateY(0);
+}
+
+/* AI次要按钮 */
+.btn-ai-secondary {
+  background: var(--accent-gradient);
+  color: var(--text-inverse);
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-md);
+}
+
+.btn-ai-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* AI轮廓按钮 */
+.btn-ai-outline {
+  background: transparent;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-ai-outline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--primary-gradient);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-ai-outline:hover::before {
+  opacity: 1;
+}
+
+.btn-ai-outline:hover {
+  color: var(--text-inverse);
+  transform: translateY(-2px);
+}
+
+/* ========================================
+   智能输入组件
+   ======================================== */
+
+/* AI输入框 */
+.ai-input-group {
+  position: relative;
+  margin-bottom: var(--spacing-md);
+}
+
+.ai-input {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-base);
+  transition: all 0.3s ease;
+  background: var(--bg-primary);
+}
+
+.ai-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.ai-input-label {
+  position: absolute;
+  top: 50%;
+  left: var(--spacing-md);
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  pointer-events: none;
+  transition: all 0.3s ease;
+  background: var(--bg-primary);
+  padding: 0 var(--spacing-xs);
+}
+
+.ai-input:focus + .ai-input-label,
+.ai-input:not(:placeholder-shown) + .ai-input-label {
+  top: 0;
+  font-size: var(--font-size-sm);
+  color: var(--primary-color);
+}
+
+/* ========================================
+   学习统计组件
+   ======================================== */
+
+/* 统计卡片 */
+.learning-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-md);
+  margin: var(--spacing-lg) 0;
+}
+
+.learning-stat-card {
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-light);
+  position: relative;
+  overflow: hidden;
+}
+
+.learning-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+}
+
+.learning-stat-card.progress::before {
+  background: var(--learning-progress);
+}
+
+.learning-stat-card.achievement::before {
+  background: var(--achievement-gold);
+}
+
+.learning-stat-card.knowledge::before {
+  background: var(--knowledge-purple);
+}
+
+.learning-stat-card.creativity::before {
+  background: var(--creativity-pink);
+}
+
+.learning-stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.stat-label {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+/* ========================================
+   响应式设计
+   ======================================== */
+
+@media (max-width: 768px) {
+  .ai-features-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+  
+  .learning-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-sm);
+  }
+  
+  .ai-message.user .message-bubble,
+  .ai-message.assistant .message-bubble {
+    max-width: 85%;
+  }
+  
+  .ai-feature-card {
+    padding: var(--spacing-md);
+  }
+  
+  .learning-progress-card {
+    padding: var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .learning-stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .btn-ai-primary,
+  .btn-ai-secondary,
+  .btn-ai-outline {
+    width: 100%;
+    justify-content: center;
+  }
+} 

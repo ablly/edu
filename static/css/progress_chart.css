@@ -1,0 +1,216 @@
+/* progress_chart.css */
+/* 完全继承submit页面的基础样式 */
+body {
+
+    background-position: center;
+    background-size: cover;
+    background-attachment : fixed;
+    height: auto;
+    min-height: 100vh;
+    background-blend-mode: multiply;
+    margin bottom: 0;
+}
+body::before{
+content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/static/img/0018.png');
+  background-repeat: repeat;
+    background-position: center; /* 设置背景图的位置 */
+    background-size: cover; /* 设置背景图大小为覆盖整个背景 */
+    background-attachment: fixed; /* 关键属性 - 使背景固定 */
+      position: fixed;
+  opacity: 0.5; /* 设置透明度 */
+  z-index: -1;
+}
+.main {
+    position: relative;
+    top: 160px;
+    padding: 20px 0;
+    width: 1000px;
+    margin: auto;
+}
+
+.submit-form {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-bottom: 30px;
+    width:1350px;
+    position:relative;
+    left:-210px;
+    top:-50px;
+}
+.ki{
+font-size:16px;
+}
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 16px;
+}
+
+/* 图表容器 - 移除默认背景和边距 */
+.chart-container {
+    background: none !important;
+    margin-top: 20px;
+}
+/* 图表卡片 - 修复白框问题 */
+.chart-card {
+    background: rgba(255, 255, 255, 0.92); /* 改为纯白微透明 */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(91, 143, 249, 0.12); /* 柔和的蓝色系阴影 */
+    border: 1px solid rgba(91, 143, 249, 0.15); /* 浅蓝色边框 */
+}
+/* 图表框 - 设为透明 */
+.chart-box {
+    background: transparent !important; /* 确保完全透明 */
+    height: 400px;
+}
+
+.message {
+    background: rgba(255,255,255,0.2);
+    border-radius: 4px;
+    padding: 20px;
+    margin: 25px 0;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #f06;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.update-info {
+    text-align: right;
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+}
+
+/* 完全复用submit页面的响应式设置 */
+@media (max-width: 768px) {
+    .main {
+        width: 95%;
+        top: 120px;
+    }
+
+    .chart-container {
+        grid-template-columns: 1fr;
+    }
+
+    .nav-list li {
+        right: 0;
+        margin-right: 10px;
+    }
+
+    .header {
+        padding: 20px 10px;
+    }
+
+    .submit-form {
+        padding: 20px;
+    }
+}
+
+.logo {
+    position: relative;
+    left: 30px;
+    font-size: 24px;
+    margin: 0;
+    color : #4A6DF8;
+}
+/* 统一文本样式 */
+.yd {
+    color: #333;
+     /*!important;*/
+}
+
+h2, h3 {
+    color: #4A6DF8;
+    margin-bottom: 20px;
+}
+h2{
+font-size:35px;
+}
+h3{
+font-size:28px;
+}
+.header {
+  backdrop-filter: blur;
+  color: #333;
+  padding: 20px 20px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+  background-color: rgba(255, 255, 255, 0.9);
+}
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+.nav-list li {
+  position: relative;
+  right: 195px;
+  margin-right: 20px;
+}
+.nav-list a, .login-button {
+  color: #333;
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.3s, transform 0.3s;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 30px;
+  background-color: transparent;
+}
+.nav-list a:hover, .login-button:hover {
+  color: #f06;
+  transform: scale(1.05);
+}
+
+/* 自定义 CSS (static/css/styles.css) */
+#loadingIndicator {
+    z-index: 9999;
+    opacity: 0.9;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* ECharts 错误提示样式覆盖 */
+.echarts .title-text {
+    font-family: 'Arial', sans-serif;
+}
+
+.yp{
+color:black;
+}

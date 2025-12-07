@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>快速测试创建套餐</title>
+</head>
+<body>
+    <h1>测试创建会员套餐</h1>
+    <button onclick="testCreate()">点击测试创建</button>
+    <pre id="result"></pre>
+
+    <script>
+        async function testCreate() {
+            const token = localStorage.getItem('admin_token');
+            
+            const testData = {
+                name: "快速测试套餐",
+                code: "quick_test_" + Date.now(),
+                description: "这是一个快速测试套餐",
+                price: 2.00,
+                duration_days: 1,
+                is_active: false,
+                is_limited: false,
+                is_early_bird: false,
+                total_quota: 0,
+                early_bird_tier: 0,
+                original_price: 1.00,
+                features: ["专属教师", "智能出题功能"]
+            };
+
+            try {
+                const response = await fetch('http://localhost:5000/api/admin/memberships/tiers', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(testData)
+                });
+
+                const data = await response.json();
+                
+                document.getElementById('result').textContent = 
+                    '状态码: ' + response.status + '\n' +
+                    '响应: ' + JSON.stringify(data, null, 2);
+
+                if (data.success) {
+                    alert('创建成功！');
+                } else {
+                    alert('创建失败: ' + (data.message || '未知错误'));
+                }
+            } catch (error) {
+                document.getElementById('result').textContent = '错误: ' + error.message;
+                alert('请求失败: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>
+
+

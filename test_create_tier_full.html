@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>完整测试创建套餐</title>
+    <meta charset="utf-8">
+</head>
+<body>
+    <h1>测试创建会员套餐</h1>
+    <div id="result"></div>
+    
+    <script>
+        async function testCreateTier() {
+            const payload = {
+                name: 'AI智能套餐',
+                code: 'ai_smart_final',
+                description: '包含AI智能答疑功能的高级套餐',
+                price: 29.90,
+                duration_days: 30,
+                level: 0,
+                is_active: true,
+                is_limited: false,
+                is_early_bird: false,
+                total_quota: 0,
+                early_bird_tier: 0,
+                original_price: 0,
+                sort_order: 0,
+                features: ['AI智能答疑', 'AI作业批改', '智能出题']
+            };
+            
+            console.log('准备发送的数据:', payload);
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/admin/memberships/tiers', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify(payload)
+                });
+                
+                const result = await response.json();
+                console.log('响应状态:', response.status);
+                console.log('响应数据:', result);
+                
+                document.getElementById('result').innerHTML = `
+                    <h2>响应状态: ${response.status}</h2>
+                    <pre>${JSON.stringify(result, null, 2)}</pre>
+                `;
+                
+                if (response.ok) {
+                    alert('✅ 创建成功！');
+                } else {
+                    alert('❌ 创建失败: ' + result.message);
+                }
+            } catch (error) {
+                console.error('请求失败:', error);
+                document.getElementById('result').innerHTML = `
+                    <h2 style="color: red;">请求失败</h2>
+                    <pre>${error.message}</pre>
+                `;
+            }
+        }
+        
+        // 自动执行测试
+        window.onload = () => {
+            setTimeout(testCreateTier, 1000);
+        };
+    </script>
+</body>
+</html>
+
+

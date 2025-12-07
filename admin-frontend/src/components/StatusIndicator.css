@@ -1,0 +1,108 @@
+/* 状态指示器样式 */
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-dot {
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.status-text {
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* 尺寸变体 */
+.status-indicator.size-small .status-dot {
+  width: 6px;
+  height: 6px;
+}
+
+.status-indicator.size-small .status-text {
+  font-size: 12px;
+}
+
+.status-indicator.size-small {
+  gap: 6px;
+}
+
+.status-indicator.size-default .status-dot {
+  width: 8px;
+  height: 8px;
+}
+
+.status-indicator.size-large .status-dot {
+  width: 12px;
+  height: 12px;
+}
+
+.status-indicator.size-large .status-text {
+  font-size: 16px;
+}
+
+.status-indicator.size-large {
+  gap: 10px;
+}
+
+/* 状态颜色变体 */
+.status-indicator.status-online .status-text {
+  color: var(--success-color);
+}
+
+.status-indicator.status-offline .status-text {
+  color: var(--text-disabled);
+}
+
+.status-indicator.status-warning .status-text {
+  color: var(--warning-color);
+}
+
+.status-indicator.status-error .status-text {
+  color: var(--danger-color);
+}
+
+.status-indicator.status-success .status-text {
+  color: var(--success-color);
+}
+
+.status-indicator.status-processing .status-text {
+  color: var(--primary-color);
+}
+
+/* 处理中状态的旋转动画 */
+.status-indicator.status-processing .status-dot {
+  position: relative;
+  overflow: hidden;
+}
+
+.status-indicator.status-processing .status-dot::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: conic-gradient(
+    from 0deg,
+    transparent,
+    var(--primary-color),
+    transparent
+  );
+  border-radius: 50%;
+  animation: rotate 1.5s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+

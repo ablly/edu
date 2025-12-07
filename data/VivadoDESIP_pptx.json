@@ -1,0 +1,485 @@
+{
+  "template_name": "pptx",
+  "slides": [
+    {
+      "slide_idx": 0,
+      "layout_name": "标题幻灯片",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "长方形 17",
+          "text": "",
+          "placeholder_type": null,
+          "position": {
+            "left": 1507,
+            "top": 4915076,
+            "width": 12188952,
+            "height": 1942924
+          }
+        },
+        {
+          "shape_idx": 1,
+          "name": "标题 1",
+          "text": "基于Vivado的DES加解密IP核完整设计方案",
+          "placeholder_type": "CENTER_TITLE (3)",
+          "position": {
+            "left": 828675,
+            "top": 5120639,
+            "width": 7137263,
+            "height": 1280161
+          }
+        },
+        {
+          "shape_idx": 3,
+          "name": "副标题 2",
+          "text": "DES加解密IP核设计与实现",
+          "placeholder_type": "SUBTITLE (4)",
+          "position": {
+            "left": 8289580,
+            "top": 5166359,
+            "width": 2582367,
+            "height": 1188721
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 1,
+      "layout_name": "三项内容",
+      "shapes": [
+        {
+          "shape_idx": 1,
+          "name": "标题 14",
+          "text": "课程大纲",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 0,
+            "top": 0,
+            "width": 12192000,
+            "height": 1296537
+          }
+        },
+        {
+          "shape_idx": 4,
+          "name": "页脚占位符 2",
+          "text": "基于Vivado的DES加解密IP核完整设计方案",
+          "placeholder_type": "FOOTER (15)",
+          "position": {
+            "left": 643051,
+            "top": 6446838,
+            "width": 6818262,
+            "height": 365125
+          }
+        },
+        {
+          "shape_idx": 5,
+          "name": "灯片编号占位符 17",
+          "text": "2",
+          "placeholder_type": "SLIDE_NUMBER (13)",
+          "position": {
+            "left": 10930596,
+            "top": 6446838,
+            "width": 617912,
+            "height": 365125
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 2,
+      "layout_name": "两栏内容",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "长方形 25",
+          "text": "",
+          "placeholder_type": null,
+          "position": {
+            "left": 15,
+            "top": 0,
+            "width": 12191985,
+            "height": 6858000
+          }
+        },
+        {
+          "shape_idx": 1,
+          "name": "标题 1",
+          "text": "系统级建模 (C语言验证)",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 598202,
+            "top": 516835,
+            "width": 3448259,
+            "height": 1666501
+          }
+        },
+        {
+          "shape_idx": 3,
+          "name": "内容占位符 2",
+          "text": "C语言实现DES简化加密算法用于功能验证\n包括加密函数和测试主函数\n示例输入输出简化加密结果",
+          "placeholder_type": "OBJECT (7)",
+          "position": {
+            "left": 505657,
+            "top": 2604280,
+            "width": 3448259,
+            "height": 3342747
+          }
+        },
+        {
+          "shape_idx": 4,
+          "name": "页脚占位符 3",
+          "text": "基于Vivado的DES加解密IP核完整设计方案",
+          "placeholder_type": "FOOTER (15)",
+          "position": {
+            "left": 643051,
+            "top": 6446838,
+            "width": 6818262,
+            "height": 365125
+          }
+        },
+        {
+          "shape_idx": 6,
+          "name": "灯片编号占位符 4",
+          "text": "3",
+          "placeholder_type": "SLIDE_NUMBER (13)",
+          "position": {
+            "left": 10930596,
+            "top": 6446838,
+            "width": 617912,
+            "height": 365125
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 3,
+      "layout_name": "1_带内容的图片",
+      "shapes": [
+        {
+          "shape_idx": 1,
+          "name": "标题 4",
+          "text": "RTL实现 (Verilog)",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 0,
+            "top": 0,
+            "width": 12192000,
+            "height": 1296537
+          }
+        },
+        {
+          "shape_idx": 2,
+          "name": "内容占位符 5",
+          "text": "顶层模块定义输入输出接口和控制器实例化\n核心控制器使用状态机管理DES流程\n流程包括初始置换、16轮Feistel网络、逆置换\n子密钥生成模块实现\n关键子模块如S盒简化定义",
+          "placeholder_type": "OBJECT (7)",
+          "position": {
+            "left": 514715,
+            "top": 1812759,
+            "width": 10905457,
+            "height": 2899284
+          }
+        },
+        {
+          "shape_idx": 3,
+          "name": "页脚占位符 1",
+          "text": "基于Vivado的DES加解密IP核完整设计方案",
+          "placeholder_type": "FOOTER (15)",
+          "position": {
+            "left": 643051,
+            "top": 6446838,
+            "width": 6818262,
+            "height": 365125
+          }
+        },
+        {
+          "shape_idx": 4,
+          "name": "灯片编号占位符 16",
+          "text": "4",
+          "placeholder_type": "SLIDE_NUMBER (13)",
+          "position": {
+            "left": 10930596,
+            "top": 6446838,
+            "width": 617912,
+            "height": 365125
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 4,
+      "layout_name": "1_带内容的图片",
+      "shapes": [
+        {
+          "shape_idx": 1,
+          "name": "标题 1",
+          "text": "仿真测试 (Testbench)",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 0,
+            "top": 0,
+            "width": 12192000,
+            "height": 1296537
+          }
+        },
+        {
+          "shape_idx": 3,
+          "name": "页脚占位符 2",
+          "text": "基于Vivado的DES加解密IP核完整设计方案",
+          "placeholder_type": "FOOTER (15)",
+          "position": {
+            "left": 643051,
+            "top": 6446838,
+            "width": 6818262,
+            "height": 365125
+          }
+        },
+        {
+          "shape_idx": 4,
+          "name": "灯片编号占位符 13",
+          "text": "5",
+          "placeholder_type": "SLIDE_NUMBER (13)",
+          "position": {
+            "left": 10930596,
+            "top": 6446838,
+            "width": 617912,
+            "height": 365125
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 5,
+      "layout_name": "1_带标题的内容",
+      "shapes": [
+        {
+          "shape_idx": 1,
+          "name": "标题 2",
+          "text": "仿真测试 (Testbench)",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 643466,
+            "top": 488254,
+            "width": 3517567,
+            "height": 1087974
+          }
+        },
+        {
+          "shape_idx": 2,
+          "name": "文本占位符 3",
+          "text": "Testbench设置时钟和复位信号\n测试加密和解密操作功能\n输出仿真结果验证设计正确性",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 403625,
+            "top": 2083689,
+            "width": 3757408,
+            "height": 3855791
+          }
+        },
+        {
+          "shape_idx": 3,
+          "name": "页脚占位符 4",
+          "text": "基于Vivado的DES加解密IP核完整设计方案",
+          "placeholder_type": "FOOTER (15)",
+          "position": {
+            "left": 643051,
+            "top": 6446838,
+            "width": 6818262,
+            "height": 365125
+          }
+        },
+        {
+          "shape_idx": 5,
+          "name": "灯片编号占位符 1",
+          "text": "6",
+          "placeholder_type": "SLIDE_NUMBER (13)",
+          "position": {
+            "left": 10930596,
+            "top": 6446838,
+            "width": 617912,
+            "height": 365125
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 6,
+      "layout_name": "2_带标题的内容",
+      "shapes": [
+        {
+          "shape_idx": 1,
+          "name": "标题 2",
+          "text": "课程总结",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 5356143,
+            "top": 3975295,
+            "width": 6835858,
+            "height": 1089350
+          }
+        },
+        {
+          "shape_idx": 2,
+          "name": "文本占位符 3",
+          "text": "系统级建模 (C语言验证)\nC语言实现DES简化加密算法用于功能验证\nRTL实现 (Verilog)\n顶层模块定义输入输出接口和控制器实例化\n仿真测试 (Testbench)\nTestbench设置时钟和复位信号",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 678635,
+            "top": 0,
+            "width": 3998873,
+            "height": 5852160
+          }
+        },
+        {
+          "shape_idx": 4,
+          "name": "文本占位符 35",
+          "text": "DES加解密IP核设计与实现的关键步骤",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 5356422,
+            "top": 5034909,
+            "width": 6835291,
+            "height": 817251
+          }
+        },
+        {
+          "shape_idx": 5,
+          "name": "页脚占位符 4",
+          "text": "基于Vivado的DES加解密IP核完整设计方案",
+          "placeholder_type": "FOOTER (15)",
+          "position": {
+            "left": 643051,
+            "top": 6446838,
+            "width": 6818262,
+            "height": 365125
+          }
+        },
+        {
+          "shape_idx": 6,
+          "name": "灯片编号占位符 1",
+          "text": "7",
+          "placeholder_type": "SLIDE_NUMBER (13)",
+          "position": {
+            "left": 10930596,
+            "top": 6446838,
+            "width": 617912,
+            "height": 365125
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 7,
+      "layout_name": "1_带内容的图片",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "标题 1",
+          "text": "课程进度",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 0,
+            "top": 0,
+            "width": 12192000,
+            "height": 1296537
+          }
+        },
+        {
+          "shape_idx": 2,
+          "name": "页脚占位符 2",
+          "text": "基于Vivado的DES加解密IP核完整设计方案",
+          "placeholder_type": "FOOTER (15)",
+          "position": {
+            "left": 643051,
+            "top": 6446838,
+            "width": 6818262,
+            "height": 365125
+          }
+        },
+        {
+          "shape_idx": 3,
+          "name": "幻灯片编号占位符 8",
+          "text": "8",
+          "placeholder_type": "SLIDE_NUMBER (13)",
+          "position": {
+            "left": 10930596,
+            "top": 6446838,
+            "width": 617912,
+            "height": 365125
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 8,
+      "layout_name": "1_带内容的图片",
+      "shapes": [
+        {
+          "shape_idx": 1,
+          "name": "标题 1",
+          "text": "课程进度",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 0,
+            "top": 0,
+            "width": 12192000,
+            "height": 1296537
+          }
+        },
+        {
+          "shape_idx": 3,
+          "name": "页脚占位符 2",
+          "text": "基于Vivado的DES加解密IP核完整设计方案",
+          "placeholder_type": "FOOTER (15)",
+          "position": {
+            "left": 643051,
+            "top": 6446838,
+            "width": 6818262,
+            "height": 365125
+          }
+        },
+        {
+          "shape_idx": 4,
+          "name": "幻灯片编号占位符 8",
+          "text": "9",
+          "placeholder_type": "SLIDE_NUMBER (13)",
+          "position": {
+            "left": 10930596,
+            "top": 6446838,
+            "width": 617912,
+            "height": 365125
+          }
+        }
+      ]
+    },
+    {
+      "slide_idx": 9,
+      "layout_name": "带标题的图片",
+      "shapes": [
+        {
+          "shape_idx": 0,
+          "name": "标题 2",
+          "text": "谢谢！",
+          "placeholder_type": "TITLE (1)",
+          "position": {
+            "left": 1097279,
+            "top": 4892956,
+            "width": 10113645,
+            "height": 743682
+          }
+        },
+        {
+          "shape_idx": 1,
+          "name": "文本占位符 3",
+          "text": "感谢您的关注与参与，期待下次再见！",
+          "placeholder_type": "BODY (2)",
+          "position": {
+            "left": 1097279,
+            "top": 5808594,
+            "width": 10113264,
+            "height": 682822
+          }
+        }
+      ]
+    }
+  ]
+}

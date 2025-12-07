@@ -1,0 +1,213 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 / 注册 - EduPilot AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}?v=20251005f">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <!-- 左侧信息面板 -->
+            <div class="info-panel">
+                <div class="logo-section">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h1>EduPilot AI</h1>
+                    <p class="tagline">智能教育协控系统</p>
+                </div>
+                
+                <div class="features">
+                    <div class="feature-item">
+                        <i class="fas fa-robot"></i>
+                        <h3>AI智能答疑</h3>
+                        <p>24/7在线解答学习疑问</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-file-alt"></i>
+                        <h3>智能出题</h3>
+                        <p>自动生成个性化试题</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-book"></i>
+                        <h3>智能讲义</h3>
+                        <p>AI辅助生成教学内容</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-users"></i>
+                        <h3>学生管理</h3>
+                        <p>高效的班级管理系统</p>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- 右侧表单面板 -->
+            <div class="form-panel">
+                <!-- 登录表单 -->
+                <div class="form-container" id="loginForm">
+                    <h2>欢迎回来</h2>
+                    <p class="form-subtitle">登录您的账号继续使用</p>
+                    
+                    <form id="loginFormElement" onsubmit="return false;">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        <div class="form-group">
+                            <label for="login-username">
+                                <i class="fas fa-user"></i>
+                                用户名 / 邮箱
+                            </label>
+                            <input 
+                                type="text" 
+                                id="login-username" 
+                                name="username" 
+                                placeholder="请输入用户名或邮箱"
+                                required
+                            >
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="login-password">
+                                <i class="fas fa-lock"></i>
+                                密码
+                            </label>
+                            <input 
+                                type="password" 
+                                id="login-password" 
+                                name="password" 
+                                placeholder="请输入密码"
+                                required
+                            >
+                        </div>
+                        
+                        <div class="form-options">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="remember-me" name="remember">
+                                <span>记住我</span>
+                            </label>
+                            <a href="{{ url_for('forgot_password_page') }}" class="forgot-password">忘记密码？</a>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-sign-in-alt"></i>
+                            登录
+                        </button>
+                        
+                        <div class="form-footer">
+                            还没有账号？
+                            <a href="#" class="switch-form" data-target="register">立即注册</a>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- 注册表单 -->
+                <div class="form-container hidden" id="registerForm">
+                    <h2>创建账号</h2>
+                    <p class="form-subtitle">加入EduPilot AI开始您的智能教育之旅</p>
+                    
+                    <form id="registerFormElement" onsubmit="return false;">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        <div class="form-group">
+                            <label for="register-username">
+                                <i class="fas fa-user"></i>
+                                用户名
+                            </label>
+                            <input 
+                                type="text" 
+                                id="register-username" 
+                                name="username" 
+                                placeholder="支持中文、英文"
+                                required
+                                minlength="2"
+                                maxlength="20"
+                            >
+                            <span class="input-hint">支持中文2-10字符或英文3-20字符</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="register-email">
+                                <i class="fas fa-envelope"></i>
+                                邮箱
+                            </label>
+                            <input 
+                                type="email" 
+                                id="register-email" 
+                                name="email" 
+                                placeholder="your@example.com"
+                                required
+                            >
+                            <span class="input-hint">用于找回密码和接收通知</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="register-password">
+                                <i class="fas fa-lock"></i>
+                                密码
+                            </label>
+                            <input 
+                                type="password" 
+                                id="register-password" 
+                                name="password" 
+                                placeholder="至少8个字符"
+                                required
+                                minlength="8"
+                            >
+                            <!-- 密码强度指示器 -->
+                            <div class="password-strength-indicator">
+                                <div class="strength-bar-container">
+                                    <div class="strength-bar" id="strength-bar"></div>
+                                </div>
+                                <span class="strength-text" id="strength-text">请输入密码</span>
+                            </div>
+                            <!-- 密码要求列表 -->
+                            <ul class="password-requirements" id="password-requirements">
+                                <li id="req-length"><i class="fas fa-circle"></i> 至少8个字符</li>
+                                <li id="req-upper"><i class="fas fa-circle"></i> 包含大写字母</li>
+                                <li id="req-lower"><i class="fas fa-circle"></i> 包含小写字母</li>
+                                <li id="req-digit"><i class="fas fa-circle"></i> 包含数字</li>
+                                <li id="req-special"><i class="fas fa-circle"></i> 包含特殊字符（推荐）</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="register-confirm-password">
+                                <i class="fas fa-lock"></i>
+                                确认密码
+                            </label>
+                            <input 
+                                type="password" 
+                                id="register-confirm-password" 
+                                name="confirm-password" 
+                                placeholder="再次输入密码"
+                                required
+                            >
+                        </div>
+                        
+                        <div class="terms-agreement">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="agree-terms" required>
+                                <span>我已阅读并同意 <a href="#" target="_blank">服务条款</a> 和 <a href="#" target="_blank">隐私政策</a></span>
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-user-plus"></i>
+                            注册
+                        </button>
+                        
+                        <div class="form-footer">
+                            已有账号？
+                            <a href="#" class="switch-form" data-target="login">立即登录</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast通知容器 -->
+    <div id="toast-container"></div>
+    
+    <script src="{{ url_for('static', filename='js/login.js') }}?v=20251005g"></script>
+</body>
+</html>

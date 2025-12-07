@@ -1,0 +1,680 @@
+/* 视频总结页面样式 */
+:root {
+    --primary-color: #667eea;
+    --secondary-color: #764ba2;
+    --success-color: #28a745;
+    --error-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --border-color: #dee2e6;
+    --shadow-light: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 4px 8px rgba(0, 0, 0, 0.15);
+    --shadow-heavy: 0 8px 16px rgba(0, 0, 0, 0.2);
+    --border-radius: 8px;
+    --transition: all 0.3s ease;
+}
+
+/* 基础布局 */
+.video-summary-page {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* 主要内容区域 */
+main {
+    padding-top: 120px;
+    padding-bottom: 40px;
+}
+
+/* 视频总结表单区域 */
+.video-summary-form {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-medium);
+    padding: 40px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+.video-summary-form::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+}
+
+/* 页面标题 */
+.video-summary-form h2 {
+    color: var(--primary-color);
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    text-align: center;
+    position: relative;
+}
+
+.video-summary-form h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    border-radius: 2px;
+}
+
+/* 功能说明区域 */
+.instructions {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: var(--border-radius);
+    padding: 25px;
+    margin-bottom: 30px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.instructions h3 {
+    color: var(--secondary-color);
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.instructions h3::before {
+    content: '\f05a';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: var(--primary-color);
+}
+
+.instructions ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.instructions li {
+    padding: 10px 0;
+    font-size: 16px;
+    color: #555;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.instructions li::before {
+    content: '\f00c';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: var(--success-color);
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+/* 表单样式 */
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: var(--dark-color);
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.form-group input[type="url"],
+.form-group input[type="file"],
+.form-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    transition: var(--transition);
+    background: white;
+    box-sizing: border-box;
+}
+
+.form-group input[type="url"]:focus,
+.form-group input[type="file"]:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* 文件上传样式增强 */
+.form-group input[type="file"] {
+    padding: 20px;
+    border: 2px dashed var(--border-color);
+    background: #fafbfc;
+    cursor: pointer;
+    text-align: center;
+    transition: var(--transition);
+}
+
+.form-group input[type="file"]:hover {
+    border-color: var(--primary-color);
+    background: #f0f4ff;
+}
+
+/* 帮助文本 */
+.help-text {
+    font-size: 14px;
+    color: #6c757d;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.help-text::before {
+    content: '\f129';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: var(--info-color);
+}
+
+/* 按钮样式 */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+    min-width: 140px;
+    box-shadow: var(--shadow-light);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn::before {
+    content: '\f04b';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary::before {
+    content: '\f12d';
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+}
+
+/* 消息显示 */
+.message-container {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    z-index: 1000;
+    max-width: 400px;
+}
+
+.message {
+    padding: 16px 20px;
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-medium);
+    animation: slideInRight 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.message::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 4px;
+}
+
+.message.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.message.success::before {
+    background: var(--success-color);
+}
+
+.message.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.message.error::before {
+    background: var(--error-color);
+}
+
+.message.info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+.message.info::before {
+    background: var(--info-color);
+}
+
+.message.warning {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+.message.warning::before {
+    background: var(--warning-color);
+}
+
+/* 总结结果显示 */
+.summary-container {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    margin-top: 30px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.summary-container h3 {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 20px;
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.summary-content {
+    padding: 30px;
+    line-height: 1.8;
+    color: #333;
+}
+
+.summary-heading {
+    color: var(--primary-color);
+    font-size: 18px;
+    font-weight: 600;
+    margin: 25px 0 15px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #f0f4ff;
+}
+
+.summary-paragraph {
+    margin-bottom: 16px;
+    text-align: justify;
+    color: #555;
+}
+
+/* 笔记功能区域 */
+#note-container {
+    margin-top: 40px;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-medium);
+    overflow: hidden;
+}
+
+.notes-section {
+    padding: 30px;
+}
+
+.notes-section h3 {
+    color: var(--secondary-color);
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notes-section h3::before {
+    content: '\f249';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: var(--primary-color);
+}
+
+.note-input-area {
+    margin-bottom: 30px;
+}
+
+.note-input-area textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 16px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    font-family: inherit;
+    resize: vertical;
+    transition: var(--transition);
+}
+
+.note-input-area textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.note-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+/* 笔记历史 */
+.note-history h4 {
+    color: var(--dark-color);
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.note-item {
+    background: #f8f9fa;
+    border-radius: var(--border-radius);
+    padding: 16px;
+    margin-bottom: 15px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.note-timestamp {
+    font-size: 12px;
+    color: #6c757d;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.note-text {
+    color: #333;
+    line-height: 1.6;
+}
+
+.no-notes {
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+    padding: 20px;
+}
+
+/* 页脚 */
+footer {
+    text-align: center;
+    padding: 30px 0;
+    color: #6c757d;
+    font-size: 14px;
+    margin-top: 40px;
+}
+
+/* 动画效果 */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+}
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.video-summary-form {
+    animation: fadeIn 0.6s ease;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+}
+
+    main {
+        padding-top: 100px;
+    }
+    
+    .video-summary-form {
+        padding: 25px 20px;
+}
+
+    .video-summary-form h2 {
+        font-size: 24px;
+}
+
+    .instructions {
+        padding: 20px;
+    }
+    
+    .note-actions {
+        flex-direction: column;
+}
+
+    .btn {
+    width: 100%;
+        justify-content: center;
+    }
+    
+    .message-container {
+        top: 80px;
+        right: 15px;
+        left: 15px;
+        max-width: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .video-summary-form {
+        padding: 20px 15px;
+    }
+    
+    .video-summary-form h2 {
+        font-size: 22px;
+}
+
+    .instructions h3 {
+        font-size: 18px;
+}
+
+    .instructions li {
+        font-size: 14px;
+    }
+    
+    .form-group input,
+    .form-group textarea {
+        font-size: 16px; /* 防止iOS自动缩放 */
+    }
+}
+
+/* 进度条样式 */
+.progress-container {
+    text-align: center;
+    padding: 30px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    width: 0%;
+    transition: width 0.3s ease;
+    border-radius: 4px;
+}
+
+.progress-text {
+    font-size: 14px;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+/* 总结操作按钮 */
+.summary-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    justify-content: center;
+}
+
+/* 小按钮样式 */
+.btn-small {
+    padding: 6px 12px;
+    font-size: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: var(--transition);
+    background: var(--primary-color);
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-small:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-small.btn-danger {
+    background: var(--error-color);
+}
+
+.btn-small.btn-danger:hover {
+    background: #c82333;
+}
+
+/* 笔记项内联操作 */
+.note-actions-inline {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.note-item:hover .note-actions-inline {
+    opacity: 1;
+}
+
+/* 文件上传增强样式 */
+.form-group input[type="file"] {
+    position: relative;
+    cursor: pointer;
+}
+
+.form-group input[type="file"]::before {
+    content: '\f093 拖拽文件到这里或点击选择';
+    font-family: 'Font Awesome 6 Free', sans-serif;
+    font-weight: 900;
+    display: block;
+    text-align: center;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+.form-group input[type="file"]:hover::before {
+    color: var(--primary-color);
+}
+
+/* 消息内容样式增强 */
+.message-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.message-content i {
+    flex-shrink: 0;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .summary-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .summary-actions .btn {
+        width: 100%;
+        max-width: 250px;
+    }
+    
+    .note-actions-inline {
+        opacity: 1; /* 移动端始终显示 */
+        justify-content: center;
+        flex-wrap: wrap;
+        }
+}
+
+@media (max-width: 480px) {
+    .progress-container {
+        padding: 20px;
+        }
+
+    .btn-small {
+        font-size: 11px;
+        padding: 5px 10px;
+    }
+        }
