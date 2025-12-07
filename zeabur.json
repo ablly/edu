@@ -1,0 +1,5 @@
+{
+  "$schema": "https://json-schema.zeabur.app/schema.json",
+  "build_type": "python",
+  "start_command": "python app.py"
+}
