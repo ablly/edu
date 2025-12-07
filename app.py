@@ -413,6 +413,27 @@ def api_init_database():
         }), 500
 
 
+# 解锁账户接口
+@app.route('/api/unlock/<username>', methods=['GET', 'POST'])
+@csrf.exempt
+def api_unlock_account(username):
+    """解锁被锁定的账户"""
+    try:
+        from models import LoginAttempt
+        # 删除该用户的所有登录尝试记录
+        LoginAttempt.query.filter_by(username=username).delete()
+        db.session.commit()
+        return jsonify({
+            'success': True,
+            'message': f'账户 {username} 已解锁'
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
 # 页面路由
 @app.route('/')
 def index():
