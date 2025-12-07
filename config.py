@@ -133,11 +133,13 @@ class ProductionConfig(BaseConfig):
     DEBUG = False
     TESTING = False
     
-    # 数据库配置 - 生产环境建议使用PostgreSQL或MySQL
-    # 示例：
-    # PostgreSQL: postgresql://user:password@localhost:5432/edupilot
-    # MySQL: mysql+pymysql://user:password@localhost:3306/edupilot
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or f'sqlite:///{os.path.join(BASE_DIR, "data", "edupilot.db")}'
+    # 数据库配置 - 生产环境必须使用PostgreSQL
+    # Vercel环境不支持SQLite（只读文件系统）
+    _db_url = os.environ.get('DATABASE_URL') or os.environ.get('POSTGRES_URL')
+    # 处理 Vercel Postgres 的 URL 格式（postgres:// -> postgresql://）
+    if _db_url and _db_url.startswith('postgres://'):
+        _db_url = _db_url.replace('postgres://', 'postgresql://', 1)
+    SQLALCHEMY_DATABASE_URI = _db_url or f'sqlite:///{os.path.join(BASE_DIR, "data", "edupilot.db")}'
     
     # 生产环境数据库连接池配置（仅MySQL/PostgreSQL）
     # 如果使用SQLite，这些参数会被自动忽略

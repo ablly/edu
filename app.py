@@ -68,11 +68,16 @@ app.config['MAIL_PASSWORD'] = 'uxsenlfyzpdrdbgh'  # QQ邮箱授权码
 app.config['MAIL_DEFAULT_SENDER'] = ('EduPilot AI', '3533912007@qq.com')
 app.config['MAIL_MAX_EMAILS'] = None
 app.config['MAIL_ASCII_ATTACHMENTS'] = False
-# 确保上传文件夹存在
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-# 确保上传和数据库目录存在
-os.makedirs(config.UPLOAD_FOLDER, exist_ok=True)
-os.makedirs(os.path.dirname(config.DATABASE_PATH), exist_ok=True)
+
+# 确保上传文件夹存在（Vercel等只读文件系统会跳过）
+try:
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    os.makedirs(config.UPLOAD_FOLDER, exist_ok=True)
+    if hasattr(config, 'DATABASE_PATH') and config.DATABASE_PATH:
+        os.makedirs(os.path.dirname(config.DATABASE_PATH), exist_ok=True)
+except (OSError, PermissionError):
+    # Vercel等无服务器环境是只读文件系统，跳过目录创建
+    pass
 
 # 初始化数据库
 db.init_app(app)
@@ -307,6 +312,54 @@ def load_k12_courses():
 
 # 在应用启动时加载K12课程
 load_k12_courses()
+
+
+# 数据库初始化路由（用于 Vercel 部署后首次初始化）
+@app.route('/api/init_db', methods=['GET', 'POST'])
+@csrf.exempt
+def api_init_database():
+    """初始化数据库表结构和默认数据"""
+    try:
+        from models_admin import init_admin_tables
+        from models_membership import MembershipTier
+        
+        # 创建所有表
+        db.create_all()
+        
+        # 初始化管理员
+        created_admins = init_admin_tables()
+        
+        # 检查是否需要创建默认会员套餐
+        free_tier = MembershipTier.query.filter_by(code='free').first()
+        tier_created = False
+        if not free_tier:
+            free_tier = MembershipTier(
+                name='免费版',
+                code='free',
+                level=0,
+                price=0,
+                duration_days=0,
+                is_active=True,
+                description='免费用户',
+                permissions='{"allowed_features": ["ai_ask"], "limits": {"ai_ask": 5}}'
+            )
+            db.session.add(free_tier)
+            db.session.commit()
+            tier_created = True
+        
+        return jsonify({
+            'success': True,
+            'message': '数据库初始化成功',
+            'admins_created': len(created_admins),
+            'tier_created': tier_created
+        })
+    except Exception as e:
+        import traceback
+        return jsonify({
+            'success': False,
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
 
 
 # 页面路由
@@ -4330,38 +4383,44 @@ def setup_logging():
         from logging.handlers import RotatingFileHandler
         import os
         
-        # 确保logs目录存在
-        if not os.path.exists('logs'):
-            os.makedirs('logs')
-        
         # 设置日志格式
         formatter = logging.Formatter(
             '[%(asctime)s] %(levelname)s in %(module)s: %(message)s'
         )
         
-        # 应用日志处理器（所有日志）
-        app_handler = RotatingFileHandler(
-            'logs/app.log',
-            maxBytes=10240000,  # 10MB
-            backupCount=10
-        )
-        app_handler.setFormatter(formatter)
-        app_handler.setLevel(logging.INFO)
+        # 尝试创建文件日志（Vercel等只读环境会跳过）
+        try:
+            if not os.path.exists('logs'):
+                os.makedirs('logs')
+            
+            # 应用日志处理器（所有日志）
+            app_handler = RotatingFileHandler(
+                'logs/app.log',
+                maxBytes=10240000,  # 10MB
+                backupCount=10
+            )
+            app_handler.setFormatter(formatter)
+            app_handler.setLevel(logging.INFO)
+            
+            # 错误日志处理器（仅错误）
+            error_handler = RotatingFileHandler(
+                'logs/error.log',
+                maxBytes=10240000,  # 10MB
+                backupCount=10
+            )
+            error_handler.setFormatter(formatter)
+            error_handler.setLevel(logging.ERROR)
+            
+            # 添加处理器到app.logger
+            app.logger.addHandler(app_handler)
+            app.logger.addHandler(error_handler)
+        except (OSError, PermissionError):
+            # Vercel等无服务器环境，使用控制台日志
+            console_handler = logging.StreamHandler()
+            console_handler.setFormatter(formatter)
+            app.logger.addHandler(console_handler)
         
-        # 错误日志处理器（仅错误）
-        error_handler = RotatingFileHandler(
-            'logs/error.log',
-            maxBytes=10240000,  # 10MB
-            backupCount=10
-        )
-        error_handler.setFormatter(formatter)
-        error_handler.setLevel(logging.ERROR)
-        
-        # 添加处理器到app.logger
-        app.logger.addHandler(app_handler)
-        app.logger.addHandler(error_handler)
         app.logger.setLevel(logging.INFO)
-        
         app.logger.info('日志系统初始化成功')
         
     except Exception as e:
