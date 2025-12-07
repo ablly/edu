@@ -321,7 +321,8 @@ def api_init_database():
     """初始化数据库表结构和默认数据"""
     try:
         from models_admin import init_admin_tables
-        from models_membership import MembershipTier
+        from models_membership import MembershipTier, User, UserMembership
+        from datetime import datetime, timedelta
         
         # 创建所有表
         db.create_all()
@@ -344,14 +345,64 @@ def api_init_database():
                 permissions='{"allowed_features": ["ai_ask"], "limits": {"ai_ask": 5}}'
             )
             db.session.add(free_tier)
-            db.session.commit()
             tier_created = True
+        
+        # 创建年会员套餐
+        yearly_tier = MembershipTier.query.filter_by(code='yearly').first()
+        if not yearly_tier:
+            yearly_tier = MembershipTier(
+                name='年会员',
+                code='yearly',
+                level=3,
+                price=299,
+                duration_days=365,
+                is_active=True,
+                description='年度会员，享受全部功能',
+                permissions='{"allowed_features": ["ai_ask", "generate_question", "video_summary", "programming_help", "generate_lecture"], "limits": {"ai_ask": 999999, "generate_question": 999999}}'
+            )
+            db.session.add(yearly_tier)
+        
+        db.session.commit()
+        
+        # 创建测试年会员账号
+        test_user = User.query.filter_by(username='vip').first()
+        user_created = False
+        if not test_user:
+            test_user = User(
+                username='vip',
+                email='vip@test.com',
+                is_active=True
+            )
+            test_user.set_password('vip123456')
+            db.session.add(test_user)
+            db.session.commit()
+            
+            # 获取年会员套餐
+            yearly_tier = MembershipTier.query.filter_by(code='yearly').first()
+            if yearly_tier:
+                # 创建会员记录（有效期1年）
+                membership = UserMembership(
+                    user_id=test_user.id,
+                    tier_id=yearly_tier.id,
+                    start_date=datetime.utcnow(),
+                    end_date=datetime.utcnow() + timedelta(days=365),
+                    is_active=True
+                )
+                db.session.add(membership)
+                db.session.commit()
+            user_created = True
         
         return jsonify({
             'success': True,
             'message': '数据库初始化成功',
             'admins_created': len(created_admins),
-            'tier_created': tier_created
+            'tier_created': tier_created,
+            'vip_user_created': user_created,
+            'vip_account': {
+                'username': 'vip',
+                'password': 'vip123456',
+                'membership': '年会员（有效期1年）'
+            }
         })
     except Exception as e:
         import traceback
