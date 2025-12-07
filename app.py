@@ -434,6 +434,35 @@ def api_unlock_account(username):
         }), 500
 
 
+# 重置VIP密码接口
+@app.route('/api/reset_vip', methods=['GET', 'POST'])
+@csrf.exempt
+def api_reset_vip_password():
+    """重置VIP用户密码"""
+    try:
+        from models_membership import User
+        user = User.query.filter_by(username='vip').first()
+        if user:
+            user.set_password('vip123456')
+            db.session.commit()
+            return jsonify({
+                'success': True,
+                'message': 'VIP密码已重置',
+                'username': 'vip',
+                'password': 'vip123456'
+            })
+        else:
+            return jsonify({
+                'success': False,
+                'error': 'VIP用户不存在'
+            }), 404
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
 # 页面路由
 @app.route('/')
 def index():
