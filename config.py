@@ -136,9 +136,12 @@ class ProductionConfig(BaseConfig):
     # 数据库配置 - 生产环境必须使用PostgreSQL
     # Vercel环境不支持SQLite（只读文件系统）
     _db_url = os.environ.get('DATABASE_URL') or os.environ.get('POSTGRES_URL')
-    # 处理 Vercel Postgres 的 URL 格式（postgres:// -> postgresql://）
-    if _db_url and _db_url.startswith('postgres://'):
-        _db_url = _db_url.replace('postgres://', 'postgresql://', 1)
+    # 处理 URL 格式，使用 psycopg3 驱动
+    if _db_url:
+        if _db_url.startswith('postgres://'):
+            _db_url = _db_url.replace('postgres://', 'postgresql+psycopg://', 1)
+        elif _db_url.startswith('postgresql://') and '+' not in _db_url:
+            _db_url = _db_url.replace('postgresql://', 'postgresql+psycopg://', 1)
     SQLALCHEMY_DATABASE_URI = _db_url or f'sqlite:///{os.path.join(BASE_DIR, "data", "edupilot.db")}'
     
     # 生产环境数据库连接池配置（仅MySQL/PostgreSQL）
