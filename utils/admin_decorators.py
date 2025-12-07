@@ -19,14 +19,14 @@ def admin_required(f):
     def decorated_function(*args, **kwargs):
         if 'admin_id' not in session:
             flash('请先登录管理后台', 'warning')
-            return redirect(url_for('admin_login'))
+            return redirect(url_for('admin_login_page'))
         
         # 检查管理员是否存在且激活
         admin = Admin.query.get(session['admin_id'])
         if not admin or not admin.is_active:
             session.pop('admin_id', None)
             flash('管理员账户不存在或已被禁用', 'error')
-            return redirect(url_for('admin_login'))
+            return redirect(url_for('admin_login_page'))
         
         return f(*args, **kwargs)
     
@@ -46,7 +46,7 @@ def permission_required(permission):
                 if request.is_json:
                     return jsonify({'success': False, 'message': '未登录'}), 401
                 flash('请先登录管理后台', 'warning')
-                return redirect(url_for('admin_login'))
+                return redirect(url_for('admin_login_page'))
             
             admin = Admin.query.get(session['admin_id'])
             if not admin or not admin.is_active:
@@ -54,7 +54,7 @@ def permission_required(permission):
                 if request.is_json:
                     return jsonify({'success': False, 'message': '账户已禁用'}), 403
                 flash('管理员账户已被禁用', 'error')
-                return redirect(url_for('admin_login'))
+                return redirect(url_for('admin_login_page'))
             
             # 超级管理员拥有所有权限
             if admin.is_super_admin:

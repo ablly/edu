@@ -151,15 +151,15 @@ class ProductionConfig(BaseConfig):
         'pool_pre_ping': True,    # 使用连接前先测试是否有效
     }
     
-    # Redis配置 - 生产环境必须使用Redis
-    REDIS_URL = os.environ.get('REDIS_URL') or 'redis://localhost:6379/0'
-    RATELIMIT_STORAGE_URL = os.environ.get('REDIS_URL') or 'redis://localhost:6379/0'
+    # Redis配置 - 如果有Redis则使用，否则使用内存存储（Vercel无Redis）
+    REDIS_URL = os.environ.get('REDIS_URL') or None
+    RATELIMIT_STORAGE_URL = os.environ.get('REDIS_URL') or 'memory://'
     
-    # Session配置 - 生产环境使用Redis
-    SESSION_TYPE = 'redis'
+    # Session配置 - Vercel无Redis，使用文件系统或null
+    SESSION_TYPE = 'filesystem' if not os.environ.get('REDIS_URL') else 'redis'
     SESSION_COOKIE_SECURE = True  # 仅HTTPS
     SESSION_COOKIE_HTTPONLY = True
-    SESSION_COOKIE_SAMESITE = 'Lax'
+    SESSION_COOKIE_SAMESITE = 'None'  # 跨域需要设置为None
     
     # 安全配置
     SECRET_KEY = os.environ.get('SECRET_KEY') or BaseConfig.SECRET_KEY  # 从环境变量或基础配置获取
